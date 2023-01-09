@@ -1,0 +1,144 @@
+#include <string.h>
+#include "SWM341.h"
+#include "hid_adc.h"
+
+extern uint8_t  USBD_DeviceDescriptor[];
+extern uint8_t  USBD_ConfigDescriptor[];
+extern uint8_t *USBD_StringDescriptor[];
+extern uint16_t USBD_HIDOffset[];
+extern uint8_t *USBD_HIDReport[];
+
+void HID_Init(void)
+{	
+	USBD_Info.Mode = USBD_MODE_DEV;
+	USBD_Info.Speed = USBD_SPEED_FS;
+	USBD_Info.CtrlPkSiz = EP_CTRL_PKSZ;
+	USBD_Info.DescDevice = USBD_DeviceDescriptor;
+	USBD_Info.DescConfig = USBD_ConfigDescriptor;
+	USBD_Info.DescString = USBD_StringDescriptor;
+	USBD_Info.DescHIDOffset = USBD_HIDOffset;
+	USBD_Info.DescHIDReport = USBD_HIDReport;
+	USBD_Info.pClassRequest_Callback = HID_ClassRequest;
+	USBD_Init();
+}
+
+
+static uint8_t Buffer[EP_INT_OUT_PKSZ];
+
+void USB_Handler(void)
+{
+	uint32_t devif = USBD->DEVIF;
+    uint32_t epif  = USBD->EPIF;
+	
+    if(devif & USBD_DEVIF_RST_Msk)
+    {
+        USBD->DEVIF = USBD_DEVIF_RST_Msk;
+    }
+	else if(devif & USBD_DEVIF_SETCFG_Msk)
+	{
+		USBD->DEVIF = USBD_DEVIF_SETCFG_Msk;
+	}
+    else if(devif & USBD_DEVIF_SETUP_Msk)
+    {
+		USBD->SETUPSR = USBD_SETUPSR_DONE_Msk;
+		
+		if(USBD->SETUPSR & USBD_SETUPSR_SUCC_Msk)
+		{
+			USBD_ProcessSetupPacket();
+		}
+    }
+	else
+    {
+        if(epif & USBD_EPIF_INEP0_Msk)					// Control IN
+        {
+			if(USBD_TxSuccess(0))
+			{
+				USBD_CtrlIn();
+			}
+			USBD_TxIntClr(0);
+        }
+        else if(epif & USBD_EPIF_OUTEP0_Msk)			// Control OUT
+        {
+			USBD_RxIntClr();
+			if(USBD_RxSuccess())
+			{
+				USBD_CtrlOut();
+			}
+        }
+		else if(epif & (1 << EP_INT_IN_NUM))			// Interrupt IN
+        {
+			if(USBD_TxSuccess(EP_INT_IN_NUM) || USBD_TxNAKSent(EP_INT_IN_NUM))
+			{
+				HID_SetInReport();
+			}
+			USBD_TxIntClr(EP_INT_IN_NUM);
+        }
+        else if(epif & (1 << (EP_INT_OUT_NUM + 16)))	// Interrupt OUT
+        {
+			USBD_RxIntClr();
+			if(USBD_RxSuccess())
+			{
+				int size = USBD_RxRead(Buffer, sizeof(Buffer));
+				
+				HID_GetOutReport(Buffer, size);
+			}
+        }
+    }
+}
+
+
+void HID_ClassRequest(USB_Setup_Packet_t * pSetup)
+{
+    if(pSetup->bRequestType & 0x80)		// Device to Host
+    {
+        switch(pSetup->bRequest)
+        {
+        case USB_HID_GET_REPORT:
+        case USB_HID_GET_IDLE:
+        case USB_HID_GET_PROTOCOL:
+        default:
+			USBD_Stall0();
+            break;
+        }
+    }
+    else								// Host to Device
+    {
+        switch(pSetup->bRequest)
+        {
+        case USB_HID_SET_REPORT:
+        {
+            if((pSetup->wValue >> 8) == 3)
+            {
+                USBD_TxWrite(0, 0, 0);
+            }
+            break;
+        }
+		
+        case USB_HID_SET_IDLE:
+        {
+            /* Status stage */
+            USBD_TxWrite(0, 0, 0);
+            break;
+        }
+		
+        case USB_HID_SET_PROTOCOL:
+        default:
+			USBD_Stall0();
+            break;
+        }
+    }
+}
+
+
+void HID_GetOutReport(uint8_t *buf, uint32_t size)
+{
+	USBD_RxReady(EP_INT_OUT_NUM);
+}
+
+
+extern uint16_t ADC_Result[8];
+void HID_SetInReport(void)
+{
+    /* Prepare the data for next HID IN transfer */
+    USBD_TxWrite(EP_INT_IN_NUM, (uint8_t *)ADC_Result, 8*2);
+}
