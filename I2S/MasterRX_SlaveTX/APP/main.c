@@ -186,6 +186,7 @@ void I2S_Master_Init(void)
 	
 	I2S_initStruct.Mode = I2S_MASTER_RX;
 	I2S_initStruct.FrameFormat = I2S_I2S_PHILIPS;
+	I2S_initStruct.ChannelLen = I2S_CHNNLEN_16;
 	I2S_initStruct.DataLen = I2S_DATALEN_16;
 	I2S_initStruct.ClkFreq = 44100 * 2 * 16;	// 44.1K
 	I2S_initStruct.RXThreshold = 0;
@@ -227,6 +228,7 @@ void I2S_Slave_Init(void)
 	
 	I2S_initStruct.Mode = I2S_SLAVE_TX;
 	I2S_initStruct.FrameFormat = I2S_I2S_PHILIPS;
+	I2S_initStruct.ChannelLen = I2S_CHNNLEN_16;
 	I2S_initStruct.DataLen = I2S_DATALEN_16;
 	I2S_initStruct.ClkFreq = 0;
 	I2S_initStruct.RXThreshold = 0;

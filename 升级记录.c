@@ -274,3 +274,6 @@ CSL\SWM341_StdPeriph_Driver\SWM341_sfc.c 文件中，SFC_Init() 函数中，添�
 CSL\SWM341_StdPeriph_Driver\SWM341_sfc.c 文件中，SFC->GO = 1 后的等待全部改为：
 	__DSB(); __ISB();
 	while(SFC->GO) __NOP();
+
+2023/02/08
+CSL\SWM341_StdPeriph_Driver\SWM341_spi.c 文件中，I2S_Init() 函数中，添加 SPIx->I2SCR.CHLEN 设置

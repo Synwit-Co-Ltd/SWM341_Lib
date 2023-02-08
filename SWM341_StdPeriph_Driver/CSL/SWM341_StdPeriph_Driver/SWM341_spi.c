@@ -313,12 +313,13 @@ void I2S_Init(SPI_TypeDef * SPIx, I2S_InitStructure * initStruct)
 	              (1                           << SPI_CTRL_TFCLR_Pos);
 	SPIx->CTRL &= ~(SPI_CTRL_RFCLR_Msk | SPI_CTRL_TFCLR_Msk);
 	
-	SPIx->I2SCR &= ~(SPI_I2SCR_MSTR_Msk | SPI_I2SCR_DIEN_Msk | SPI_I2SCR_DOEN_Msk | SPI_I2SCR_FFMT_Msk | SPI_I2SCR_DLEN_Msk | SPI_I2SCR_PCMSYNW_Msk);
+	SPIx->I2SCR &= ~(SPI_I2SCR_MSTR_Msk | SPI_I2SCR_DIEN_Msk | SPI_I2SCR_DOEN_Msk | SPI_I2SCR_FFMT_Msk | SPI_I2SCR_DLEN_Msk | SPI_I2SCR_CHLEN_Msk | SPI_I2SCR_PCMSYNW_Msk);
 	SPIx->I2SCR |= ((initStruct->Mode & 0x04 ? 1 : 0) << SPI_I2SCR_MSTR_Pos) |
 				   ((initStruct->Mode & 0x02 ? 1 : 0) << SPI_I2SCR_DOEN_Pos) |
 				   ((initStruct->Mode & 0x01 ? 1 : 0) << SPI_I2SCR_DIEN_Pos) |
 				   ((initStruct->FrameFormat & 0x03)  << SPI_I2SCR_FFMT_Pos) |
 				   (initStruct->DataLen               << SPI_I2SCR_DLEN_Pos) |
+				   (initStruct->ChannelLen			  << SPI_I2SCR_CHLEN_Pos) |
 				   ((initStruct->FrameFormat & 0x04 ? 1 : 0) << SPI_I2SCR_PCMSYNW_Pos);
 	
 	SPIx->I2SPR &= ~SPI_I2SPR_SCLKDIV_Msk;
