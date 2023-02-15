@@ -624,10 +624,6 @@ typedef struct {
 
 #define SYS_TEMPCR_EN_Pos			0
 #define SYS_TEMPCR_EN_Msk			(0x01 << SYS_TEMPCR_EN_Pos)
-#define SYS_TEMPCR_TRIM_Pos			4
-#define SYS_TEMPCR_TRIM_Msk			(0x3F << SYS_TEMPCR_TRIM_Pos)
-#define SYS_TEMPCR_AD0CH7_Pos		16		//ADC0 CH7通道测量信号选择，0 外部输入   1 温度传感器输出
-#define SYS_TEMPCR_AD0CH7_Msk		(0x03 << SYS_TEMPCR_AD0CH7_Pos)
 
 
 
