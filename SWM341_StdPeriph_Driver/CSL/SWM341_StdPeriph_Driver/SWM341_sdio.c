@@ -59,6 +59,8 @@ uint32_t SDIO_Init(uint32_t freq)
 	
 	while((SDIO->CR2 & SDIO_CR2_CLKRDY_Msk) == 0);
 	
+	for(int i = 0; i < CyclesPerUs * 10; i++) __NOP();
+	
 	SDIO->IM = 0xFFFFFFFF;
 	
 	
