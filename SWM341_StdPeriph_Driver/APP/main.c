@@ -10,7 +10,9 @@ int main(void)
 	
 	SerialInit();
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);				//GPIOA.5配置为输出引脚，推挽输出
+	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);			//GPIOA.5配置为输出引脚，推挽输出
+	
+	GPIO_INIT(GPIOA, PIN5, GPIO_OUTPUT);		//同上，另一种可读性更好的写法
 	
  	while(1==1)
  	{
