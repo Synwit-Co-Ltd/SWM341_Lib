@@ -382,27 +382,3 @@ void I2S_Close(SPI_TypeDef * SPIx)
 	SPIx->CTRL &= ~SPI_CTRL_EN_Msk;
 	SPIx->I2SCR &= ~SPI_I2SCR_EN_Msk;
 }
-
-/****************************************************************************************************************************************** 
-* 函数名称:	I2S_MCLKConfig()
-* 功能说明:	I2S MCLK时钟输出配置
-* 输    入: SPI_TypeDef * SPIx		指定要被设置的SPI，有效值包括SPI0、SPI1
-*			uint32_t output_enable	是否输出MCLK时钟
-*			uint32_t mclk_freq		MCLK时钟频率
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
-void I2S_MCLKConfig(SPI_TypeDef * SPIx, uint32_t output_enable, uint32_t mclk_freq)
-{
-	if(output_enable)
-	{
-		SPIx->I2SPR &= ~SPI_I2SPR_MCLKDIV_Msk;
-		SPIx->I2SPR |= (SystemCoreClock / mclk_freq / 2 - 1) << SPI_I2SPR_MCLKDIV_Pos;
-		
-		SPIx->I2SCR |= (1 << SPI_I2SCR_MCLKOE_Pos);
-	}
-	else
-	{
-		SPIx->I2SCR &= ~(1 << SPI_I2SCR_MCLKOE_Pos);
-	}
-}
