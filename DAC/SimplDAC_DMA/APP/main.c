@@ -42,15 +42,15 @@ int main(void)
 #if 1
 	DMA_initStruct.Handshake = DMA_EXHS_TIMR0;
 	
-	TIMR_Init(TIMR0, TIMR_MODE_TIMER, CyclesPerUs, 1000, 0);	//每1ms钟触发DMA向UART0->DATA搬运一个字节
+	TIMR_Init(TIMR0, TIMR_MODE_TIMER, CyclesPerUs, 1000, 0);	//每1ms钟触发DMA向DAC->DHR搬运一个数据
 	TIMR_Start(TIMR0);
 #else
 	DMA_initStruct.Handshake = DMA_EXHS_TRIG0;
 	
-	PORT_Init(PORTN, PIN5, PORTN_PIN5_DMA_TRIG0, 1);	//PN5引脚上升沿触发DMA向UART0->DATA搬运一个字节
+	PORT_Init(PORTN, PIN5, PORTN_PIN5_DMA_TRIG0, 1);	//PN5引脚上升沿触发DMA向DAC->DHR搬运一个数据
 	PORTN->PULLU |= (1 << PIN5);
 	
-//	PORT_Init(PORTB, PIN0, PORTB_PIN0_DMA_TRIG1, 1);	//PB0引脚上升沿触发DMA向UART0->DATA搬运一个字节
+//	PORT_Init(PORTB, PIN0, PORTB_PIN0_DMA_TRIG1, 1);	//PB0引脚上升沿触发DMA向DAC->DHR搬运一个数据
 //	PORTB->PULLU |= (1 << PIN0);
 #endif
 
