@@ -1,1 +1,1 @@
-功能说明：USB Host 连接键盘
+功能说明：USB Host 连接键盘（只支持 Full Speed 键盘）

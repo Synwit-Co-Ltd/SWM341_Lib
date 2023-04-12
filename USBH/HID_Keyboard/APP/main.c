@@ -13,8 +13,6 @@ void SerialInit(void);
 
 int main(void)
 {	
-	uint8_t button, x , y;
-	
 	SystemInit();
 	
 	SerialInit();

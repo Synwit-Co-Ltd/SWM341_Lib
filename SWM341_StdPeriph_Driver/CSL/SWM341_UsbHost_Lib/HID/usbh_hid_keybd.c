@@ -122,7 +122,7 @@ void USBH_HID_KeyBD_Decode(uint8_t *pbuf)
 					break;
 			}
 
-			if(j == nbr_keys_last)	// 遍历到了最后，说明 pbuf[i] 不在 keys_last[j] 中，是新按下的
+			if(j == nbr_keys_last)	// 遍历到了最后，说明 pbuf[i] 不在 keys_last 中，是新按下的
 				keys_new[nbr_keys_new++] = pbuf[i];
 		}
 	}
