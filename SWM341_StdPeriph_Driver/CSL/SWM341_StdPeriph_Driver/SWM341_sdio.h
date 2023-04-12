@@ -48,6 +48,15 @@
 #define SD_RES_TIMEOUT		2
 
 
+/* Card Status return by response R1 */
+#define SD_CS_APP_CMD			(1 <<  5)	// The card will expect ACMD
+#define SD_CS_READY_FOR_DATA	(1 <<  8)	// Corresponds to buffer empty signaling on the bus
+#define SD_CS_CURRENT_STATE		(1 <<  9)	// The state of the card when receiving the command. ¹² 4 Î»
+#define SD_CS_CARD_ECC_FAILED	(1 << 21)
+#define SD_CS_ILLEGAL_COMMAND	(1 << 22)
+#define SD_CS_CARD_IS_LOCKED	(1 << 25)
+
+
 typedef struct
 {
   __IO uint8_t  CSDStruct;            // CSD structure 

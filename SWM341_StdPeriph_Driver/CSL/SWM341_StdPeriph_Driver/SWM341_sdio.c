@@ -79,7 +79,7 @@ uint32_t SDIO_Init(uint32_t freq)
 		if(res != SD_RES_OK)
 			return res;
 		
-		if(resp != 0x120) return SD_RES_ERR;	//不是SD卡，可能是MMC卡
+		if((resp & SD_CS_APP_CMD) == 0) return SD_RES_ERR;
 		
 		if(SD_cardInfo.CardType == SDIO_STD_CAPACITY_SD_CARD_V2_0)
 			SDIO_SendCmd(SD_CMD_SD_APP_OP_COND, 0x80100000|0x40000000, SD_RESP_32b, &resp);
