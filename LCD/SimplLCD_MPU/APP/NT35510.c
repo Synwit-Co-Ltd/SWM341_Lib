@@ -7,9 +7,6 @@
 #define NT35510_CMD_COUSOR_Y	0x2B00
 #define NT35510_CMD_WR_DATA		0x2C00
 
-#define LCD_VPIX  800
-#define LCD_HPIX  480
-
 /****************************************************************************************************************************************** 
 * 函数名称:	NT35510_Init()
 * 功能说明: TFT液晶屏初始化，TFT使用NT35510驱动，分辨率480*800，使用正点原子4.3寸屏测试
@@ -488,9 +485,9 @@ void NT35510_Clear(uint16_t rgb)
 	
 	LCD_WR_REG(LCD, NT35510_CMD_WR_DATA);
 	
-	for(i = 0; i < LCD_VPIX; i++)
+	for(i = 0; i < NT35510_VPIX; i++)
 	{
-		for(j = 0; j < LCD_HPIX; j++)
+		for(j = 0; j < NT35510_HPIX; j++)
 		{
 			LCD_WR_DATA(LCD, rgb);
 		}
@@ -498,19 +495,19 @@ void NT35510_Clear(uint16_t rgb)
 }
 
 /****************************************************************************************************************************************** 
-* 函数名称: NT35510_DMAClear()
+* 函数名称: NT35510_DMAWrite()
 * 功能说明: 
 * 输    入: 
 * 输    出: 
 * 注意事项: 
 ******************************************************************************************************************************************/
-void NT35510_DMAClear(uint32_t * buff)
-{	
-	NT35510_SetCursor(0, 0);
+void NT35510_DMAWrite(uint32_t * buff, uint32_t start_line, uint32_t count_line)
+{
+	NT35510_SetCursor(0, start_line);
 	
 	LCD_WR_REG(LCD, NT35510_CMD_WR_DATA);
 	
-	MPULCD_DMAStart(LCD, buff, LCD_HPIX, LCD_VPIX);
+	MPULCD_DMAStart(LCD, buff, NT35510_HPIX, count_line);
 	
 	while(MPULCD_DMABusy(LCD)) __NOP();
 }

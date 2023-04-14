@@ -3,15 +3,17 @@
 #include "ugui.h"
 #include "NT35510.h"
 
+
+uint16_t Buffer[NT35510_HPIX * 10] = {0};
+
+
 UG_GUI gui;
 
 void SerialInit(void);
 void MPULCDInit(void);
 
 int main(void)
-{
-	uint32_t i, j;
-	
+{	
 	SystemInit();
 	
 	SerialInit();
@@ -32,10 +34,34 @@ int main(void)
  	
   	UG_FontSelect(&FONT_12X20);
 	UG_PutString(120, 80, "Hi from Synwit");
-
+	
+	/* MPU DMA 写入与中断演示 */
+	for(int i = 0; i < sizeof(Buffer) / 2; i++)
+		Buffer[i] = 0xFF00;
+	
+	GPIO_INIT(GPION, PIN5, GPIO_OUTPUT);
+	
+	NVIC_EnableIRQ(LCD_IRQn);
+	
 	while(1==1)
-	{		
+	{
+		GPIO_SetBit(GPION, PIN5);
+		NT35510_DMAWrite((uint32_t *)Buffer, 0, sizeof(Buffer) / 2 / NT35510_HPIX);
+		
+		for(int i = 0; i < CyclesPerUs; i++) __NOP();
+		LCD_INTEn(LCD);
+		
+		for(int i = 0; i < SystemCoreClock / 100; i++) __NOP();
 	}
+}
+
+
+void LCD_Handler(void)
+{
+	LCD_INTDis(LCD);
+	LCD_INTClr(LCD);
+	
+	GPIO_InvBit(GPION, PIN5);
 }
 
 
