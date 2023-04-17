@@ -13,7 +13,7 @@ void SerialInit(void);
 void MPULCDInit(void);
 
 int main(void)
-{	
+{
 	SystemInit();
 	
 	SerialInit();
@@ -40,6 +40,7 @@ int main(void)
 		Buffer[i] = 0xFF00;
 	
 	GPIO_INIT(GPION, PIN5, GPIO_OUTPUT);
+	GPIO_ClrBit(GPION, PIN5);
 	
 	NVIC_EnableIRQ(LCD_IRQn);
 	
@@ -48,7 +49,9 @@ int main(void)
 		GPIO_SetBit(GPION, PIN5);
 		NT35510_DMAWrite((uint32_t *)Buffer, 0, sizeof(Buffer) / 2 / NT35510_HPIX);
 		
-		for(int i = 0; i < CyclesPerUs; i++) __NOP();
+		/* 注意：由于写 LCD->MPUIR、LCD->MPUDR 启动的传输也会产生 LCD 中断，
+				 因此只在启动 DMA 传输后使能中断，并在中断响应后关闭中断使能 */
+		LCD_INTClr(LCD);
 		LCD_INTEn(LCD);
 		
 		for(int i = 0; i < SystemCoreClock / 100; i++) __NOP();
@@ -59,7 +62,6 @@ int main(void)
 void LCD_Handler(void)
 {
 	LCD_INTDis(LCD);
-	LCD_INTClr(LCD);
 	
 	GPIO_InvBit(GPION, PIN5);
 }

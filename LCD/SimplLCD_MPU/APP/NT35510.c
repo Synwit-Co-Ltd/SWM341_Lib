@@ -499,7 +499,9 @@ void NT35510_Clear(uint16_t rgb)
 * 功能说明: 
 * 输    入: 
 * 输    出: 
-* 注意事项: 
+* 注意事项: 启动传输后立即返回，不等待传输完成，后续使用方法有两种：
+*			（1）调用 while(MPULCD_DMABusy(LCD)) __NOP(); 查询等待传输完成
+*			（2）使用 LCD 中断
 ******************************************************************************************************************************************/
 void NT35510_DMAWrite(uint32_t * buff, uint32_t start_line, uint32_t count_line)
 {
@@ -508,6 +510,4 @@ void NT35510_DMAWrite(uint32_t * buff, uint32_t start_line, uint32_t count_line)
 	LCD_WR_REG(LCD, NT35510_CMD_WR_DATA);
 	
 	MPULCD_DMAStart(LCD, buff, NT35510_HPIX, count_line);
-	
-	while(MPULCD_DMABusy(LCD)) __NOP();
 }
