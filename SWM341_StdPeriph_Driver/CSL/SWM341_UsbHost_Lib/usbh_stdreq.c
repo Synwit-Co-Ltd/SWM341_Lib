@@ -113,7 +113,7 @@ USBH_Status USBH_SetConfiguration(USBH_Info_t *phost, uint8_t cfg)
 ******************************************************************************************************************************************/
 USBH_Status USBH_SetInterface(USBH_Info_t *phost, uint8_t intf, uint8_t altSetting)
 {	
-	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_STANDARD | USB_REQ_TO_DEVICE;
+	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_STANDARD | USB_REQ_TO_INTERFACE;
 	phost->Ctrl.setup.bRequest = USB_SET_INTERFACE;
 	phost->Ctrl.setup.wValue = altSetting;
 	phost->Ctrl.setup.wIndex = intf;
