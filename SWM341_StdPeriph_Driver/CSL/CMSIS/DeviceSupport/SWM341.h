@@ -1000,6 +1000,8 @@ typedef struct {
 #define UART_RTSCR_STAT_Pos			8		//RTS信号的当前状态
 #define UART_RTSCR_STAT_Msk			(0x01 << UART_RTSCR_STAT_Pos)
 
+#define UART_CFG_RXEN_Pos			0		//RX Enable
+#define UART_CFG_RXEN_Msk			(0x01 << UART_CFG_RXEN_Pos)
 #define UART_CFG_MSBF_Pos			1		//接收发送MSB First
 #define UART_CFG_MSBF_Msk			(0x01 << UART_CFG_MSBF_Pos)
 #define UART_CFG_BRKTXLEN_Pos		2		//1表示1bit，以此类推，默认值13
