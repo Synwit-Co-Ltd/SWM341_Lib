@@ -51,7 +51,7 @@
     .global  OSIntCtxSw
     .global  PendSV_Handler
 
-#if (defined(__VFP_FP__) && !defined(__SOFTFP__))
+#if !defined(__SOFTFP__)
     .global  OS_CPU_FP_Reg_Push
     .global  OS_CPU_FP_Reg_Pop
 #endif
@@ -88,7 +88,7 @@
 @              b) Update OSTCBCur->OSTCBStkPtr;
 @********************************************************************************************************
 
-#if (defined(__VFP_FP__) && !defined(__SOFTFP__))
+#if !defined(__SOFTFP__)
 
 .thumb_func
 OS_CPU_FP_Reg_Push:
@@ -115,7 +115,7 @@ OS_CPU_FP_nosave:
 @              b) Update OSTCBHighRdy->OSTCBStkPtr pointer of new proces stack;
 @********************************************************************************************************
 
-#if (defined(__VFP_FP__) && !defined(__SOFTFP__))
+#if !defined(__SOFTFP__)
 
 .thumb_func
 OS_CPU_FP_Reg_Pop:
