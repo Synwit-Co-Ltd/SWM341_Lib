@@ -5,6 +5,13 @@
 CircleBuffer_t CirBuf;
 
 
+#define RXSIZE	512
+#define RXCOUNT	10
+uint8_t RXBuffer[RXCOUNT][RXSIZE];
+uint32_t RdIndex = 0;
+volatile uint32_t WrIndex = 0;
+
+
 void SerialInit(void);
 
 int main(void)
@@ -12,14 +19,18 @@ int main(void)
 	SystemInit();
 	
 	SerialInit();
-
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);
    	
 	while(1==1)
 	{
-		uint8_t chr;
-		if(CirBuf_Read(&CirBuf, &chr, 1))
-			printf("%c", chr);
+		if(RdIndex != WrIndex)
+		{
+			printf("%s\n", RXBuffer[RdIndex]);
+			memset(RXBuffer[RdIndex], 0x00, RXSIZE);
+			
+			RdIndex++;
+			if(RdIndex == RXCOUNT)
+				RdIndex = 0;
+		}
 	}
 }
 
@@ -42,7 +53,11 @@ void UART0_Handler(void)
 		{
 			UART_INTClr(UART0, UART_IT_RX_TOUT);
 			
-			GPIO_InvBit(GPIOA, PIN5);
+			CirBuf_Read(&CirBuf, RXBuffer[WrIndex], RXSIZE);
+			
+			WrIndex++;
+			if(WrIndex == RXCOUNT)
+				WrIndex = 0;
 		}
 	}
 }
