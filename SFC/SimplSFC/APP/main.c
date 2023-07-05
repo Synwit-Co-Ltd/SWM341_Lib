@@ -36,9 +36,26 @@ int main(void)
 	for(i = 0; i < 20; i++) printf("0x%X, ", RdBuff[i]);
 	
 	printf("\r\nAfter Write: \r\n");
-   	
+
+	/* SFC 写入较慢，大量写入时，建议用 GPIO 模拟 SPI 写入 */
+#if 0
 	SFC_Write(EEPROM_ADDR, WrBuff, 20);
+#else
+	GPIO_SetBit(GPIOD, PIN6);
+	GPIO_SetBit(GPIOD, PIN5);
+	GPIO_INIT(GPIOD, PIN5, GPIO_OUTPUT);
+	GPIO_INIT(GPIOD, PIN6, GPIO_OUTPUT);
+	GPIO_INIT(GPIOD, PIN8, GPIO_OUTPUT);
+	GPIO_INIT(GPIOD, PIN7, GPIO_INPUT);
 	
+	SFC_GPIOWrite(EEPROM_ADDR, WrBuff, 20);
+	
+	PORT_Init(PORTD, PIN5, PORTD_PIN5_FSPI_SCLK,  0);
+	PORT_Init(PORTD, PIN6, PORTD_PIN6_FSPI_SSEL,  0);
+	PORT_Init(PORTD, PIN8, PORTD_PIN8_FSPI_MOSI,  1);
+	PORT_Init(PORTD, PIN7, PORTD_PIN7_FSPI_MISO,  1);
+#endif
+
 	SFC_Read(EEPROM_ADDR, RdBuff, 20);
 	for(i = 0; i < 20; i++) printf("0x%X, ", RdBuff[i]);
 	

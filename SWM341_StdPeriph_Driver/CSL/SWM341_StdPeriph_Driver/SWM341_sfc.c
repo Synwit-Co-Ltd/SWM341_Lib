@@ -143,6 +143,73 @@ void SFC_Write(uint32_t addr, uint32_t buff[], uint32_t cnt)
 	SFC->CFG &= ~SFC_CFG_WREN_Msk;
 }
 
+
+#define IOSPI_CS_Low()		GPIO_AtomicClrBit(GPIOD, PIN6); __NOP(); __NOP(); __NOP(); __NOP()
+#define IOSPI_CS_High()		__NOP(); __NOP(); __NOP(); __NOP(); GPIO_AtomicSetBit(GPIOD, PIN6)
+#define IOSPI_CLK_Low()		GPIO_AtomicClrBit(GPIOD, PIN5); __NOP(); __NOP()
+#define IOSPI_CLK_High()	__NOP(); __NOP(); GPIO_AtomicSetBit(GPIOD, PIN5)
+#define IOSPI_MOSI_Low()	GPIO_AtomicClrBit(GPIOD, PIN8)
+#define IOSPI_MOSI_High()	GPIO_AtomicSetBit(GPIOD, PIN8)
+#define IOSPI_MISO_Value()	GPIO_GetBit(GPIOD, PIN7)
+
+static uint8_t IOSPI_ReadWrite(uint8_t data)
+{
+	uint8_t val = 0;
+	
+	for(int i = 0; i < 8; i++)
+	{
+		IOSPI_CLK_Low();
+		
+		if(data & (1 << (7 - i)))
+			IOSPI_MOSI_High();
+		else
+			IOSPI_MOSI_Low();
+		
+		IOSPI_CLK_High();
+		
+		val = (val << 1) | IOSPI_MISO_Value();
+	}
+	
+	return val;
+}
+
+/****************************************************************************************************************************************** 
+* 函数名称:	SFC_GPIOWrite()
+* 功能说明:	SFC 写入较慢，大量写入时，建议用 GPIO 模拟 SPI 写入
+* 输    入: uint32_t addr		数据要写入到Flash中的地址，字对齐
+*			uint32_t buff[]		要写入Flash中的数据
+*			uint32_t cnt		要写的数据的个数，以字为单位，最大64
+* 输    出: 无
+* 注意事项: 执行此函数前需要将相应引脚切到 GPIO 功能，使用完后再次将相应引脚切换回 SFC 功能，以便使用 SFC 擦除、读取功能
+******************************************************************************************************************************************/
+void SFC_GPIOWrite(uint32_t addr, uint32_t buff[], uint32_t cnt)
+{
+	IOSPI_CS_Low();
+	IOSPI_ReadWrite(SFC_CMD_WRITE_ENABLE);
+	IOSPI_CS_High();
+	
+	IOSPI_CS_Low();
+	IOSPI_ReadWrite(SFC_CMD_PAGE_PROGRAM);
+	IOSPI_ReadWrite(addr >> 16);
+	IOSPI_ReadWrite(addr >>  8);
+	IOSPI_ReadWrite(addr);
+	
+	for(int i = 0; i < cnt * 4; i++)
+	{
+		IOSPI_ReadWrite(((uint8_t *)buff)[i]);
+	}
+	IOSPI_CS_High();
+	
+	int busy;
+	do {
+		IOSPI_CS_Low();
+		IOSPI_ReadWrite(SFC_CMD_READ_STATUS_REG1);
+		busy = IOSPI_ReadWrite(0xFF) & (1 << SFC_STATUS_REG_BUSY_Pos);
+		IOSPI_CS_High();
+	} while(busy);
+}
+
+
 /****************************************************************************************************************************************** 
 * 函数名称:	SFC_Read()
 * 功能说明:	SPI Flash数据读取
