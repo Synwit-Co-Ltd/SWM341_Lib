@@ -144,12 +144,12 @@ void SFC_Write(uint32_t addr, uint32_t buff[], uint32_t cnt)
 }
 
 
-#define IOSPI_CS_Low()		GPIO_AtomicClrBit(GPIOD, PIN6); __NOP(); __NOP(); __NOP(); __NOP()
-#define IOSPI_CS_High()		__NOP(); __NOP(); __NOP(); __NOP(); GPIO_AtomicSetBit(GPIOD, PIN6)
-#define IOSPI_CLK_Low()		GPIO_AtomicClrBit(GPIOD, PIN5); __NOP(); __NOP()
-#define IOSPI_CLK_High()	__NOP(); __NOP(); GPIO_AtomicSetBit(GPIOD, PIN5)
-#define IOSPI_MOSI_Low()	GPIO_AtomicClrBit(GPIOD, PIN8)
-#define IOSPI_MOSI_High()	GPIO_AtomicSetBit(GPIOD, PIN8)
+#define IOSPI_CS_Low()		GPIO_ClrBit(GPIOD, PIN6); __NOP(); __NOP(); __NOP(); __NOP()
+#define IOSPI_CS_High()		__NOP(); __NOP(); __NOP(); __NOP(); GPIO_SetBit(GPIOD, PIN6)
+#define IOSPI_CLK_Low()		GPIO_ClrBit(GPIOD, PIN5); __NOP(); __NOP()
+#define IOSPI_CLK_High()	__NOP(); __NOP(); GPIO_SetBit(GPIOD, PIN5)
+#define IOSPI_MOSI_Low()	GPIO_ClrBit(GPIOD, PIN8)
+#define IOSPI_MOSI_High()	GPIO_SetBit(GPIOD, PIN8)
 #define IOSPI_MISO_Value()	GPIO_GetBit(GPIOD, PIN7)
 
 static uint8_t IOSPI_ReadWrite(uint8_t data)
