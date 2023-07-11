@@ -37,6 +37,10 @@ void WDT_Init(WDT_TypeDef * WDTx, uint32_t int_period, uint32_t rst_period)
 	
 	WDT_Stop(WDTx);		//设置前先关闭
 	
+	/* 当 WDT 已经在运行中，第二次执行 WDT_Init()，且设置的 rst_period 比当前计数器值还小时，
+	   WDT 需要计数到 2^32 溢出返回 0，才能触发中断和复位，这里执行一下喂狗，保证计数器从零重新计数，避免上述问题 */
+	WDT_Feed(WDTx);
+	
 	WDTx->CR &= ~WDT_CR_CKDIV_Msk;
 	WDTx->CR |= (4 << WDT_CR_CKDIV_Pos);	// 对时钟源 32 分频
 	
