@@ -5,6 +5,7 @@
 #define MSC_MEDIUM_FLASH	0	//片内Flash
 #define MSC_MEDIUM_SFLASH	1	//片外SPI Flash
 #define MSC_MEDIUM_SDCARD	2	//SD卡
+#define MSC_MEDIUM_SDRAM	3	//SDRAM，用于测试 USB 接口传输速度
 
 #define MSC_MEDIUM  MSC_MEDIUM_SFLASH
 
@@ -23,6 +24,10 @@
 
 #define DATA_FLASH_SIZE		SD_cardInfo.CardCapacity
 
+#elif (MSC_MEDIUM  == MSC_MEDIUM_SDRAM)
+
+#define DATA_FLASH_SIZE		(1024 * 1024 * 8)
+
 #else
 
 #error "MSC_MEDIUM Setting Error"
@@ -30,6 +35,7 @@
 #endif
 
 
+void FlashDiskInit(void);
 void FlashDiskRead(uint64_t addr, uint32_t size, uint8_t *buff);
 void FlashDiskWrite(uint64_t addr, uint32_t size, const uint8_t *buff);
 void FlashDiskFlush(void);

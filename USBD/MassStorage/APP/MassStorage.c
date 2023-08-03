@@ -22,34 +22,7 @@ void MSC_ClassRequest(USB_Setup_Packet_t * pSetup);
 
 void MSC_Init(void)
 {
-#if (MSC_MEDIUM == MSC_MEDIUM_SFLASH)
-	SFC_InitStructure SFC_initStruct;
-	
-	/* SFC使用专用的FSPI（Flash SPI）接口连接SPI Flash */
-	PORT_Init(PORTD, PIN5, PORTD_PIN5_FSPI_SCLK,  0);
-	PORT_Init(PORTD, PIN6, PORTD_PIN6_FSPI_SSEL,  0);
-	PORT_Init(PORTD, PIN8, PORTD_PIN8_FSPI_MOSI,  1);
-	PORT_Init(PORTD, PIN7, PORTD_PIN7_FSPI_MISO,  1);
-	PORT_Init(PORTD, PIN3, PORTD_PIN3_FSPI_DATA2, 1);
-	PORT_Init(PORTD, PIN4, PORTD_PIN4_FSPI_DATA3, 1);
-	
-	SFC_initStruct.ClkDiv = SFC_CLKDIV_4;
-	SFC_initStruct.Cmd_Read = 0xEB;
-	SFC_initStruct.Width_Read = SFC_RDWIDTH_4;
-	SFC_initStruct.Cmd_PageProgram = 0x32;
-	SFC_initStruct.Width_PageProgram = SFC_PPWIDTH_4;
-	SFC_Init(&SFC_initStruct);
-
-#elif (MSC_MEDIUM == MSC_MEDIUM_SDCARD)
-	PORT_Init(PORTM, PIN2, PORTM_PIN2_SD_CLK, 0);
-	PORT_Init(PORTM, PIN4, PORTM_PIN4_SD_CMD, 1);
-	PORT_Init(PORTM, PIN5, PORTM_PIN5_SD_D0,  1);
-	PORT_Init(PORTM, PIN6, PORTM_PIN6_SD_D1,  1);
-	PORT_Init(PORTN, PIN0, PORTN_PIN0_SD_D2,  1);
-	PORT_Init(PORTN, PIN1, PORTN_PIN1_SD_D3,  1);
-	
-	SDIO_Init(20000000);
-#endif
+	FlashDiskInit();
 	
 	USBD_Info.Mode = USBD_MODE_DEV;
 	USBD_Info.Speed = USBD_SPEED_FS;

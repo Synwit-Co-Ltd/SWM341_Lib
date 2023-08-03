@@ -68,9 +68,9 @@ void RTC_Config(void)
 
 void RTC_Handler(void)
 {
-	if(RTC_IntAlarmStat(RTC))
+	if(RTC_INTStat(RTC, RTC_IT_ALARM))
 	{
-		RTC_IntAlarmClr(RTC);
+		RTC_INTClr(RTC, RTC_IT_ALARM);
 		
 		RTC_GetDateTime(RTC, &dateTime);
 		printf("Now Time: %02d : %02d\r\n", dateTime.Minute, dateTime.Second);
