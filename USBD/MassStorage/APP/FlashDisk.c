@@ -3,14 +3,21 @@
 #include "FlashDisk.h"
 
 
-#define FLASH_BLOCK_SIZE	4096
+#if ((MSC_MEDIUM == MSC_MEDIUM_SFLASH) && (SFLASH_ERASE_64KB == 1))
+#define FLASH_BLOCK_SIZE	(1024 * 64)
+#else
+#define FLASH_BLOCK_SIZE	(1024 * 4)
+#endif
 #define MIN(a, b)	(a < b) ? a : b
 
 
 static uint64_t Flash_Block_Addr = 0xFFFFFFFF;
 static uint32_t FLASH_Cache_Dirty = 0;
+#if ((MSC_MEDIUM == MSC_MEDIUM_SFLASH) && (SFLASH_ERASE_64KB == 1))
+static uint8_t *FLASH_Block_Cache = (uint8_t *)SDRAMM_BASE;
+#else
 static uint8_t  FLASH_Block_Cache[FLASH_BLOCK_SIZE] __attribute__((aligned(8)));
-
+#endif
 
 void FlashDiskInit(void)
 {
@@ -41,8 +48,9 @@ void FlashDiskInit(void)
 	PORT_Init(PORTN, PIN1, PORTN_PIN1_SD_D3,  1);
 	
 	SDIO_Init(20000000);
-	
-#elif (MSC_MEDIUM  == MSC_MEDIUM_SDRAM)
+#endif
+
+#if ((MSC_MEDIUM == MSC_MEDIUM_SDRAM) || ((MSC_MEDIUM == MSC_MEDIUM_SFLASH) && (SFLASH_ERASE_64KB == 1)))
 	SDRAM_InitStructure SDRAM_InitStruct;
 
 	PORT_Init(PORTM, PIN13, PORTM_PIN13_SDR_CLK, 0);
@@ -180,7 +188,12 @@ void FlashDiskFlush(void)
 		
 		FLASH_Write(DATA_FLASH_BASE + Flash_Block_Addr, (uint32_t *)FLASH_Block_Cache, FLASH_BLOCK_SIZE/4);
 #elif (MSC_MEDIUM == MSC_MEDIUM_SFLASH)
+	#if ((MSC_MEDIUM == MSC_MEDIUM_SFLASH) && (SFLASH_ERASE_64KB == 1))
+		SFC_EraseEx(DATA_FLASH_BASE + Flash_Block_Addr, SFC_CMD_ERASE_BLOCK64KB, 0);
+		while(SFC_FlashBusy()) __NOP();
+	#else
         SFC_Erase(DATA_FLASH_BASE + Flash_Block_Addr, 1);
+	#endif
 		
 		for(int i = 0; i < FLASH_BLOCK_SIZE; i += 256)
 			SFC_Write(DATA_FLASH_BASE + Flash_Block_Addr + i, (uint32_t *)&FLASH_Block_Cache[i], 256/4);

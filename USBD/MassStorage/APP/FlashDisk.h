@@ -20,6 +20,12 @@
 #define DATA_FLASH_BASE		(1024 * 1024 * 2)
 #define DATA_FLASH_SIZE		(1024 * 1024 * 16 - DATA_FLASH_BASE)
 
+/* 0：使用 4KB Sector Erase 命令
+ * 1：使用 64KB Block Erase 命令，大数据量写入时，平均擦除时间更短，整体写入速度更快
+ *	  但需要 64KB Buffer 存储待擦除 Block 的数据，因此只能用于有 SDRAM 的情况
+ */
+#define SFLASH_ERASE_64KB	0
+
 #elif (MSC_MEDIUM == MSC_MEDIUM_SDCARD)
 
 #define DATA_FLASH_SIZE		SD_cardInfo.CardCapacity
