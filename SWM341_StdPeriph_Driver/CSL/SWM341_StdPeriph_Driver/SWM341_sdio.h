@@ -34,6 +34,13 @@
 #define SD_CMD_SDIO_RW_DIRECT                      ((uint8_t)52)
 #define SD_CMD_SDIO_RW_EXTENDED                    ((uint8_t)53)
 
+#define SD_CMD53_ARG_Count		 0	// 0x001 1   0x002 2   ...   0x1FF 512   0x000 512 byte
+#define SD_CMD53_ARG_Addr		 9	// Start Address of I/O register to read or write
+#define SD_CMD53_ARG_AddrInc	26	// 0 Multi byte R/W to fixed address   1 Multi byte R/W to incrementing address
+#define SD_CMD53_ARG_CountUnit	27	// 0 Count in byte   1 Count in block
+#define SD_CMD53_ARG_Function	28	// The number of the function within the I/O card you wish to read or write. Function 0x00 selects the common I/O area (CIA).
+#define SD_CMD53_ARG_nRW		31	// 0 for read   1 for write
+
 
 #define SD_RESP_NO			0	//0 无响应
 #define SD_RESP_32b			2	//2 32位响应
@@ -152,5 +159,13 @@ void parseCID(uint32_t CID_Tab[4]);
 void parseCSD(uint32_t CID_Tab[4]);
 
 uint32_t calcSDCLKDiv(uint32_t freq_sel);
+
+
+enum SDIO_bus_width { SDIO_1bit = 0, SDIO_4bit = 1 };
+
+uint32_t SDIO_IO_Init(uint32_t freq, enum SDIO_bus_width w);
+uint32_t SDIO_IO_Write(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t count);
+uint32_t SDIO_IO_Read(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t count);
+
 
 #endif //__SWM341_SDIO_H__
