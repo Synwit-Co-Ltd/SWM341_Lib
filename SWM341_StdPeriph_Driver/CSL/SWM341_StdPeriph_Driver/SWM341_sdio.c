@@ -610,7 +610,7 @@ uint32_t calcSDCLKDiv(uint32_t freq)
 * 函数名称: SDIO_IO_Init()
 * 功能说明:	SDIO读写IO卡初始化
 * 输    入: uint32_t freq			SDIO_CLK时钟频率
-*			bool bus_4bit			SDIO_1bit 1-bit bus   SDIO_4bit 4-bit bus
+*			enum SDIO_bus_width w	SDIO_1bit 1-bit bus   SDIO_4bit 4-bit bus
 * 输    出: uint32_t				SD_RES_OK 操作成功    SD_RES_ERR 操作失败    SD_RES_TIMEOUT 操作超时
 * 注意事项: 无
 ******************************************************************************************************************************************/
@@ -628,7 +628,7 @@ uint32_t SDIO_IO_Init(uint32_t freq, enum SDIO_bus_width w)
 	SYS->CLKEN0 |= (0x01 << SYS_CLKEN0_SDIO_Pos);
 	
 //	SDIO->CR2 = (1 << SDIO_CR2_RSTALL_Pos);
-//	for(int i = 0; i < CyclesPerUs; i++) __NOP();
+	for(int i = 0; i < CyclesPerUs; i++) __NOP();
 	
 	SDIO->CR1 = (1 << SDIO_CR1_CDSRC_Pos) |
 				(0 << SDIO_CR1_8BIT_Pos)  |
@@ -638,7 +638,7 @@ uint32_t SDIO_IO_Init(uint32_t freq, enum SDIO_bus_width w)
 	
 	SDIO->CR2 = (1 << SDIO_CR2_CLKEN_Pos) |
 				(1 << SDIO_CR2_SDCLKEN_Pos) |
-				(calcSDCLKDiv(100000) << SDIO_CR2_SDCLKDIV_Pos) |
+				(calcSDCLKDiv(freq) << SDIO_CR2_SDCLKDIV_Pos) |
 				(0xC << SDIO_CR2_TIMEOUT_Pos);		// 2**25 SDIO_CLK
 	
 	while((SDIO->CR2 & SDIO_CR2_CLKRDY_Msk) == 0);
@@ -654,7 +654,11 @@ uint32_t SDIO_IO_Init(uint32_t freq, enum SDIO_bus_width w)
 /****************************************************************************************************************************************** 
 * 函数名称: SDIO_IO_Write()
 * 功能说明:	向IO卡写入数据
-* 输    入: 
+* 输    入: uint8_t func			The number of the function within the I/O card you wish to read or write
+*			uint32_t addr			Start Address of I/O register to read or write. Range is 0--0x1FFFF
+*			uint8_t addrInc			0 Multi byte R/W to fixed address   1 Multi byte R/W to incrementing address
+*			uint32_t buff[]			要写出的数据
+*			uint16_t count			要写出的字节个数，取值 1--512
 * 输    出: uint32_t				SD_RES_OK 操作成功    SD_RES_ERR 操作失败    SD_RES_TIMEOUT 操作超时
 * 注意事项: 无
 ******************************************************************************************************************************************/
@@ -691,7 +695,11 @@ uint32_t SDIO_IO_Write(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t bu
 /****************************************************************************************************************************************** 
 * 函数名称: SDIO_IO_Read()
 * 功能说明:	从IO卡读出数据
-* 输    入: 
+* 输    入: uint8_t func			The number of the function within the I/O card you wish to read or write
+*			uint32_t addr			Start Address of I/O register to read or write. Range is 0--0x1FFFF
+*			uint8_t addrInc			0 Multi byte R/W to fixed address   1 Multi byte R/W to incrementing address
+*			uint32_t buff[]			读取到的数据存入此数组
+*			uint16_t count			要读取的字节个数，取值 1--512
 * 输    出: uint32_t				SD_RES_OK 操作成功    SD_RES_ERR 操作失败    SD_RES_TIMEOUT 操作超时
 * 注意事项: 无
 ******************************************************************************************************************************************/
@@ -716,7 +724,95 @@ uint32_t SDIO_IO_Read(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buf
     while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0) __NOP();
 	SDIO->IF = SDIO_IF_BUFRDRDY_Msk;
     
-    for(i = 0; i < 512/4; i++) buff[i] = SDIO->DATA;
+    for(i = 0; i < count/4; i++) buff[i] = SDIO->DATA;
+    
+	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	SDIO->IF = SDIO_IF_TRXDONE_Msk;
+	
+	return SD_RES_OK;
+}
+
+
+/****************************************************************************************************************************************** 
+* 函数名称: SDIO_IO_BlockWrite()
+* 功能说明:	向IO卡写入块数据
+* 输    入: uint8_t func			The number of the function within the I/O card you wish to read or write
+*			uint32_t addr			Start Address of I/O register to read or write. Range is 0--0x1FFFF
+*			uint8_t addrInc			0 Multi byte R/W to fixed address   1 Multi byte R/W to incrementing address
+*			uint32_t buff[]			要写出的数据
+*			uint16_t block_count	要写出的块个数，块大小为 512 字节
+* 输    出: uint32_t				SD_RES_OK 操作成功    SD_RES_ERR 操作失败    SD_RES_TIMEOUT 操作超时
+* 注意事项: 无
+******************************************************************************************************************************************/
+uint32_t SDIO_IO_BlockWrite(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t block_count)
+{
+	uint32_t res, i, j;
+	uint32_t arg, resp;
+	
+	SDIO->BLK = 512;
+	
+	arg = ((1u			<< SD_CMD53_ARG_nRW) |
+		   (func		<< SD_CMD53_ARG_Function) |
+		   (addr		<< SD_CMD53_ARG_Addr) |
+		   (addrInc		<< SD_CMD53_ARG_AddrInc) |
+		   (block_count	<< SD_CMD53_ARG_Count) |
+		   (1			<< SD_CMD53_ARG_CountUnit));
+	
+	res = SDIO_SendCmdWithData(53, arg, SD_RESP_NO, &resp, 0, block_count);
+	if(res != SD_RES_OK)
+		return res;
+	
+	for(i = 0; i < block_count; i++)
+	{
+		while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0) __NOP();
+		SDIO->IF = SDIO_IF_BUFWRRDY_Msk;
+		
+		for(j = 0; j < 512/4; j++) SDIO->DATA = buff[i*(512/4) + j];
+	}
+		
+    while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	SDIO->IF = SDIO_IF_TRXDONE_Msk;
+	
+	return SD_RES_OK;
+}
+
+
+/****************************************************************************************************************************************** 
+* 函数名称: SDIO_IO_BlockRead()
+* 功能说明:	从IO卡读出块数据
+* 输    入: uint8_t func			The number of the function within the I/O card you wish to read or write
+*			uint32_t addr			Start Address of I/O register to read or write. Range is 0--0x1FFFF
+*			uint8_t addrInc			0 Multi byte R/W to fixed address   1 Multi byte R/W to incrementing address
+*			uint32_t buff[]			读取到的数据存入此数组
+*			uint16_t count			要读取的块个数，块大小为 512 字节
+* 输    出: uint32_t				SD_RES_OK 操作成功    SD_RES_ERR 操作失败    SD_RES_TIMEOUT 操作超时
+* 注意事项: 无
+******************************************************************************************************************************************/
+uint32_t SDIO_IO_BlockRead(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t block_count)
+{
+	uint32_t res, i, j;
+    uint32_t arg, resp;
+	
+	SDIO->BLK = 512;
+	
+	arg = ((0u      	<< SD_CMD53_ARG_nRW) |
+		   (func    	<< SD_CMD53_ARG_Function) |
+		   (addr    	<< SD_CMD53_ARG_Addr) |
+		   (addrInc 	<< SD_CMD53_ARG_AddrInc) |
+		   (block_count	<< SD_CMD53_ARG_Count) |
+		   (1       	<< SD_CMD53_ARG_CountUnit));
+	
+	res = SDIO_SendCmdWithData(53, arg, SD_RESP_NO, &resp, 1, block_count);
+	if(res != SD_RES_OK)
+		return res;
+	
+	for(i = 0; i < block_count; i++)
+	{
+		while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0) __NOP();
+		SDIO->IF = SDIO_IF_BUFRDRDY_Msk;
+		
+		for(j = 0; j < 512/4; j++) buff[i*(512/4) + j] = SDIO->DATA;
+	}
     
 	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;

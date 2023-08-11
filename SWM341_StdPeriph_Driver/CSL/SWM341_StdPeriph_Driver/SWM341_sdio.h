@@ -166,6 +166,7 @@ enum SDIO_bus_width { SDIO_1bit = 0, SDIO_4bit = 1 };
 uint32_t SDIO_IO_Init(uint32_t freq, enum SDIO_bus_width w);
 uint32_t SDIO_IO_Write(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t count);
 uint32_t SDIO_IO_Read(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t count);
-
+uint32_t SDIO_IO_BlockWrite(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t block_count);
+uint32_t SDIO_IO_BlockRead(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t block_count);
 
 #endif //__SWM341_SDIO_H__
