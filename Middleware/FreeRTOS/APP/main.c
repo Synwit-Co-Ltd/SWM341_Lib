@@ -4,6 +4,15 @@
 #include "task.h"
 #include "queue.h"
 
+
+/* 开启 FPU 支持：
+ * 1）将 port.c 替换为 APP\FreeRTOS\portable\GCC\ARM_CM4F 目录下的 port.c
+ * 2）将 Options => C/C++ (AC6) => Include Paths 页面中的 .\APP\FreeRTOS\portable\GCC\ARM_CM3 替换为
+ *														  .\APP\FreeRTOS\portable\GCC\ARM_CM4F
+ * 3）将 Options => Target 页面中的 Floating Point Hardware 选项由 Not Used 改为 Single Precision
+*/
+
+
 QueueHandle_t queueADC;
 
 void TaskADC(void *arg);
