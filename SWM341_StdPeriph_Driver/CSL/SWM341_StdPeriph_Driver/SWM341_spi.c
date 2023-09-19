@@ -57,7 +57,7 @@ void SPI_Init(SPI_TypeDef * SPIx, SPI_InitStructure * initStruct)
 		no_sync = 1;
 	}
 	
-	SPIx->CTRL &= ~(SPI_CTRL_FFS_Msk | SPI_CTRL_CPHA_Msk | SPI_CTRL_CPOL_Msk | SPI_CTRL_SIZE_Msk | SPI_CTRL_MSTR_Msk | 
+	SPIx->CTRL &= ~(SPI_CTRL_FFS_Msk | SPI_CTRL_CPHA_Msk | SPI_CTRL_CPOL_Msk | SPI_CTRL_SIZE_Msk | SPI_CTRL_MSTR_Msk | SPI_CTRL_FAST_Msk | SPI_CTRL_NSYNC_Msk |
 	                SPI_CTRL_CLKDIV_Msk | SPI_CTRL_SSN_H_Msk | SPI_CTRL_RFTHR_Msk | SPI_CTRL_TFTHR_Msk);
 	SPIx->CTRL |= (initStruct->FrameFormat     << SPI_CTRL_FFS_Pos)    |
 				  (initStruct->SampleEdge      << SPI_CTRL_CPHA_Pos)   |
