@@ -1,53 +1,61 @@
-#include <string.h>
 #include "SWM341.h"
+#include "CircleBuffer.h"
 
+volatile bool msg_rcvd = false;
+
+CircleBuffer_t CirBuf;
 
 void SerialInit(void);
-void UART_SendChars(char data[], uint32_t len);
 
 int main(void)
 {
-	char str_Hi[] = "Hello from Synwit UART!\r\n";
-	
 	SystemInit();
 	
 	SerialInit();
-	
-	GPIO_Init(GPIOA, PIN2, 1, 0, 0, 0);
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);
    	
 	while(1==1)
 	{
-		UART_SendChars(str_Hi, strlen(str_Hi));
-		
-		for(int i = 0; i < SystemCoreClock/8; i++) __NOP();
+		if(msg_rcvd)
+		{
+			msg_rcvd = false;
+			
+			UART_INTEn(UART0, UART_IT_TX_THR);
+		}
 	}
-}
-
-
-char * UART_TXBuffer = 0;
-uint32_t UART_TXCount = 0,
-         UART_TXIndex = 0;
-
-void UART_SendChars(char data[], uint32_t len)
-{
-	UART_TXBuffer = data;
-	UART_TXCount = len;
-	UART_TXIndex = 0;
-	
-	UART_INTEn(UART0, UART_IT_TX_THR | UART_IT_TX_DONE);
 }
 
 
 void UART0_Handler(void)
 {
+	uint32_t chr;
+	
+	if(UART_INTStat(UART0, UART_IT_RX_THR | UART_IT_RX_TOUT))
+	{
+		while(UART_IsRXFIFOEmpty(UART0) == 0)
+		{
+			if(UART_ReadByte(UART0, &chr) == 0)
+			{
+				CirBuf_Write(&CirBuf, (uint8_t *)&chr, 1);
+			}
+		}
+		
+		if(UART_INTStat(UART0, UART_IT_RX_TOUT))
+		{
+			UART_INTClr(UART0, UART_IT_RX_TOUT);
+			
+			msg_rcvd = true;
+		}
+	}
+	
 	if(UART_INTStat(UART0, UART_IT_TX_THR))
 	{
-		while(UART_IsTXFIFOFull(UART0) == 0)
+		while(!UART_IsTXFIFOFull(UART0))
 		{
-			if(UART_TXIndex < UART_TXCount)
+			if(!CirBuf_Empty(&CirBuf))
 			{
-				UART_WriteByte(UART0, UART_TXBuffer[UART_TXIndex++]);
+				CirBuf_Read(&CirBuf, (uint8_t *)&chr, 1);
+				
+				UART_WriteByte(UART0, chr);
 			}
 			else
 			{
@@ -56,14 +64,6 @@ void UART0_Handler(void)
 				break;
 			}
 		}
-		
-		GPIO_InvBit(GPIOA, PIN2);
-	}
-	else if(UART_INTStat(UART0, UART_IT_TX_DONE))
-	{
-		GPIO_InvBit(GPIOA, PIN5);
-		
-		UART_INTDis(UART0, UART_IT_TX_DONE);
 	}
 }
 
@@ -80,15 +80,13 @@ void SerialInit(void)
 	UART_initStruct.Parity = UART_PARITY_NONE;
 	UART_initStruct.StopBits = UART_STOP_1BIT;
 	UART_initStruct.RXThreshold = 3;
-	UART_initStruct.RXThresholdIEn = 0;
+	UART_initStruct.RXThresholdIEn = 1;
 	UART_initStruct.TXThreshold = 3;
 	UART_initStruct.TXThresholdIEn = 0;
-	UART_initStruct.TimeoutTime = 10;
-	UART_initStruct.TimeoutIEn = 0;
+	UART_initStruct.TimeoutTime = 10;		//10个字符时间内未接收到新的数据则触发超时中断
+	UART_initStruct.TimeoutIEn = 1;
  	UART_Init(UART0, &UART_initStruct);
 	UART_Open(UART0);
-	
-	NVIC_EnableIRQ(UART0_IRQn);
 }
 
 /****************************************************************************************************************************************** 

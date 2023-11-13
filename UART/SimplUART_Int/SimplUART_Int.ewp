@@ -655,7 +655,7 @@
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state>SimplUART_Interrupt_TX.srec</state>
+                    <state>SimplUART_Int.srec</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -710,7 +710,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>SimplUART_Interrupt_TX.out</state>
+                    <state>SimplUART_Int.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>
