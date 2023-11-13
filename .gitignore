@@ -4,6 +4,11 @@ JLinkLog.txt
 JLinkSettings.ini
 EventRecorderStub.scvd
 
+settings/
+*.dep
+*.ewd
+*.ewt
+
 # Prerequisites
 *.d
 
