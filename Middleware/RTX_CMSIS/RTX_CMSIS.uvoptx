@@ -175,7 +175,7 @@
         </Mm>
       </MemoryWindow1>
       <ScvdPack>
-        <Filename>D:\Program\MDK535\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\RTOS2\RTX\RTX5.scvd</Filename>
+        <Filename>D:\Program\Keil\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\RTOS2\RTX\RTX5.scvd</Filename>
         <Type>ARM.CMSIS.5.8.0</Type>
         <SubType>1</SubType>
       </ScvdPack>
