@@ -16,8 +16,8 @@ int main(void)
 	
 	SerialInit();
 	
-	PORT_Init(PORTB, PIN5, PORTB_PIN5_CAN0_RX, 1);	//GPIOB.4配置为CAN0输入引脚
-	PORT_Init(PORTB, PIN4, PORTB_PIN4_CAN0_TX, 0);	//GPIOB.3配置为CAN0输出引脚
+	PORT_Init(PORTB, PIN5, PORTB_PIN5_CAN0_RX, 1);	//GPIOB.5配置为CAN0输入引脚
+	PORT_Init(PORTB, PIN4, PORTB_PIN4_CAN0_TX, 0);	//GPIOB.4配置为CAN0输出引脚
 	
 	CAN_initStruct.Mode = CAN_MODE_NORMAL;
 	CAN_initStruct.CAN_bs1 = CAN_BS1_5tq;
