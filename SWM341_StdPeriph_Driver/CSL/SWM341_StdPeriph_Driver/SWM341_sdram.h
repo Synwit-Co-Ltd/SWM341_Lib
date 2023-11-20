@@ -5,6 +5,7 @@ typedef struct {
 	uint8_t Size;				// SDRAM 容量，SDRAM_SIZE_2MB、SDRAM_SIZE_8MB、SDRAM_SIZE_16MB、SDRAM_SIZE_32MB
 	uint8_t ClkDiv;				// SDRAM 时钟分频，SDRAM_CLKDIV_1、SDRAM_CLKDIV_2
 	uint8_t CASLatency;			// 列地址到有效数据输出间隔，SDRAM_CASLATENCY_2、SDRAM_CASLATENCY_3
+	uint8_t RefreshTime;		// 刷新时间，单位 ms，在这个时间内 SDRAM 必须完成一次整片刷新，通常为 64ms
 	
 	uint8_t TimeTRP;			// Row precharge delay，Precharge命令到另一个命令间延时
 	uint8_t TimeTRCD;			// Row to column delay，行地址到列地址间延时，也即Activate命令到读写命令间延时

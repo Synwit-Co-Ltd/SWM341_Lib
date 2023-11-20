@@ -54,7 +54,7 @@ void SDRAM_Init(SDRAM_InitStructure * initStruct)
 	default:              row_n = 4096; break;
 	}
 	
-	SDRAMC->T64 = (64*1000 / row_n + 1) * cyclesPerUs;
+	SDRAMC->T64 = (initStruct->RefreshTime * 1000 / row_n + 1) * cyclesPerUs;
 	
 	SDRAMC->CR = (1 << SDRAMC_CR_PWRON_Pos);
 	

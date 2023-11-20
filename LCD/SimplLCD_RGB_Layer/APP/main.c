@@ -207,6 +207,7 @@ void MemoryInit(void)
 	SDRAM_InitStruct.Size = SDRAM_SIZE_8MB;
 	SDRAM_InitStruct.ClkDiv = SDRAM_CLKDIV_1;
 	SDRAM_InitStruct.CASLatency = SDRAM_CASLATENCY_2;
+	SDRAM_InitStruct.RefreshTime = 64;
 	SDRAM_InitStruct.TimeTRP  = SDRAM_TRP_3;
 	SDRAM_InitStruct.TimeTRCD = SDRAM_TRCD_3;
 	SDRAM_InitStruct.TimeTRFC  = SDRAM_TRFC_15;
