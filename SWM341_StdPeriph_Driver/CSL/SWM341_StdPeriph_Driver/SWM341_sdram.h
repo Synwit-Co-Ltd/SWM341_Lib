@@ -10,6 +10,7 @@ typedef struct {
 	uint8_t TimeTRP;			// Row precharge delay，Precharge命令到另一个命令间延时
 	uint8_t TimeTRCD;			// Row to column delay，行地址到列地址间延时，也即Activate命令到读写命令间延时
 	uint8_t TimeTRC;			// Row cycle time, Activate to Activate on same bank
+								// 若 SDRAM 颗粒除了 tRC，还有 tRFC 或 tRRC 参数，则按照二者中较大的计算 TimeTRC
 } SDRAM_InitStructure;
 
 								// rowaddr         bankaddr        coladdr
