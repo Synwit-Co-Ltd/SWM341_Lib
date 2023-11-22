@@ -9,7 +9,7 @@ typedef struct {
 	
 	uint8_t TimeTRP;			// Row precharge delay，Precharge命令到另一个命令间延时
 	uint8_t TimeTRCD;			// Row to column delay，行地址到列地址间延时，也即Activate命令到读写命令间延时
-	uint8_t TimeTRFC;			// Refresh Cycle
+	uint8_t TimeTRC;			// Row cycle time, Activate to Activate on same bank
 } SDRAM_InitStructure;
 
 								// rowaddr         bankaddr        coladdr
@@ -35,19 +35,19 @@ typedef struct {
 #define SDRAM_TRCD_3		2
 #define SDRAM_TRCD_4		3
 
-#define SDRAM_TRFC_4		3
-#define SDRAM_TRFC_5		4
-#define SDRAM_TRFC_6		5
-#define SDRAM_TRFC_7		6
-#define SDRAM_TRFC_8		7
-#define SDRAM_TRFC_9		8
-#define SDRAM_TRFC_10		9
-#define SDRAM_TRFC_11		10
-#define SDRAM_TRFC_12		11
-#define SDRAM_TRFC_13		12
-#define SDRAM_TRFC_14		13
-#define SDRAM_TRFC_15		14
-#define SDRAM_TRFC_16		15
+#define SDRAM_TRC_4			3
+#define SDRAM_TRC_5			4
+#define SDRAM_TRC_6			5
+#define SDRAM_TRC_7			6
+#define SDRAM_TRC_8			7
+#define SDRAM_TRC_9			8
+#define SDRAM_TRC_10		9
+#define SDRAM_TRC_11		10
+#define SDRAM_TRC_12		11
+#define SDRAM_TRC_13		12
+#define SDRAM_TRC_14		13
+#define SDRAM_TRC_15		14
+#define SDRAM_TRC_16		15
 
 
 void SDRAM_Init(SDRAM_InitStructure * initStruct);

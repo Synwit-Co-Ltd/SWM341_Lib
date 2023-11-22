@@ -293,7 +293,7 @@ void MemoryInit(void)
 	SDRAM_InitStruct.RefreshTime = 64;
 	SDRAM_InitStruct.TimeTRP  = SDRAM_TRP_3;
 	SDRAM_InitStruct.TimeTRCD = SDRAM_TRCD_3;
-	SDRAM_InitStruct.TimeTRFC  = SDRAM_TRFC_9;
+	SDRAM_InitStruct.TimeTRC  = SDRAM_TRC_9;
 	SDRAM_Init(&SDRAM_InitStruct);
 }
 

@@ -2704,8 +2704,8 @@ typedef struct {
 
 #define SDRAMC_TIM_TRCD_Pos		    0		//Row to column delay, Ie. Activate to Command delay
 #define SDRAMC_TIM_TRCD_Msk		    (0x03 << SDRAMC_TIM_TRCD_Pos)
-#define SDRAMC_TIM_TRFC_Pos		    2		//Refresh Cycle
-#define SDRAMC_TIM_TRFC_Msk		    (0x0F << SDRAMC_TIM_TRFC_Pos)
+#define SDRAMC_TIM_TRC_Pos		    2		//Activate to Activate on same bank
+#define SDRAMC_TIM_TRC_Msk		    (0x0F << SDRAMC_TIM_TRC_Pos)
 #define SDRAMC_TIM_TRP_Pos		    6		//Row precharge time,  Ie. Precharge to Activate delay
 #define SDRAMC_TIM_TRP_Msk		    (0x03 << SDRAMC_TIM_TRP_Pos)
 #define SDRAMC_TIM_T100US_Pos		8
