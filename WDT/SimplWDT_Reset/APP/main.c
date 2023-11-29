@@ -24,7 +24,13 @@ int main(void)
 	{
 		WDT_Feed(WDT);	// 注释掉喂狗，芯片会不停复位打印“WDT Reset Happened”
 		
-		for(i = 0; i < 12000; i++) __NOP();	// 两次喂狗之间至少间隔2个WDT时钟周期，即60us
+		/* 注意：
+		 *	1、两次喂狗之间至少间隔 5 个 WDT 时钟周期，即 1000000 / 32768 * 5 = 150us；又考虑到 WDT 时钟误差很大，建议间隔不小于 300us
+		 *	2、WDT 停止状态下，不要执行 WDT_Feed()
+		 *	3、执行 WDT_Feed() 后，不能立即执行 WDT_Stop()，必须间隔 5 个 WDT 时钟周期再执行 WDT_Stop()
+		*/
+
+		for(i = 0; i < CyclesPerUs * 300 / 4; i++) __NOP();
 	}
 }
 
