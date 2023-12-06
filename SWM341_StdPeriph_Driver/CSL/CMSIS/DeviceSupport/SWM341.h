@@ -475,12 +475,14 @@ typedef struct {
 
 #define SYS_PRSTR1_GPIOE_Pos		0
 #define SYS_PRSTR1_GPIOE_Msk		(0x01 << SYS_PRSTR1_GPIOE_Pos)
-#define SYS_PRSTR1_SPI2_Pos			8
-#define SYS_PRSTR1_SPI2_Msk			(0x01 << SYS_PRSTR1_SPI2_Pos)
 #define SYS_PRSTR1_SDRAM_Pos		12
 #define SYS_PRSTR1_SDRAM_Msk		(0x01 << SYS_PRSTR1_SDRAM_Pos)
+#define SYS_PRSTR1_SFC_Pos			13
+#define SYS_PRSTR1_SFC_Msk			(0x01 << SYS_PRSTR1_SFC_Pos)
 #define SYS_PRSTR1_ADC1_Pos			16
 #define SYS_PRSTR1_ADC1_Msk			(0x01 << SYS_PRSTR1_ADC1_Pos)
+#define SYS_PRSTR1_CAN1_Pos			17
+#define SYS_PRSTR1_CAN1_Msk			(0x01 << SYS_PRSTR1_CAN1_Pos)
 #define SYS_PRSTR1_RTC_Pos			19
 #define SYS_PRSTR1_RTC_Msk			(0x01 << SYS_PRSTR1_RTC_Pos)
 #define SYS_PRSTR1_IOFILT_Pos		20
@@ -489,6 +491,10 @@ typedef struct {
 #define SYS_PRSTR1_BTIMR_Msk		(0x01 << SYS_PRSTR1_BTIMR_Pos)
 #define SYS_PRSTR1_JPEG_Pos			25
 #define SYS_PRSTR1_JPEG_Msk			(0x01 << SYS_PRSTR1_JPEG_Pos)
+#define SYS_PRSTR1_DAC_Pos			26
+#define SYS_PRSTR1_DAC_Msk			(0x01 << SYS_PRSTR1_DAC_Pos)
+#define SYS_PRSTR1_QEI_Pos			27
+#define SYS_PRSTR1_QEI_Msk			(0x01 << SYS_PRSTR1_QEI_Pos)
 
 #define SYS_HRCCR_ON_Pos			0		//High speed RC ON
 #define SYS_HRCCR_ON_Msk			(0x01 << SYS_HRCCR_ON_Pos)
