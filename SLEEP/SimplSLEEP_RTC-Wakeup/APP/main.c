@@ -13,16 +13,16 @@ int main(void)
 	
 	SYS->LRCCR = (1 << SYS_LRCCR_ON_Pos);			//¿ªÆô32KµÍÆµÕñµ´Æ÷
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);				//Êä³ö£¬ ½ÓLED
+	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);				//Êä³ö£¬ ½ÓLED
 	
 	RTC_Config();
 	SYS->RTCWKCR |= (1 << SYS_RTCWKCR_EN_Pos);		//¿ªÆôRTC»½ÐÑ
 	
 	while(1==1)
 	{
-		GPIO_SetBit(GPIOA, PIN5);					//µãÁÁLED
+		GPIO_SetBit(GPIOA, PIN9);					//µãÁÁLED
 		for(i = 0; i < SystemCoreClock/4; i++) __NOP();
-		GPIO_ClrBit(GPIOA, PIN5);					//Ï¨ÃðLED
+		GPIO_ClrBit(GPIOA, PIN9);					//Ï¨ÃðLED
 		
 		__disable_irq();
 		switchTo20MHz();	//ÐÝÃßÇ°£¬ÇÐ»»µ½ 20MHz

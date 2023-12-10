@@ -6,19 +6,19 @@ int main(void)
 {	
 	SystemInit();
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);			//输出，接LED
+	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);			//输出，接LED
 	
-	GPIO_Init(GPIOA, PIN0, 0, 1, 0, 0);			//输入，上拉使能，接KEY
+	GPIO_Init(GPIOA, PIN10, 0, 1, 0, 0);			//输入，上拉使能，接KEY
 	
-	EXTI_Init(GPIOA, PIN0, EXTI_FALL_EDGE);		//下降沿触发中断
+	EXTI_Init(GPIOA, PIN10, EXTI_FALL_EDGE);		//下降沿触发中断
 
 #if FAST_IRQ
-	NVIC_EnableIRQ(GPIOA0_IRQn);
+	NVIC_EnableIRQ(GPIOA10_IRQn);
 #else
 	NVIC_EnableIRQ(GPIOA_IRQn);
 #endif
 	
-	EXTI_Open(GPIOA, PIN0);
+	EXTI_Open(GPIOA, PIN10);
 
 	while(1==1)
 	{
@@ -26,20 +26,20 @@ int main(void)
 }
 
 #if FAST_IRQ
-void GPIOA0_Handler(void)
+void GPIOA10_Handler(void)
 {
-	EXTI_Clear(GPIOA, PIN0);
+	EXTI_Clear(GPIOA, PIN10);
 	
-	GPIO_InvBit(GPIOA, PIN5);
+	GPIO_InvBit(GPIOA, PIN9);
 }
 #else
 void GPIOA_Handler(void)
 {
-	if(EXTI_State(GPIOA, PIN0))
+	if(EXTI_State(GPIOA, PIN10))
 	{
-		EXTI_Clear(GPIOA, PIN0);
+		EXTI_Clear(GPIOA, PIN10);
 		
-		GPIO_InvBit(GPIOA, PIN5);
+		GPIO_InvBit(GPIOA, PIN9);
 	}
 }
 #endif
