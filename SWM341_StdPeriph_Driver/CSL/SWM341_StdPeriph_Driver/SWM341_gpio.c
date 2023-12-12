@@ -168,9 +168,7 @@ void GPIO_SetBits(GPIO_TypeDef * GPIOx, uint32_t n, uint32_t w)
 	
 	bits = 0xFFFF >> (16 - w);
 	
-	__disable_irq();
 	GPIOx->ODR |= (bits << n);
-	__enable_irq();
 }
 
 /****************************************************************************************************************************************** 
@@ -188,9 +186,7 @@ void GPIO_ClrBits(GPIO_TypeDef * GPIOx, uint32_t n, uint32_t w)
 	
 	bits = 0xFFFF >> (16 - w);
 	
-	__disable_irq();
 	GPIOx->ODR &= ~(bits << n);
-	__enable_irq();
 }
 
 /****************************************************************************************************************************************** 
@@ -208,9 +204,7 @@ void GPIO_InvBits(GPIO_TypeDef * GPIOx, uint32_t n, uint32_t w)
 	
 	bits = 0xFFFF >> (16 - w);
 	
-	__disable_irq();
 	GPIOx->ODR ^= (bits << n);
-	__enable_irq();
 }
 
 /****************************************************************************************************************************************** 
@@ -230,4 +224,64 @@ uint32_t GPIO_GetBits(GPIO_TypeDef * GPIOx, uint32_t n, uint32_t w)
    	bits = 0xFFFF >> (16 - w);
 	
 	return ((GPIOx->IDR >> n) & bits);
+}
+
+/****************************************************************************************************************************************** 
+* 函数名称: GPIO_AtomicSetBits()
+* 功能说明: 将参数指定的从n开始的w位连续引脚的电平置高，确保引脚”读-改-写“操作的原子性（不被中断ISR打断）
+* 输    入: GPIO_TypeDef * GPIOx	    指定GPIO端口，有效值包括GPIOA、GPIOB、GPIOC、GPIOD、GPIOE、GPIOM、GPION
+*			uint32_t n		       指定GPIO引脚，有效值包括PIN0、PIN1、PIN2、... ... PIN14、PIN15
+*			uint32_t w		指定要将引脚电平置高的引脚的个数
+* 输    出: 无
+* 注意事项: 当GPIOx的16个引脚中，有些在主循环中操作，有些在中断ISR中操作时，GPIOx的引脚必须都用GPIO_Atomic类型函数操作
+******************************************************************************************************************************************/
+void GPIO_AtomicSetBits(GPIO_TypeDef * GPIOx, uint32_t n, uint32_t w)
+{
+	uint32_t bits;
+	
+	bits = 0xFFFF >> (16 - w);
+	
+	__disable_irq();
+	GPIOx->ODR |= (bits << n);
+	__enable_irq();
+}
+
+/****************************************************************************************************************************************** 
+* 函数名称:	GPIO_AtomicClrBits()
+* 功能说明: 将参数指定的从n开始的w位连续引脚的电平置低，确保引脚”读-改-写“操作的原子性（不被中断ISR打断）
+* 输    入: GPIO_TypeDef * GPIOx	    指定GPIO端口，有效值包括GPIOA、GPIOB、GPIOC、GPIOD、GPIOE、GPIOM、GPION
+*			uint32_t n		       指定GPIO引脚，有效值包括PIN0、PIN1、PIN2、... ... PIN14、PIN15
+*			uint32_t w			   指定要将引脚电平置低的引脚的个数
+* 输    出: 无
+* 注意事项: 当GPIOx的16个引脚中，有些在主循环中操作，有些在中断ISR中操作时，GPIOx的引脚必须都用GPIO_Atomic类型函数操作
+******************************************************************************************************************************************/
+void GPIO_AtomicClrBits(GPIO_TypeDef * GPIOx, uint32_t n, uint32_t w)
+{
+	uint32_t bits;
+	
+	bits = 0xFFFF >> (16 - w);
+	
+	__disable_irq();
+	GPIOx->ODR &= ~(bits << n);
+	__enable_irq();
+}
+
+/****************************************************************************************************************************************** 
+* 函数名称: GPIO_AtomicInvBits()
+* 功能说明: 将参数指定的从n开始的w位连续引脚的电平反转，确保引脚”读-改-写“操作的原子性（不被中断ISR打断）
+* 输    入: GPIO_TypeDef * GPIOx	    指定GPIO端口，有效值包括GPIOA、GPIOB、GPIOC、GPIOD、GPIOE、GPIOM、GPION
+*			uint32_t n		       指定GPIO引脚，有效值包括PIN0、PIN1、PIN2、... ... PIN14、PIN15
+*			uint32_t w			   指定要将引脚电平反转的引脚的个数
+* 输    出: 无
+* 注意事项: 当GPIOx的16个引脚中，有些在主循环中操作，有些在中断ISR中操作时，GPIOx的引脚必须都用GPIO_Atomic类型函数操作
+******************************************************************************************************************************************/
+void GPIO_AtomicInvBits(GPIO_TypeDef * GPIOx, uint32_t n, uint32_t w)
+{
+	uint32_t bits;
+	
+	bits = 0xFFFF >> (16 - w);
+	
+	__disable_irq();
+	GPIOx->ODR ^= (bits << n);
+	__enable_irq();
 }
