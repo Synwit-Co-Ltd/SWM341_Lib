@@ -5,7 +5,7 @@ int main(void)
 {	
 	SystemInit();
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);			//输出，接LED
+	GPIO_Init(GPIOA, PIN10, 1, 0, 0, 0);			//输出，接LED
 	
 	GPIO_Init(GPIOA, PIN2, 0, 1, 0, 0);			//输入，上拉使能，接KEY
 	
@@ -24,7 +24,7 @@ void NMI_Handler(void)
 {
 	EXTI_Clear(GPIOA, PIN2);
 	
-	GPIO_InvBit(GPIOA, PIN5);
+	GPIO_InvBit(GPIOA, PIN10);
 }
 
 void GPIOA_Handler(void)
