@@ -7,11 +7,11 @@ int main(void)
 {
 	SystemInit();
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);		//输出，接LED
+	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);		//输出，接LED
 	
 	while(1==1)
 	{
-		GPIO_InvBit(GPIOA, PIN5);
+		GPIO_InvBit(GPIOA, PIN9);
 		SysTick_Delayus(100000);
 		SysTick_Delayus(100000);
 		SysTick_Delayus(100000);
