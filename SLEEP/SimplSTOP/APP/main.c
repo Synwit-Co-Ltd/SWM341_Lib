@@ -21,16 +21,16 @@ int main(void)
 	printf("BACKUP[0]: %08X\r\n", SYS->BACKUP[0]);	//注意：测试发现没有保持功能
 	SYS->BACKUP[0] += 1;
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);				//输出， 接LED
+	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);				//输出， 接LED
 	
 	PORT_Init(PORTD, PIN6, PORTD_PIN6_WAKEUP, 1);
 	PORTD->PULLU |= (1 << PIN6);
 	
 	while(1==1)
 	{
-		GPIO_SetBit(GPIOA, PIN5);					//点亮LED
+		GPIO_SetBit(GPIOA, PIN9);					//点亮LED
 		for(i = 0; i < SystemCoreClock/4; i++) __NOP();
-		GPIO_ClrBit(GPIOA, PIN5);					//熄灭LED
+		GPIO_ClrBit(GPIOA, PIN9);					//熄灭LED
 		
 		SYS->SLEEP |= (1 << SYS_SLEEP_STOP_Pos);	//进入STOP模式
 	
