@@ -43,15 +43,28 @@ void I2C_Init(I2C_TypeDef * I2Cx, I2C_InitStructure * initStruct)
 		break;
 	}
 	
+	__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();
+	
 	I2C_Close(I2Cx);	//一些关键寄存器只能在I2C关闭时设置
 	
 	if(initStruct->Master == 1)
 	{
+		int total_clkdiv, clkdiv, scl_hi = 0;
+		
 		I2Cx->CR |= (1 << I2C_CR_MASTER_Pos);
 		
-		I2Cx->CLK = (((SystemCoreClock/2)/1000000/3*2 - 1) << I2C_CLK_SCLL_Pos) |
-					(((SystemCoreClock/2)/1000000/3*1 - 1) << I2C_CLK_SCLH_Pos) |
-					((1000000 / initStruct->MstClk - 1)    << I2C_CLK_DIV_Pos);
+		total_clkdiv = (SystemCoreClock / 2) / initStruct->MstClk;
+		if(total_clkdiv < 17)
+			total_clkdiv = 17;	//无法产生指定的频率，产生最接近的频率
+		
+		do {
+			scl_hi++;
+			clkdiv = (total_clkdiv - 14) / (scl_hi + scl_hi * 2);
+		} while(clkdiv > 256);
+		
+		I2Cx->CLK = ((scl_hi * 2 - 1) << I2C_CLK_SCLL_Pos) |
+					((scl_hi     - 1) << I2C_CLK_SCLH_Pos) |
+					((clkdiv     - 1) << I2C_CLK_DIV_Pos);
 		
 		I2Cx->IF = 0xFFFFFFFF;
 		I2Cx->IE = (initStruct->TXEmptyIEn << I2C_IE_TXE_Pos) |

@@ -2,6 +2,15 @@
 
 #include <string.h>
 
+
+/* 注意：
+ *	1、内置上拉电阻阻值较大，上拉驱动能力有限，当 MstClk > 100000 时，
+ *	   需外接上拉电阻（500KHz 时 3KΩ，1MHz 时 1KΩ），否则 I2C 输出频率会低于设定值
+ *	2、从机模式支持的最高总线频率略低于主机模式，因此当主机时钟频率配置为最高时，
+ *	   从机无法及时响应 ACK，本例程无法正常执行
+ */
+
+
 #define SLV_ADDR  0x6C
 
 char mst_txbuff[4] = {0x37, 0x55, 0xAA, 0x78};
@@ -81,7 +90,7 @@ int main(void)
 
 nextloop:
 		I2C_Stop(I2C0, 1);
-		for(i = 0; i < SystemCoreClock/3; i++) __NOP();
+		for(i = 0; i < SystemCoreClock/8; i++) __NOP();
 	}
 }
 
