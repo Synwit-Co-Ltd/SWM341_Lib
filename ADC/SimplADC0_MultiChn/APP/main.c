@@ -43,7 +43,7 @@ int main(void)
 	while(1==1)
 	{
 		ADC_Start(ADC0, ADC_SEQ0);
-//		while((ADC0->SEQ[0].SR & ADC_SR_EOC_Msk) == 0);
+		for(int i = 0; i < 5; i++) __NOP();		//防止 BUSY 位还未拉高就查询
   		while(ADC0->GO & ADC_GO_BUSY_Msk) __NOP();
 		while((ADC0->SEQ[0].SR & ADC_SR_EMPTY_Msk) == 0)
 		{
