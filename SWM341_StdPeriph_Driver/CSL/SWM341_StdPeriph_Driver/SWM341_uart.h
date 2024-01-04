@@ -52,6 +52,9 @@ typedef struct {
 #define UART_IT_TX_THR		(1 << UART_CTRL_TXIE_Pos)	//TX FIFO Threshold, TX FIFO中数据个数 <= TXThreshold
 #define UART_IT_TX_DONE		(1 << UART_CTRL_TXDOIE_Pos)	//TX Done, 发送FIFO空且发送发送移位寄存器已将最后一位发送出去
 
+#define UART_IT_LIN_DET		(1 << UART_LINCR_BRKDETIE_Pos)
+#define UART_IT_LIN_GEN		(1 << UART_LINCR_GENBRKIE_Pos)
+
 
 
 void UART_Init(UART_TypeDef * UARTx, UART_InitStructure * initStruct);	//UART串口初始化
@@ -77,8 +80,14 @@ uint32_t UART_RTSLineState(UART_TypeDef * UARTx);
 
 void UART_LINConfig(UART_TypeDef * UARTx, uint32_t detectedLen, uint32_t detectedIEn, uint32_t generatedLen, uint32_t generatedIEn);
 void UART_LINGenerate(UART_TypeDef * UARTx);
-uint32_t UART_LINIsDetected(UART_TypeDef * UARTx);
-uint32_t UART_LINIsGenerated(UART_TypeDef * UARTx);
+
+void UART_LININTEn(UART_TypeDef * UARTx, uint32_t it);
+void UART_LININTDis(UART_TypeDef * UARTx, uint32_t it);
+void UART_LININTClr(UART_TypeDef * UARTx, uint32_t it);
+uint32_t UART_LININTStat(UART_TypeDef * UARTx, uint32_t it);
+
+uint8_t UART_LIN_IDParity(uint8_t lin_id);
+uint8_t UART_LIN_Checksum(uint8_t lin_id, uint8_t data[], uint32_t count, bool enhanced_checksum);
 
 void UART_ABRStart(UART_TypeDef * UARTx, uint32_t detectChar);
 uint32_t UART_ABRIsDone(UART_TypeDef * UARTx);

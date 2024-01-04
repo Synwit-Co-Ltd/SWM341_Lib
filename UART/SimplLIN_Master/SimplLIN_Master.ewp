@@ -655,7 +655,7 @@
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state>SimplLIN.srec</state>
+                    <state>SimplLIN_Master.srec</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -710,7 +710,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>SimplLIN.out</state>
+                    <state>SimplLIN_Master.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>

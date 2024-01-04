@@ -335,28 +335,94 @@ void UART_LINGenerate(UART_TypeDef * UARTx)
 }
 
 /****************************************************************************************************************************************** 
-* 函数名称:	UART_LINIsDetected()
-* 功能说明:	UART LIN是否检测到Break
+* 函数名称:	UART_LININTEn()
+* 功能说明:	LIN 中断使能
 * 输    入: UART_TypeDef * UARTx	指定要被设置的UART串口，有效值包括UART0、UART1、UART2、UART3
-* 输    出: uint32_t				1 检测到LIN Break    0 未检测到LIN Break
+* 			uint32_t it				interrupt type，有效值有 UART_IT_LIN_DET、UART_IT_LIN_GEN 及其“或”
+* 输    出: 无
 * 注意事项: 无
 ******************************************************************************************************************************************/
-uint32_t UART_LINIsDetected(UART_TypeDef * UARTx)
+void UART_LININTEn(UART_TypeDef * UARTx, uint32_t it)
 {
-	return (UARTx->LINCR & UART_LINCR_BRKDETIF_Msk) ? 1 : 0;
+	UARTx->LINCR |= it;
 }
 
 /****************************************************************************************************************************************** 
-* 函数名称:	UART_LINIsGenerated()
-* 功能说明:	UART LIN Break是否发送完成
+* 函数名称:	UART_LININTDis()
+* 功能说明:	LIN 中断禁止
 * 输    入: UART_TypeDef * UARTx	指定要被设置的UART串口，有效值包括UART0、UART1、UART2、UART3
-* 输    出: uint32_t				1 LIN Break 发送完成    0 LIN Break发送未完成
+* 			uint32_t it				interrupt type，有效值有 UART_IT_LIN_DET、UART_IT_LIN_GEN 及其“或”
+* 输    出: 无
 * 注意事项: 无
 ******************************************************************************************************************************************/
-uint32_t UART_LINIsGenerated(UART_TypeDef * UARTx)
+void UART_LININTDis(UART_TypeDef * UARTx, uint32_t it)
 {
-	return (UARTx->LINCR & UART_LINCR_GENBRKIF_Msk) ? 1 : 0;
+	UARTx->LINCR &= ~it;
 }
+
+/****************************************************************************************************************************************** 
+* 函数名称:	UART_LININTClr()
+* 功能说明:	LIN 中断标志清除
+* 输    入: UART_TypeDef * UARTx	指定要被设置的UART串口，有效值包括UART0、UART1、UART2、UART3
+* 			uint32_t it				interrupt type，有效值有 UART_IT_LIN_DET、UART_IT_LIN_GEN 及其“或”
+* 输    出: 无
+* 注意事项: 无
+******************************************************************************************************************************************/
+void UART_LININTClr(UART_TypeDef * UARTx, uint32_t it)
+{
+	UARTx->LINCR |= (it << 1);
+}
+
+/****************************************************************************************************************************************** 
+* 函数名称:	UART_LININTStat()
+* 功能说明:	LIN 中断状态查询
+* 输    入: UART_TypeDef * UARTx	指定要被设置的UART串口，有效值包括UART0、UART1、UART2、UART3
+* 			uint32_t it				interrupt type，有效值有 UART_IT_LIN_DET、UART_IT_LIN_GEN 及其“或”
+* 输    出: uint32_t				非0 中断已发生    0 中断未发生
+* 注意事项: 无
+******************************************************************************************************************************************/
+uint32_t UART_LININTStat(UART_TypeDef * UARTx, uint32_t it)
+{
+	return (UARTx->LINCR & (it << 1));
+}
+
+uint8_t UART_LIN_IDParity(uint8_t lin_id)
+{
+	struct {
+		uint8_t b0 : 1;
+		uint8_t b1 : 1;
+		uint8_t b2 : 1;
+		uint8_t b3 : 1;
+		uint8_t b4 : 1;
+		uint8_t b5 : 1;
+		uint8_t b6 : 1;
+		uint8_t b7 : 1;
+	} * bits = (void *)&lin_id;
+	
+	uint8_t id_P0 =  (bits->b0 ^ bits->b1 ^ bits->b2 ^ bits->b4);
+	uint8_t id_P1 = ~(bits->b1 ^ bits->b3 ^ bits->b4 ^ bits->b5);
+	
+	return (lin_id & 0x3F) | (id_P0 << 6) | (id_P1 << 7);
+}
+
+uint8_t UART_LIN_Checksum(uint8_t lin_id, uint8_t data[], uint32_t count, bool enhanced_checksum)
+{
+	uint16_t checksum;
+	
+	if(enhanced_checksum && ((lin_id & 0x3F) != 60) && ((lin_id & 0x3F) != 61))
+		checksum = lin_id;
+	else
+		checksum = 0x00;
+	
+	for(int i = 0; i < count; i++)
+	{
+		checksum += data[i];
+		checksum = (checksum & 0xFF) + (checksum >> 8);
+	}
+	
+	return ~checksum;
+}
+
 
 /****************************************************************************************************************************************** 
 * 函数名称:	UART_ABRStart()
