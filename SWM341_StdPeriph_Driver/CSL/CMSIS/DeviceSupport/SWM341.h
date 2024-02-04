@@ -697,10 +697,8 @@ typedef struct {
 	__IO uint32_t INTSTAT;				    //INTSTAT.PIN0 = INTRAWSTAT.PIN0 & INTEN.PIN0
 
 	__IO uint32_t INTCLR;				    //写1清除中断标志，只对边沿触发中断有用
-	
-	__IO uint32_t DMAEN;
-	
-		 uint32_t RESERVED[2];
+		
+		 uint32_t RESERVED[3];
 	
 	__IO uint32_t IDR;
 	
