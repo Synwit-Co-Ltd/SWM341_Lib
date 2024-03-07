@@ -2,7 +2,9 @@
 #include <string.h>
 
 
-/* 注意：使用 DMA 单步模式时，DMA 其他通道不工作
+/* 注意：1、使用 DMA_EXHS_ 握手信号时，DMA 其他通道不工作
+ *		 2、使用 DMA_EXHS_ 握手信号时，Mode 只能用 DMA_MODE_SINGLE
+ *		 3、使用 DMA_EXHS_ 握手信号时，DMA 搬运不会自动终止；只能在 DMA_IT_DONE 中断中清零 EXTHSEN 位终止传输
 */
 
 char str_hi[] = "Hi from Synwit\n";
@@ -18,7 +20,7 @@ int main(void)
 	
 	SerialInit();
 	
-	DMA_initStruct.Mode = DMA_MODE_CIRCLE;
+	DMA_initStruct.Mode = DMA_MODE_SINGLE;
 	DMA_initStruct.Unit = DMA_UNIT_BYTE;
 	DMA_initStruct.Count = strlen(str_hi);
 	DMA_initStruct.SrcAddr = (uint32_t)str_hi;
@@ -48,6 +50,17 @@ int main(void)
 	
 	while(1==1)
 	{
+	}
+}
+
+
+void DMA_Handler(void)
+{
+	if(DMA_CH_INTStat(DMA_CH0, DMA_IT_DONE))
+	{
+		DMA_CH_INTClr(DMA_CH0, DMA_IT_DONE);
+		
+		DMA->CH[0].MUX &= ~DMA_MUX_EXTHSEN_Msk;
 	}
 }
 

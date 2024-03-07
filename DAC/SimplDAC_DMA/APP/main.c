@@ -29,7 +29,7 @@ int main(void)
 	DAC_Init(DAC, DAC_FORMAT_LSB12B);
 	DAC_Open(DAC);
 	
-	DMA_initStruct.Mode = DMA_MODE_CIRCLE;
+	DMA_initStruct.Mode = DMA_MODE_SINGLE;
 	DMA_initStruct.Unit = DMA_UNIT_HALFWORD;
 	DMA_initStruct.Count = sizeof(sin_data)/sizeof(sin_data[0]);
 	DMA_initStruct.SrcAddr = (uint32_t)sin_data;
