@@ -654,10 +654,6 @@ typedef struct {
          uint32_t RESERVED4[63];
 
 	__IO uint32_t OPEND;              		//开漏使能
-    
-         uint32_t RESERVED5[63];
-	
-	__IO uint32_t DRVST;					//驱动强度选择，0 4mA   1 8mA
 } PORT_TypeDef;
 
 
