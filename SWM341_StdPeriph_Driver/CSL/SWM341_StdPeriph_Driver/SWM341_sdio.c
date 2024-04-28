@@ -22,6 +22,25 @@
 #include "SWM341_sdio.h"
 
 
+/*  0: 无软件超时，一直查询
+ * >0: 条件查询次数，当查询 SDIO_TIMEOUT 次后，不再等待、立即返回
+ */
+#ifndef SDIO_TIMEOUT
+#define SDIO_TIMEOUT  0
+#endif
+
+
+#define wait_while(condition) {					\
+		uint32_t time = SDIO_TIMEOUT;			\
+												\
+		while(condition) {						\
+			if(SDIO_TIMEOUT && (--time == 0))	\
+				return SD_RES_TIMEOUT;			\
+		}										\
+	}
+
+
+
 SD_CardInfo SD_cardInfo;
 
 /****************************************************************************************************************************************** 
@@ -151,12 +170,12 @@ uint32_t SDIO_BlockWrite(uint32_t block_addr, uint32_t buff[])
 	if(res != SD_RES_OK)
 		return res;
 	
-    while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0) __NOP();
+	wait_while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0);
     SDIO->IF = SDIO_IF_BUFWRRDY_Msk;		
     
     for(i = 0; i < 512/4; i++) SDIO->DATA = buff[i];
 	
-    while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+    wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -185,13 +204,13 @@ uint32_t SDIO_MultiBlockWrite(uint32_t block_addr, uint16_t block_cnt, uint32_t 
 	
 	for(i = 0; i < block_cnt; i++)
 	{
-		while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0) __NOP();
+		wait_while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0);
 		SDIO->IF = SDIO_IF_BUFWRRDY_Msk;
 		
 		for(j = 0; j < 512/4; j++) SDIO->DATA = buff[i*(512/4) + j];
 	}
 	
-	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -220,7 +239,7 @@ uint32_t SDIO_DMABlockWrite(uint32_t block_addr, uint16_t block_cnt, uint32_t bu
 	if(res != SD_RES_OK)
 		return res;
 	
-	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -246,12 +265,12 @@ uint32_t SDIO_BlockRead(uint32_t block_addr, uint32_t buff[])
 	if(res != SD_RES_OK)
 		return res;
 	
-    while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0) __NOP();
+    wait_while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0);
 	SDIO->IF = SDIO_IF_BUFRDRDY_Msk;
     
     for(i = 0; i < 512/4; i++) buff[i] = SDIO->DATA;
     
-	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -280,13 +299,13 @@ uint32_t SDIO_MultiBlockRead(uint32_t block_addr, uint16_t block_cnt, uint32_t b
 	
 	for(i = 0; i < block_cnt; i++)
 	{
-		while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0) __NOP();
+		wait_while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0);
 		SDIO->IF = SDIO_IF_BUFRDRDY_Msk;
 		
 		for(j = 0; j < 512/4; j++) buff[i*(512/4) + j] = SDIO->DATA;
 	}
 	
-	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -315,7 +334,7 @@ uint32_t SDIO_DMABlockRead(uint32_t block_addr, uint16_t block_cnt, uint32_t buf
 	if(res != SD_RES_OK)
 		return res;
 	
-	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -736,12 +755,12 @@ uint32_t SDIO_IO_BlockWrite(uint8_t func, uint32_t addr, uint8_t addrInc, uint32
 	if(res != SD_RES_OK)
 		return res;
 	
-    while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0) __NOP();
+    wait_while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0);
     SDIO->IF = SDIO_IF_BUFWRRDY_Msk;		
     
     for(i = 0; i < block_size/4; i++) SDIO->DATA = buff[i];
 	
-    while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+    wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -777,12 +796,12 @@ uint32_t SDIO_IO_BlockRead(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_
 	if(res != SD_RES_OK)
 		return res;
 	
-    while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0) __NOP();
+    wait_while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0);
 	SDIO->IF = SDIO_IF_BUFRDRDY_Msk;
     
     for(i = 0; i < block_size/4; i++) buff[i] = SDIO->DATA;
     
-	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -820,13 +839,13 @@ uint32_t SDIO_IO_MultiBlockWrite(uint8_t func, uint32_t addr, uint8_t addrInc, u
 	
 	for(i = 0; i < block_count; i++)
 	{
-		while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0) __NOP();
+		wait_while((SDIO->IF & SDIO_IF_BUFWRRDY_Msk) == 0);
 		SDIO->IF = SDIO_IF_BUFWRRDY_Msk;
 		
 		for(j = 0; j < 512/4; j++) SDIO->DATA = buff[i*(512/4) + j];
 	}
 	
-    while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+    wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
@@ -864,13 +883,13 @@ uint32_t SDIO_IO_MultiBlockRead(uint8_t func, uint32_t addr, uint8_t addrInc, ui
 	
 	for(i = 0; i < block_count; i++)
 	{
-		while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0) __NOP();
+		wait_while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0);
 		SDIO->IF = SDIO_IF_BUFRDRDY_Msk;
 		
 		for(j = 0; j < 512/4; j++) buff[i*(512/4) + j] = SDIO->DATA;
 	}
     
-	while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0) __NOP();
+	wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
 	return SD_RES_OK;
