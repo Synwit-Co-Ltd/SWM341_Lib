@@ -84,16 +84,21 @@ uint32_t SDIO_Init(uint32_t freq)
 	
 	
 	SDIO_SendCmd(SD_CMD_GO_IDLE_STATE, 0x00, SD_RESP_NO, 0);				//CMD0: GO_IDLE_STATE
+	SDIO_SendCmd(SD_CMD_GO_IDLE_STATE, 0x00, SD_RESP_NO, 0);
 	
 	res = SDIO_SendCmd(SD_CMD_SEND_IF_COND, 0x1AA, SD_RESP_32b, &resp);		//CMD8: SEND_IF_COND, 检测工作电压、检测是否支持SD 2.0
 	if(res != SD_RES_OK)
-		return res;
+		return res;		// voltage mismatch or Ver1.X SD Memory Card or not SD Memory Card 
 	
 	if(resp == 0x1AA) SD_cardInfo.CardType = SDIO_STD_CAPACITY_SD_CARD_V2_0;
-	else			  SD_cardInfo.CardType = SDIO_STD_CAPACITY_SD_CARD_V1_1;
+	else			  return SD_RES_ERR;
 	
+	uint32_t timeout = 2000;	// SD_CLK 100KHz, 100 bits per CMD, 1000 CMDs per second
 	do																		//ACMD41: SD_CMD_SD_APP_OP_COND
 	{
+		if(--timeout == 0)
+			return SD_RES_ERR;
+		
 		res = SDIO_SendCmd(SD_CMD_APP_CMD, 0x00, SD_RESP_32b, &resp);
 		if(res != SD_RES_OK)
 			return res;
