@@ -5,6 +5,7 @@
 #include "jpeg_image1.h"
 #include "jpeg_image2.h"
 #include "jpeg_image3.h"
+#include "jpeg_synwit.h"
 
 
 #define LCD_HDOT	480		// 水平点数
@@ -42,8 +43,21 @@ int main(void)
 	jpeg_outset.format = JPEG_OUT_RGB565;
 	jpeg_outset.dither = 0;
 	jpeg_outset.RGBAddr = SDRAMM_BASE;
+	jpeg_outset.RGBWidth = jfif_info.Width;	// 图片宽度与屏幕宽度相同，赋值 jfif_info.Width 或 LCD_HDOT 均可
 	JPEG_Decode(JPEG, &jfif_info, &jpeg_outset);
 	while(JPEG_DecodeBusy(JPEG)) __NOP();
+
+#if 1
+	memcpy(jpeg_image_sdr, jpeg_synwit, sizeof(jpeg_synwit));
+	jfif_parse(jpeg_image_sdr, sizeof(jpeg_synwit), &jfif_info);
+	
+	jpeg_outset.format = JPEG_OUT_RGB565;
+	jpeg_outset.dither = 0;
+	jpeg_outset.RGBAddr = SDRAMM_BASE;
+	jpeg_outset.RGBWidth = LCD_HDOT;		// 图片宽度小于屏幕宽度，解码到显存中直接显示，必须赋值屏幕宽度 LCD_HDOT
+	JPEG_Decode(JPEG, &jfif_info, &jpeg_outset);
+	while(JPEG_DecodeBusy(JPEG)) __NOP();
+#endif
 	
 	LCD_Start(LCD);
 	

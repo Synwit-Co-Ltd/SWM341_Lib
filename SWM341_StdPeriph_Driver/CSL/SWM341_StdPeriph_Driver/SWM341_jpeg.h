@@ -16,6 +16,8 @@ typedef struct {
 	/* for RGB output */
 	uint8_t  dither;			// RGB565 dithering enable
 	uint32_t RGBAddr;
+	uint32_t RGBWidth;			// RGB Line Width，通常赋值为 fif_info.Width，即图片的宽度
+								// 若图片比屏幕窄，但又想要将图片直接解码到显存中显示，则须赋值为屏幕宽度
 	
 	/* for YUV output */
 	uint32_t YAddr;
