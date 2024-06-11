@@ -78,35 +78,24 @@ uint32_t FLASH_Write(uint32_t addr, uint32_t buff[], uint32_t count)
 /****************************************************************************************************************************************** 
 * 函数名称: Flash_Param_at_xMHz()
 * 功能说明:	将Flash参数设置成xMHz主频下运行时所需的参数
-* 输    入: uint32_t x		取值30、40、80、120、150
+* 输    入: uint32_t xMHz
 * 输    出: 无
 * 注意事项: 系统主频越高，Flash访问等待周期越长
 ******************************************************************************************************************************************/
-void Flash_Param_at_xMHz(uint32_t x)
+void Flash_Param_at_xMHz(uint32_t xMHz)
 {
 	__disable_irq();
-	switch(x)
-	{
-		case 30:
-			IAP_Flash_Param(0x8949, 0x0FA1, 0x0B11FFAC);
-			break;
-		
-		case 40:
-			IAP_Flash_Param(0x8A49, 0x14A9, 0x0B11FFAC);
-			break;
-		
-		case 80:
-			IAP_Flash_Param(0xD349, 0x294A, 0x0B11FFAC);
-			break;
-		
-		case 120:
-			IAP_Flash_Param(0x11C89, 0x3D6B, 0x0B11FFAC);
-			break;
-		
-		case 150:
-		default:
-			IAP_Flash_Param(0x16589, 0x4C74, 0x0B11FFAC);
-			break;
-	}
+	
+	if(xMHz <= 30)
+		IAP_Flash_Param(0x8949, 0x0FA1, 0x0B11FFAC);
+	else if(xMHz <= 40)
+		IAP_Flash_Param(0x8A49, 0x14A9, 0x0B11FFAC);
+	else if(xMHz <= 80)
+		IAP_Flash_Param(0xD349, 0x294A, 0x0B11FFAC);
+	else if(xMHz <= 120)
+		IAP_Flash_Param(0x11C89, 0x3D6B, 0x0B11FFAC);
+	else
+		IAP_Flash_Param(0x16589, 0x4C74, 0x0B11FFAC);
+	
 	__enable_irq();
 }
