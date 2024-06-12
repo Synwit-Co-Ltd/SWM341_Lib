@@ -24,7 +24,7 @@ extern void switchTo2M5Hz(void);
 extern void switchTo40MHz(void);
 extern void switchTo5MHz(void);
 extern void switchToXTAL(uint32_t div8);
-void switchToPLL(uint32_t indiv, uint32_t fbdiv, uint32_t outdiv, uint32_t div8);
+void switchToPLL(uint32_t clksrc_xtal, uint32_t indiv, uint32_t fbdiv, uint32_t outdiv, uint32_t div8);
 extern void switchTo32KHz(void);
 extern void switchToXTAL_32K(void);
 

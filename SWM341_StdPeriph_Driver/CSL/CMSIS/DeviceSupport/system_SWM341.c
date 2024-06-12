@@ -169,11 +169,11 @@ void SystemInit(void)
 			break;
 		
 		case SYS_CLK_PLL:
-			switchToPLL(PLL_IN_DIV, PLL_FB_DIV, PLL_OUT_DIV, 0);
+			switchToPLL(SYS_PLL_SRC == SYS_CLK_XTAL, PLL_IN_DIV, PLL_FB_DIV, PLL_OUT_DIV, 0);
 			break;
 		
 		case SYS_CLK_PLL_DIV8:
-			switchToPLL(PLL_IN_DIV, PLL_FB_DIV, PLL_OUT_DIV, 1);
+			switchToPLL(SYS_PLL_SRC == SYS_CLK_XTAL, PLL_IN_DIV, PLL_FB_DIV, PLL_OUT_DIV, 1);
 			break;
 		
 		case SYS_CLK_32KHz:
@@ -295,18 +295,18 @@ void switchToXTAL(uint32_t div8)
 	SYS->CLKSEL &=~(1 << SYS_CLKSEL_SYS_Pos);		//SYS <= XTAL
 }
 
-void switchToPLL(uint32_t indiv, uint32_t fbdiv, uint32_t outdiv, uint32_t div8)
+void switchToPLL(uint32_t clksrc_xtal, uint32_t indiv, uint32_t fbdiv, uint32_t outdiv, uint32_t div8)
 {
 	switchTo20MHz();
 	
-	if(SYS_PLL_SRC == SYS_CLK_20MHz)
+	if(clksrc_xtal == 0)
 	{
 		SYS->HRCCR = (1 << SYS_HRCCR_ON_Pos) |
 					 (0 << SYS_HRCCR_DBL_Pos);		//HRC = 20Hz
 		
 		SYS->PLLCR |= (1 << SYS_PLLCR_INSEL_Pos);	//PLL_SRC <= HRC
 	}
-	else if(SYS_PLL_SRC == SYS_CLK_XTAL)
+	else
 	{
 		PORT_Init(PORTA, PIN3, PORTA_PIN3_XTAL_IN,  0);
 		PORT_Init(PORTA, PIN4, PORTA_PIN4_XTAL_OUT, 0);
