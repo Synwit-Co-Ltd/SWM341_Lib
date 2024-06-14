@@ -133,16 +133,17 @@ extern uint16_t DAC_Buffer[1024];
 
 void HID_GetOutReport(uint8_t *buf, uint32_t size)
 {
-    uint16_t ctrl = buf[0] | (buf[1] << 8);		// 高 4 位为 DAC 通道选择，低 12 位为数据在波形中的偏移
-	uint16_t offset = ctrl & 0xFFF;
+	uint8_t chnl = buf[0];						// 此包中数据属于哪个 DAC 通道
+	uint8_t count = buf[1];						// 此包中数据个数
+	uint16_t offset = buf[2] + (buf[3] << 8);	// 此包中数据在波形中的位置
 	
-//	printf("Copy %d-bytes from %08X to %08X\n", size-2, (int)&buf[2], (int)&DAC_Buffer[offset]);
+//	printf("Copy %d-bytes from %08X to %08X\n", count*2, (int)&buf[4], (int)&DAC_Buffer[offset]);
 	
-	DAC_nPoint = offset + (size - 2) / 2;
-	if(DAC_nPoint > 1023)
+	DAC_nPoint = offset + count;
+	if(DAC_nPoint > 1024)
 		return;
 	
-	memcpy(&DAC_Buffer[offset], &buf[2], size-2);
+	memcpy(&DAC_Buffer[offset], &buf[4], count*2);
 	
 	USBD_RxReady(EP_INT_OUT_NUM);
 }
