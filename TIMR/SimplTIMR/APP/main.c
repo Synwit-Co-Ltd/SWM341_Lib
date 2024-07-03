@@ -19,7 +19,7 @@ int main(void)
 
 void TIMR4_Handler(void)
 {
-	TIMR_INTClr(TIMR4);
+	TIMR_INTClr(TIMR4, TIMR_IT_TO);
 	
 	GPIO_InvBit(GPIOA, PIN9);	//·´×ªLEDÁÁÃð×´Ì¬
 }

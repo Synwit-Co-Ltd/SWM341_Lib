@@ -27,15 +27,15 @@ int main(void)
 
 void TIMR0_Handler(void)
 {
-	if(TIMR_IC_CaptureH_INTStat(TIMR0))
+	if(TIMR_INTStat(TIMR0, TIMR_IT_IC_HIGH))
 	{
-		TIMR_IC_CaptureH_INTClr(TIMR0);
+		TIMR_INTClr(TIMR0, TIMR_IT_IC_HIGH);
 		
 		printf("H: %d\r\n", TIMR_IC_GetCaptureH(TIMR0));
 	}
-	else if(TIMR_IC_CaptureL_INTStat(TIMR0))
+	else if(TIMR_INTStat(TIMR0, TIMR_IT_IC_LOW))
 	{
-		TIMR_IC_CaptureL_INTClr(TIMR0);
+		TIMR_INTClr(TIMR0, TIMR_IT_IC_LOW);
 		
 		printf("L: %d\r\n", TIMR_IC_GetCaptureL(TIMR0));
 	}
