@@ -1,7 +1,8 @@
 #ifndef __SWM341_PORT_H__
 #define __SWM341_PORT_H__
 
-void PORT_Init(PORT_TypeDef * PORTx, uint32_t n, uint32_t func, uint32_t digit_in_en);	//端口引脚功能选择，其可取值如下：
+
+void PORT_Init(PORT_TypeDef * PORTx, uint32_t n, uint32_t func, uint32_t digit_in_en);
 
 
 
@@ -645,4 +646,4 @@ void PORT_Init(PORT_TypeDef * PORTx, uint32_t n, uint32_t func, uint32_t digit_i
 #define PORTN_PIN15_SDR_A10		1
 
 
-#endif //__SWM341_PORT_H__
+#endif
