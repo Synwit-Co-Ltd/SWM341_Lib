@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>SWM341xE</Device>
           <Vendor>Synwit</Vendor>
-          <PackID>Synwit.SWM32_DFP.2.0.7</PackID>
+          <PackID>Synwit.SWM32_DFP.2.1.0</PackID>
           <PackURL>http://www.synwit.com/pack</PackURL>
           <Cpu>CPUTYPE("Cortex-M33") FPU3(SFPU) DSP CLOCK(12000000) ESEL ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -517,6 +517,26 @@
               <FileName>SWM341_sfc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\CSL\SWM341_StdPeriph_Driver\SWM341_sfc.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM341_dma2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM341_StdPeriph_Driver\SWM341_dma2d.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM341_iofilt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM341_StdPeriph_Driver\SWM341_iofilt.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM341_qei.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM341_StdPeriph_Driver\SWM341_qei.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM341_usbh.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM341_StdPeriph_Driver\SWM341_usbh.c</FilePath>
             </File>
           </Files>
         </Group>
