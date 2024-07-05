@@ -3,20 +3,20 @@
 
 
 typedef struct {
-	uint8_t  Mode;				//CAN_MODE_NORMAL、CAN_MODE_LISTEN、CAN_MODE_SELFTEST
-	uint8_t  CAN_bs1;			//CAN_BS1_1tq、CAN_BS1_2tq、... ... 、CAN_BS1_16tq
-	uint8_t  CAN_bs2;			//CAN_BS2_1tq、CAN_BS2_2tq、... ... 、CAN_BS2_8tq
-	uint8_t  CAN_sjw;			//CAN_SJW_1tq、CAN_SJW_2tq、CAN_SJW_3tq、CAN_SJW_4tq
-	uint32_t Baudrate;			//波特率，即位传输速率，取值1--1000000
-	uint8_t  RXNotEmptyIEn;		//接收FIFO非空，有数据可读
-	uint8_t  ArbitrLostIEn;		//控制器丢失仲裁变成接收方
-	uint8_t  ErrPassiveIEn;		//接收/发送错误计数值达到127
+	uint8_t  Mode;				// CAN_MODE_NORMAL, CAN_MODE_LISTEN, CAN_MODE_SELFTEST
+	uint8_t  CAN_bs1;			// CAN_BS1_1tq, CAN_BS1_2tq, ... ... , CAN_BS1_16tq
+	uint8_t  CAN_bs2;			// CAN_BS2_1tq, CAN_BS2_2tq, ... ... , CAN_BS2_8tq
+	uint8_t  CAN_sjw;			// CAN_SJW_1tq, CAN_SJW_2tq, CAN_SJW_3tq, CAN_SJW_4tq
+	uint32_t Baudrate;			// baudrate, can be 1000--1000000
+	uint8_t  RXNotEmptyIEn;		// RX FIFO not empty interrupt enable
+	uint8_t  ArbitrLostIEn;		// lose arbitration and become a receiver interrupt enable
+	uint8_t  ErrPassiveIEn;		// TXERR/RXERR reached 127 interrupt enable
 } CAN_InitStructure;
 
 
-#define CAN_MODE_NORMAL		0	//常规模式
-#define CAN_MODE_LISTEN		1	//监听模式
-#define CAN_MODE_SELFTEST	2	//自测模式
+#define CAN_MODE_NORMAL		0	// Normal mode
+#define CAN_MODE_LISTEN		1	// Listen Only mode
+#define CAN_MODE_SELFTEST	2	// Self Test mode
 
 #define CAN_BS1_1tq			0
 #define CAN_BS1_2tq			1
@@ -71,23 +71,23 @@ typedef struct {
 
 
 /* Interrupt Type */
-#define CAN_IT_RX_NOTEMPTY	(0x01 << 0)		//RX Buffer Not Empty
-#define CAN_IT_RX_OVERFLOW	(0x01 << 3)		//RX Buffer Overflow
-#define CAN_IT_TX_EMPTY		(0x01 << 1)		//TX Buffer Empty
-#define CAN_IT_ARBLOST		(0x01 << 6)		//Arbitration lost
+#define CAN_IT_RX_NOTEMPTY	(0x01 << 0)		// RX Buffer Not Empty
+#define CAN_IT_RX_OVERFLOW	(0x01 << 3)		// RX Buffer Overflow
+#define CAN_IT_TX_EMPTY		(0x01 << 1)		// TX Buffer Empty
+#define CAN_IT_ARBLOST		(0x01 << 6)		// Arbitration lost
 #define CAN_IT_ERR			(0x01 << 7)
-#define CAN_IT_ERR_WARN		(0x01 << 2)		//TXERR/RXERR计数值达到Error Warning Limit
-#define CAN_IT_ERR_PASS		(0x01 << 5)		//TXERR/RXERR计数值达到127
+#define CAN_IT_ERR_WARN		(0x01 << 2)		// TXERR/RXERR exceed Error Warning Limit
+#define CAN_IT_ERR_PASS		(0x01 << 5)		// TXERR/RXERR exceed 127
 #define CAN_IT_WAKEUP		(0x01 << 4)
 
 
 
 typedef struct {
-	uint32_t id;		//消息ID
-	uint8_t  format;	//帧格式：CAN_FRAME_STD、CAN_FRAME_EXT
-	uint8_t  remote;	//消息是否为远程帧
-	uint8_t  size;		//接收到的数据个数
-	uint8_t  data[8];	//接收到的数据
+	uint32_t id;		// frame id
+	uint8_t  format;	// frame format: CAN_FRAME_STD, CAN_FRAME_EXT
+	uint8_t  remote;	// remote frame?
+	uint8_t  size;		// received data byte count
+	uint8_t  data[8];	// received data
 } CAN_RXMessage;
 
 
@@ -118,4 +118,4 @@ void CAN_INTClr(CAN_TypeDef * CANx, uint32_t it);
 uint32_t CAN_INTStat(CAN_TypeDef * CANx);
 
 
-#endif //__SWM341_CAN_H__
+#endif
