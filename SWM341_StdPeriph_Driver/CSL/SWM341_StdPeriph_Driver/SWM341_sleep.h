@@ -15,4 +15,4 @@ __ramfunc void EnterStopMode(void);
 #endif
 
 
-#endif //__SWM341_SLEEP_H__
+#endif

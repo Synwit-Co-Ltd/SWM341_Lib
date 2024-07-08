@@ -4,12 +4,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
 typedef void (*USBD_ClassRequest_Callback)(USB_Setup_Packet_t * pSetup);
 typedef void (*USBD_VendorRequest_Callback)(USB_Setup_Packet_t * pSetup);
 
+
 typedef struct {
-	uint8_t  Mode;				// USBD_MODE_DEV、USBD_MODE_OTG
-	uint8_t  Speed;				// USBD_SPEED_LS、USBD_SPEED_FS
+	uint8_t  Mode;				// USBD_MODE_DEV, USBD_MODE_OTG
+	uint8_t  Speed;				// USBD_SPEED_LS, USBD_SPEED_FS
 	uint8_t  CtrlPkSiz;			// Control Endpoint Packet Size
 	
 	uint8_t  *DescDevice;
@@ -22,8 +24,8 @@ typedef struct {
 	uint8_t  *DescBOS;			// BOS descriptor
 	
 	/* HID */
-	uint16_t *DescHIDOffset;	// HID描述符在DescConfig中的偏移
-	uint8_t **DescHIDReport;	// HID报告描述符
+	uint16_t *DescHIDOffset;	// Offset of HID descriptor in DescConfig
+	uint8_t **DescHIDReport;	// HID report descriptor
     
 	/* WINUSB */
 	uint8_t  *DescOSString;		// Microsoft OS String Descriptor
@@ -33,7 +35,7 @@ extern USBD_Info_t USBD_Info;
 
 
 #define USBD_MODE_DEV	3		// Device only
-#define USBD_MODE_OTG	0		// OTG, 主机模式还是从机模式由USB ID线决定
+#define USBD_MODE_OTG	0		// OTG, host or device mode is determined by the USB ID line
 
 #define USBD_SPEED_LS	2
 #define USBD_SPEED_FS	3
@@ -64,7 +66,6 @@ static __INLINE void USBD_Stall0(void)
 	USBD_RxStall(0);
 }
 
-/* 注意：因为要读 TXSR.DATSNT 位，因此必须在 USBD_TxIntClr() 之前调用 */
 static __INLINE bool USBD_TxSuccess(uint8_t epnr)
 {
 	uint32_t sr = USBD->INEP[epnr].TXSR;
@@ -97,13 +98,13 @@ static __INLINE void USBD_RxIntClr(void)
 static __INLINE void USBD_PullUp_Enable(void)
 {
 	SYS->USBPHYCR &= ~SYS_USBPHYCR_OPMODE_Msk;
-	SYS->USBPHYCR |= (0 << SYS_USBPHYCR_OPMODE_Pos);	//Normal Operation
+	SYS->USBPHYCR |= (0 << SYS_USBPHYCR_OPMODE_Pos);	// Normal Operation
 }
 
 static __INLINE void USBD_PullUp_Disable(void)
 {
 	SYS->USBPHYCR &= ~SYS_USBPHYCR_OPMODE_Msk;
-	SYS->USBPHYCR |= (1 << SYS_USBPHYCR_OPMODE_Pos);  	//Non-Driving, DP Pull-Up disable
+	SYS->USBPHYCR |= (1 << SYS_USBPHYCR_OPMODE_Pos);  	// Non-Driving, DP Pull-Up disable
 }
 
 
@@ -124,4 +125,5 @@ uint16_t USBD_RxRead(uint8_t *buff, uint16_t size);
 
 void USBD_memcpy(uint8_t *destin, uint8_t *source, uint32_t nByte);
 
-#endif //__SWM341_USBD_H__
+
+#endif
