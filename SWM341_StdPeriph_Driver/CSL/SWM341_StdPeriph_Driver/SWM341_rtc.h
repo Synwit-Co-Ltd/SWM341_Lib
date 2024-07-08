@@ -15,19 +15,19 @@
 
 
 typedef struct {
-	uint8_t  clksrc;		//RTC_CLKSRC_RC32K、RTC_CLKSRC_XTAL32K
+	uint8_t  clksrc;		// RTC_CLKSRC_RC32K, RTC_CLKSRC_XTAL32K
 	uint16_t Year;
-	uint8_t  Month;			//取值1--12
-	uint8_t  Date;			//取值1--31
-	uint8_t  Hour;			//取值0--23
-	uint8_t  Minute;		//取值0--59
-	uint8_t  Second;		//取值0--59
+	uint8_t  Month;			// 1--12
+	uint8_t  Date;			// 1--31
+	uint8_t  Hour;			// 0--23
+	uint8_t  Minute;		// 0--59
+	uint8_t  Second;		// 0--59
 	uint8_t  SecondIEn;
 	uint8_t  MinuteIEn;
 } RTC_InitStructure;
 
 typedef struct {
-	uint8_t  Days;			//RTC_SUN、RTC_MON、RTC_TUE、RTC_WED、RTC_THU、RTC_FRI、RTC_SAT及其或运算组合
+	uint8_t  Days;			// RTC_SUN, RTC_MON, RTC_TUE, RTC_WED, RTC_THU, RTC_FRI, RTC_SAT and their '|' operation
 	uint8_t  Hour;
 	uint8_t  Minute;
 	uint8_t  Second;
@@ -38,7 +38,7 @@ typedef struct {
 	uint16_t Year;
 	uint8_t  Month;
 	uint8_t  Date;
-	uint8_t  Day;			//RTC_SUN、RTC_MON、RTC_TUE、RTC_WED、RTC_THU、RTC_FRI、RTC_SAT
+	uint8_t  Day;			//RTC_SUN, RTC_MON, RTC_TUE, RTC_WED, RTC_THU, RTC_FRI, RTC_SAT
 	uint8_t  Hour;
 	uint8_t  Minute;
 	uint8_t  Second;
@@ -46,13 +46,13 @@ typedef struct {
 
 
 /* Interrupt Type */
-#define RTC_IT_SECOND		(1 << 0)	//Second Interrupt
+#define RTC_IT_SECOND		(1 << 0)	// Second Interrupt
 #define RTC_IT_MINUTE		(1 << 1)
 #define RTC_IT_HOUR			(1 << 2)
 #define RTC_IT_DATE			(1 << 3)
 #define RTC_IT_ALARM		(1 << 4)
-#define RTC_IT_SECOND_DIV2	(1 << 6)	//1/2 Second Interrupt
-#define RTC_IT_SECOND_DIV4	(1 << 7)	//1/4 Second Interrupt
+#define RTC_IT_SECOND_DIV2	(1 << 6)	// 1/2 Second Interrupt
+#define RTC_IT_SECOND_DIV4	(1 << 7)	// 1/4 Second Interrupt
 
 
 
@@ -70,4 +70,5 @@ void RTC_INTDis(RTC_TypeDef * RTCx, uint32_t it);
 void RTC_INTClr(RTC_TypeDef * RTCx, uint32_t it);
 uint32_t RTC_INTStat(RTC_TypeDef * RTCx, uint32_t it);
 
-#endif //__SWM341_RTC_H__
+
+#endif

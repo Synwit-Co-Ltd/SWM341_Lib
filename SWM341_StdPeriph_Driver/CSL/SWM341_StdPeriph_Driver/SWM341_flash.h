@@ -7,6 +7,7 @@ uint32_t FLASH_Write(uint32_t addr, uint32_t buff[], uint32_t count);
 
 void Flash_Param_at_xMHz(uint32_t xMHz);
 
+
 #define FLASH_RES_OK	0
 #define FLASH_RES_TO	1	//Timeout
 #define FLASH_RES_ERR	2
@@ -24,4 +25,4 @@ extern const IAP_Flash_Erase_t IAP_Flash_Erase;
 extern const IAP_Flash_Write_t IAP_Flash_Write;
 
 
-#endif //__SWM341_FLASH_H__
+#endif

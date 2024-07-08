@@ -3,13 +3,13 @@
 
 
 typedef struct {
-	uint32_t init_crc;			// 初始值
-	uint8_t  Poly;				// CRC多项式，可取值CRC_POLY_11021、CRC_POLY_107、CRC_POLY_18005、CRC_POLY_104C11DB7
-	uint8_t  in_width;			// 输入数据宽度，可取值CRC_WIDTH_32、CRC_WIDTH_16、CRC_WIDTH_8
-	uint8_t  in_rev;			// 输入数据翻转，可取值CRC_REV_NOT、CRC_REV_ALL、CRC_REV_IN_BYTE、CRC_REV_BYTE
-	bool     in_not;			// 输入数据取反
-	uint8_t  out_rev;			// 输出结果翻转，可取值CRC_REV_NOT、CRC_REV_ALL、CRC_REV_IN_BYTE、CRC_REV_BYTE
-	bool     out_not;			// 输出结果取反
+	uint32_t init_crc;			// initial value
+	uint8_t  Poly;				// CRC polynomial, can be CRC_POLY_11021, CRC_POLY_107, CRC_POLY_18005, CRC_POLY_104C11DB7
+	uint8_t  in_width;			// input data width, can be CRC_WIDTH_32, CRC_WIDTH_16, CRC_WIDTH_8
+	uint8_t  in_rev;			// input data reverse, can be CRC_REV_NOT, CRC_REV_ALL, CRC_REV_IN_BYTE, CRC_REV_BYTE
+	bool     in_not;			// input data inverse
+	uint8_t  out_rev;			// output data reverse, can be CRC_REV_NOT, CRC_REV_ALL, CRC_REV_IN_BYTE, CRC_REV_BYTE
+	bool     out_not;			// output data inverse
 } CRC_InitStructure;
 
 
@@ -22,38 +22,35 @@ typedef struct {
 #define CRC_WIDTH_16		1
 #define CRC_WIDTH_8			2
 
-#define CRC_REV_NOT			0	// bit顺序不变
-#define CRC_REV_ALL			1	// bit顺序完全翻转
-#define CRC_REV_IN_BYTE		2	// bit顺序字节内翻转
-#define CRC_REV_BYTE		3	// 仅字节顺序翻转
+#define CRC_REV_NOT			0	// bit order not change
+#define CRC_REV_ALL			1	// bit order completely reverse
+#define CRC_REV_IN_BYTE		2	// bit order intra-byte reverse
+#define CRC_REV_BYTE		3	// byte order reverse
 
 
 void CRC_Init(CRC_TypeDef * CRCx, CRC_InitStructure * initStruct);
 void CRC_SetInitVal(CRC_TypeDef * CRCx, uint32_t init_crc);
 
 
-/****************************************************************************************************************************************** 
-* 函数名称:	CRC_Write()
-* 功能说明:	CRC写入数据
-* 输    入: uint32_t data		要写入的数据
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	write data to do CRC
+* @param	data is the data to write to CRC module
+* @return
+*******************************************************************************************************************************/
 static __INLINE void CRC_Write(uint32_t data)
 {
 	CRC->DATAIN = data;
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称:	CRC_Result()
-* 功能说明:	获取CRC计算结果
-* 输    入: 无
-* 输    出: uint32_t			CRC 计算结果
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	read out CRC calculation result
+* @param
+* @return	CRC calculation result
+*******************************************************************************************************************************/
 static __INLINE uint32_t CRC_Result(void)
 {
 	return CRC->RESULT;
 }
 
-#endif //__SWM341_CRC_H__
+
+#endif
