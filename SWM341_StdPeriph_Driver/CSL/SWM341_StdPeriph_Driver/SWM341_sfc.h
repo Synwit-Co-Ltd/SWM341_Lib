@@ -3,11 +3,11 @@
 
 
 typedef struct {
-	uint8_t ClkDiv;				//SPI_SCLK是系统时钟的几分频，取值：SFC_CLKDIV_1、SFC_CLKDIV_2、SFC_CLKDIV_4、SFC_CLKDIV_8
-	uint8_t Cmd_Read;			//读取SPI Flash用的指令码
-	uint8_t Width_Read;			//读取SPI Flash时数据线位数，取值SFC_RDWIDTH_1、SFC_RDWIDTH_2、SFC_RDWIDTH_4
-	uint8_t Cmd_PageProgram;	//页编程SPI Flash用的指令码
-	uint8_t Width_PageProgram;	//页编程SPI Flash时数据线位数，取值SFC_PPWIDTH_1、SFC_PPWIDTH_4
+	uint8_t ClkDiv;				// SFC_CLKDIV_1, SFC_CLKDIV_2, SFC_CLKDIV_4 and SFC_CLKDIV_8
+	uint8_t Cmd_Read;			// command opcode for SPI Flash read
+	uint8_t Width_Read;			// data bus width for SPI Flash read, can be SFC_RDWIDTH_1, SFC_RDWIDTH_2 and SFC_RDWIDTH_4
+	uint8_t Cmd_PageProgram;	// command opcode for SPI Flash page program
+	uint8_t Width_PageProgram;	// data bus width for SPI Flash page program, can be SFC_PPWIDTH_1 and SFC_PPWIDTH_4
 } SFC_InitStructure;
 
 
@@ -53,10 +53,10 @@ void SFC_Read(uint32_t addr, uint32_t buff[], uint32_t cnt);
 
 
 uint8_t SFC_ReadStatusReg(uint8_t cmd);
-void SFC_WriteStatusReg(uint8_t cmd, uint16_t reg);
+void SFC_WriteStatusReg(uint8_t cmd, uint16_t val);
 void SFC_QuadSwitch(uint8_t on);
 uint8_t SFC_QuadState(void);
 uint8_t SFC_FlashBusy(void);
 
 
-#endif //__SWM341_SFC_H__
+#endif

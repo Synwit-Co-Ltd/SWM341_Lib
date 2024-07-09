@@ -5,21 +5,21 @@
 
 
 typedef struct {
-	uint16_t Interval;			// 每传输一块数据（64个字），等待指定个系统周期后再传输下一个块，防止DMA2D占用过多SDRAM带宽，影响LCD读取显示数据；取值1--1023
-	uint8_t  IntEOTEn;			// End of Transter（传输完成）中断使能
+	uint16_t Interval;			// data block (64 word) transfer interval in unit of HCLK period, can be 1--1023
+	uint8_t  IntEOTEn;			// End of Transter interrupt enable
 } DMA2D_InitStructure;
 
 
 typedef struct {
 	uint32_t Address;
 	uint32_t LineOffset;		// added at the end of each line to determine the starting address of the next line
-	uint8_t  ColorMode;			// DMA2D_FMT_ARGB888、DMA2D_FMT_RGB888、DMA2D_FMT_RGB565、...
-	uint8_t  AlphaMode;			// DMA2D_AMODE_PIXEL、DMA2D_AMODE_ALPHA、DMA2D_AMODE_PMULA、...
+	uint8_t  ColorMode;			// DMA2D_FMT_ARGB888, DMA2D_FMT_RGB888, DMA2D_FMT_RGB565, ...
+	uint8_t  AlphaMode;			// DMA2D_AMODE_PIXEL, DMA2D_AMODE_ALPHA, DMA2D_AMODE_PMULA, ...
 	uint8_t  Alpha;
 	
-	/* 只有输出层需要设置这两个域，前景层和背景层不需设置 */
-	uint16_t LineCount;			// 显示数据行数
-	uint16_t LinePixel;			// 每行像素个数
+	/* only for DMA2D_LAYER_OUT, not for DMA2D_LAYER_FG and DMA2D_LAYER_BG */
+	uint16_t LineCount;			// line per screen
+	uint16_t LinePixel;			// pixel per line
 } DMA2D_LayerSetting;
 
 
@@ -36,9 +36,9 @@ typedef struct {
 #define DMA2D_FMT_BGR565    (2 | (1 << 4))
 
 /* Alpha Mode */
-#define DMA2D_AMODE_PIXEL	(0 | (0 << 5))	// 使用像素点自带Alpha值
-#define DMA2D_AMODE_ALPHA	(0 | (1 << 5))	// 使用软件指定的Alpha值
-#define DMA2D_AMODE_PMULA	(0 | (2 << 5))	// 使用像素点自带Alpha值与软件指定的Alpha值的乘积
+#define DMA2D_AMODE_PIXEL	(0 | (0 << 5))	// use the pixel's own Alpha value
+#define DMA2D_AMODE_ALPHA	(0 | (1 << 5))	// use the Alpha value specified by software
+#define DMA2D_AMODE_PMULA	(0 | (2 << 5))	// use the product of the pixel's own Alpha value and the Alpha value specified by software
 
 
 void DMA2D_Init(DMA2D_InitStructure * initStruct);
@@ -54,4 +54,4 @@ void DMA2D_INTClr(void);
 uint32_t DMA2D_INTStat(void);
 
 
-#endif // __SWM341_DMA2D_H__
+#endif

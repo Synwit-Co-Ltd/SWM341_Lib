@@ -20,7 +20,7 @@ typedef enum {
     USBR_BUFFER_OVERRUN,
     USBR_BUFFER_UNDERRUN,
 	USBR_ERROR = 0xFE,
-    USBR_NO = 0xFF       	// 还未收到设备响应
+    USBR_NO = 0xFF       	// No response from the device yet
 } USBH_Resp;
 
 
@@ -39,4 +39,4 @@ uint32_t USBH_SendInPacket(uint8_t addr, uint8_t endp, uint8_t DATAx, uint16_t s
 uint32_t USBH_ReadRxBuffer(uint8_t *buff, uint32_t size);
 
 
-#endif // __SWM341_USBH_H__
+#endif

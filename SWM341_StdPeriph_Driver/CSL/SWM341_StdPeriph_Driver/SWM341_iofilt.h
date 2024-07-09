@@ -2,7 +2,7 @@
 #define __SWM341_IOFILT_H__
 
 
-/* 选择对哪个信号进行滤波 */
+/* select which signal to filter */
 #define IOFILT0_PB5		0
 #define IOFILT0_PB4		1
 #define IOFILT0_PB3		2
@@ -37,4 +37,4 @@ void IOFILT_Open(uint32_t IOFILTn);
 void IOFILT_Close(uint32_t IOFILTn);
 
 
-#endif // __SWM341_IOFILT_H__
+#endif
