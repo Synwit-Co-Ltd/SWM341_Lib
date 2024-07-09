@@ -5,19 +5,19 @@
 
 
 typedef struct {
-	uint8_t  DoneIEn;			// 解码完成中断使能
-	uint8_t  ErrorIEn;			// 解码出错中断使能
+	uint8_t  DoneIEn;			// decode done interrupt enable
+	uint8_t  ErrorIEn;			// decode error interrupt enable
 } JPEG_InitStructure;
 
 
 typedef struct {
-	uint8_t  format;			// 解码输出格式，可取值JPEG_OUT_YUV、JPEG_OUT_YUVsp、JPEG_OUT_XRGB888、...
+	uint8_t  format;			// decode output format, can be JPEG_OUT_YUV, JPEG_OUT_YUVsp, JPEG_OUT_XRGB888, ...
 	
 	/* for RGB output */
 	uint8_t  dither;			// RGB565 dithering enable
 	uint32_t RGBAddr;
-	uint32_t RGBWidth;			// RGB Line Width，通常赋值为 jfif_info.Width，即图片的宽度
-								// 若图片比屏幕窄，但又想要将图片直接解码到显存中显示，则须赋值为屏幕宽度
+	uint32_t RGBWidth;			// RGB Line Width, usually assigned to jfif_info.Width, i.e. the width of the image
+								// If the picture is narrower than the screen, but you want to decode the picture directly to graphic memory, it must be assigned to the screen width
 	
 	/* for YUV output */
 	uint32_t YAddr;
@@ -54,12 +54,12 @@ typedef struct {
 	uint16_t Height;
 	
 	struct {
-		uint8_t id;				// 1：Y   2：Cb   3：Cr
-		uint8_t hfactor;		// 颜色分量水平采样因子
-		uint8_t vfactor;		// 颜色分量垂直采样因子
-		uint8_t qtab_id;		// 颜色分量使用的量化表ID
-		uint8_t htab_id_dc;		// 直流分量使用的霍夫曼表ID
-		uint8_t htab_id_ac;		// 交流分量使用的霍夫曼表ID
+		uint8_t id;				// 1: Y   2: Cb   3: Cr
+		uint8_t hfactor;		// Color component horizontal sampling factor
+		uint8_t vfactor;		// Color component vertical sampling factor
+		uint8_t qtab_id;		// Quantization table used for color components
+		uint8_t htab_id_dc;		// Hoffmann table used for DC components
+		uint8_t htab_id_ac;		// Hoffmann table used for AC components
 	} CompInfo[3];				// Component Information
 	uint8_t CompCnt;
 	
@@ -81,7 +81,7 @@ typedef struct {
 	} HTable[JFIF_HTAB_MAX];
 	uint8_t HTableCnt;
 	
-	uint32_t CodeAddr;			// 待解码数据
+	uint32_t CodeAddr;			// data to decode
 	uint32_t CodeLen;
 } jfif_info_t;
 
@@ -92,4 +92,4 @@ void JPEG_Decode(JPEG_TypeDef * JPEGx, jfif_info_t * jfif_info, jpeg_outset_t * 
 uint32_t JPEG_DecodeBusy(JPEG_TypeDef * JPEGx);
 
 
-#endif //__SWM341_JPEG_H__
+#endif

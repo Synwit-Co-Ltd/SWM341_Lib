@@ -23,8 +23,8 @@
 #define SD_CMD_PROG_CSD                            ((uint8_t)27)
 #define SD_CMD_APP_CMD                             ((uint8_t)55)
 
-/*Following commands are SD Card Specific commands.
-  SDIO_APP_CMD should be sent before sending these commands. */
+/* Following commands are SD Card Specific commands.
+   SDIO_APP_CMD should be sent before sending these commands. */
 #define SD_CMD_APP_SD_SET_BUSWIDTH                 ((uint8_t)6)
 #define SD_CMD_SD_APP_STAUS                        ((uint8_t)13)
 #define SD_CMD_SD_APP_SEND_NUM_WRITE_BLOCKS        ((uint8_t)22)
@@ -42,10 +42,11 @@
 #define SD_CMD53_ARG_nRW		31	// 0 for read   1 for write
 
 
-#define SD_RESP_NO			0	//0 无响应
-#define SD_RESP_32b			2	//2 32位响应
-#define SD_RESP_128b		1	//1 128位响应
-#define SD_RESP_32b_busy	3	//3 32位响应，check Busy after response
+#define SD_RESP_NO			0	// 0 no response
+#define SD_RESP_32b			2	// 2 32-bit response
+#define SD_RESP_128b		1	// 1 128-bit response
+#define SD_RESP_32b_busy	3	// 3 32-bit response, check busy after response
+
 
 #define SD_BUSWIDTH_1b		0
 #define SD_BUSWIDTH_4b		2
@@ -58,7 +59,7 @@
 /* Card Status return by response R1 */
 #define SD_CS_APP_CMD			(1 <<  5)	// The card will expect ACMD
 #define SD_CS_READY_FOR_DATA	(1 <<  8)	// Corresponds to buffer empty signaling on the bus
-#define SD_CS_CURRENT_STATE		(1 <<  9)	// The state of the card when receiving the command. 共 4 位
+#define SD_CS_CURRENT_STATE		(1 <<  9)	// The state of the card when receiving the command
 #define SD_CS_CARD_ECC_FAILED	(1 << 21)
 #define SD_CS_ILLEGAL_COMMAND	(1 << 22)
 #define SD_CS_CARD_IS_LOCKED	(1 << 25)
@@ -72,7 +73,7 @@ typedef struct
   __IO uint8_t  TAAC;                 // Data read access-time 1 
   __IO uint8_t  NSAC;                 // Data read access-time 2 in CLK cycles 
   __IO uint8_t  MaxBusClkFrec;        // Max. bus clock frequency 
-  __IO uint16_t CardComdClasses;      //< Card command classes 
+  __IO uint16_t CardComdClasses;      // Card command classes 
   __IO uint8_t  RdBlockLen;           // Max. read data block length 
   __IO uint8_t  PartBlockRead;        // Partial blocks for read allowed 
   __IO uint8_t  WrBlockMisalign;      // Write block misalignment 
@@ -171,4 +172,5 @@ uint32_t SDIO_IO_BlockRead(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_
 uint32_t SDIO_IO_MultiBlockWrite(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t block_count);
 uint32_t SDIO_IO_MultiBlockRead(uint8_t func, uint32_t addr, uint8_t addrInc, uint32_t buff[], uint16_t block_count);
 
-#endif //__SWM341_SDIO_H__
+
+#endif
