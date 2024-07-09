@@ -33,4 +33,4 @@ extern void switchToXTAL_32K(void);
 }
 #endif
 
-#endif //__SYSTEM_SWM341_H__
+#endif

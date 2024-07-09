@@ -1,13 +1,8 @@
-/****************************************************************************************************************************************** 
-* 文件名称:	system_SWM341.c
-* 功能说明:	SWM341单片机的时钟设置
-* 技术支持:	http://www.synwit.com.cn/e/tool/gbook/?bid=1
-* 注意事项:
-* 版本日期: V1.1.0		2017年10月25日
-* 升级记录: 
+/*******************************************************************************************************************************
+* @brief	system clock setting
 *
 *
-*******************************************************************************************************************************************
+********************************************************************************************************************************
 * @attention
 *
 * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS WITH CODING INFORMATION 
@@ -16,41 +11,41 @@
 * OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING INFORMATION CONTAINED HEREIN IN CONN-
 * -ECTION WITH THEIR PRODUCTS.
 *
-* COPYRIGHT 2012 Synwit Technology
-*******************************************************************************************************************************************/ 
+* COPYRIGHT 2012 Synwit Technology 
+*******************************************************************************************************************************/
 #include <stdint.h>
 #include "SWM341.h"
 
 
-/******************************************************************************************************************************************
- * 系统时钟设定
- *****************************************************************************************************************************************/
-#define SYS_CLK_20MHz		0	 	//0 内部高频20MHz  RC振荡器
-#define SYS_CLK_2M5Hz		1		//1 内部高频2.5MHz RC振荡器
-#define SYS_CLK_40MHz		2		//2 内部高频40MHz  RC振荡器
-#define SYS_CLK_5MHz		3		//3 内部高频 5MHz  RC振荡器
-#define SYS_CLK_XTAL		4		//4 外部晶体振荡器（4-32MHz）
-#define SYS_CLK_XTAL_DIV8	5		//5 外部晶体振荡器（4-32MHz） 8分频
-#define SYS_CLK_PLL			6		//6 锁相环输出
-#define SYS_CLK_PLL_DIV8	7		//7 锁相环输出 8分频
-#define SYS_CLK_32KHz		8		//8 内部低频32KHz RC  振荡器
-#define SYS_CLK_XTAL_32K	9		//9 外部低频32KHz 晶体振荡器
+/*******************************************************************************************************************************
+ * system clock setting
+ ******************************************************************************************************************************/
+#define SYS_CLK_20MHz		0	 	// 0 internal 20MHz
+#define SYS_CLK_2M5Hz		1		// 1 internal 2.5MHz
+#define SYS_CLK_40MHz		2		// 2 internal 40MHz
+#define SYS_CLK_5MHz		3		// 3 internal  5MHz
+#define SYS_CLK_XTAL		4		// 4 external XTAL (4-32MHz)
+#define SYS_CLK_XTAL_DIV8	5		// 5 external XTAL (4-32MHz) divide by 8
+#define SYS_CLK_PLL			6		// 6 PLL output
+#define SYS_CLK_PLL_DIV8	7		// 7 PLL output divide by 8
+#define SYS_CLK_32KHz		8		// 8 internal 32KHz
+#define SYS_CLK_XTAL_32K	9		// 9 exteranl 32KHz XTAL
 
 #define SYS_CLK   SYS_CLK_PLL
 
 
-#define __HSI		(20000000UL)		//高速内部时钟
-#define __LSI		(   32000UL)		//低速内部时钟
-#define __HSE		(12000000UL)		//高速外部时钟
-#define __LSE		(   32768UL)		//低速外部时钟
+#define __HSI		(20000000UL)	// high speed internal clock
+#define __LSI		(   32000UL)	// low speed internal clock
+#define __HSE		(12000000UL)	// high speed external clock
+#define __LSE		(   32768UL)	// low speed external clock
 
 
-/********************************** PLL 设定 **********************************************
- * VCO输出频率 = PLL输入时钟 / INDIV * 4 * FBDIV
- * PLL输出频率 = PLL输入时钟 / INDIV * 4 * FBDIV / OUTDIV = VCO输出频率 / OUTDIV
- * 注意：VCO输出频率需要在 [600MHz, 1400MHz] 之间
- *****************************************************************************************/ 
-#define SYS_PLL_SRC   	SYS_CLK_XTAL	//可取值SYS_CLK_20MHz、SYS_CLK_XTAL
+/********************************** PLL setting ********************************************************************************
+ * VCO output frequency = PLL input frequency / INDIV * 4 * FBDIV
+ * PLL output frequency = PLL input frequency / INDIV * 4 * FBDIV / OUTDIV = VCO output frequency / OUTDIV
+ * note: VCO output frequency shoud be in range [600MHz, 1400MHz]
+ ******************************************************************************************************************************/ 
+#define SYS_PLL_SRC   	SYS_CLK_XTAL	// SYS_CLK_20MHz or SYS_CLK_XTAL
 
 #define PLL_IN_DIV		3
 
@@ -60,17 +55,16 @@
 
 
 
-uint32_t SystemCoreClock  = __HSI;   				//System Clock Frequency (Core Clock)
-uint32_t CyclesPerUs      = (__HSI / 1000000); 		//Cycles per micro second
+uint32_t SystemCoreClock  = __HSI;   				// System Clock Frequency (Core Clock)
+uint32_t CyclesPerUs      = (__HSI / 1000000); 		// Cycles per micro second
 
 
-/****************************************************************************************************************************************** 
-* 函数名称: 
-* 功能说明: This function is used to update the variable SystemCoreClock and must be called whenever the core clock is changed
-* 输    入: 
-* 输    出: 
-* 注意事项: 
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	This function is used to update the variable SystemCoreClock and must be called whenever the core clock is changed
+* @param
+* @param
+* @return
+*******************************************************************************************************************************/
 void SystemCoreClockUpdate(void)    
 {
 	if(SYS->CLKSEL & SYS_CLKSEL_SYS_Msk)			//SYS  <= HRC
@@ -129,13 +123,12 @@ void SystemCoreClockUpdate(void)
 	CyclesPerUs = SystemCoreClock / 1000000;
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: 
-* 功能说明: The necessary initializaiton of systerm
-* 输    入: 
-* 输    出: 
-* 注意事项: 
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	The necessary initializaiton of systerm
+* @param
+* @param
+* @return
+*******************************************************************************************************************************/
 void SystemInit(void)
 {
 	SYS->CLKEN0 |= (1 << SYS_CLKEN0_ANAC_Pos);
@@ -324,7 +317,7 @@ void switchToPLL(uint32_t clksrc_xtal, uint32_t indiv, uint32_t fbdiv, uint32_t 
 	
 	SYS->PLLCR &= ~(1 << SYS_PLLCR_OFF_Pos);
 	
-	while(SYS->PLLLOCK == 0);		//等待PLL锁定
+	while(SYS->PLLLOCK == 0);		// wait for PLL to lock
 	
 	SYS->PLLCR |= (1 << SYS_PLLCR_OUTEN_Pos);
 	

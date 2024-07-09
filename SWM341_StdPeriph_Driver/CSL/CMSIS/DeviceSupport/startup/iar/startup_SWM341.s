@@ -1,23 +1,18 @@
-;******************************************************************************************************************************************
-; 文件名称: startup_SWM341.s
-; 功能说明: SWM341单片机的启动文件
-; 技术支持: http://www.synwit.com.cn/e/tool/gbook/?bid=1
-; 注意事项:
-; 版本日期: V1.0.0        2019年5月30日
-; 升级记录:
+;*******************************************************************************************************************************
+; @brief    startup file
 ;
 ;
-;******************************************************************************************************************************************
+;*******************************************************************************************************************************
 ; @attention
 ;
-; THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS WITH CODING INFORMATION
-; REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME. AS A RESULT, SYNWIT SHALL NOT BE HELD LIABLE
-; FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE CONTENT
+; THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS WITH CODING INFORMATION 
+; REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME. AS A RESULT, SYNWIT SHALL NOT BE HELD LIABLE 
+; FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE CONTENT 
 ; OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING INFORMATION CONTAINED HEREIN IN CONN-
 ; -ECTION WITH THEIR PRODUCTS.
 ;
-; COPYRIGHT 2012 Synwit Technology
-;******************************************************************************************************************************************
+; COPYRIGHT 2012 Synwit Technology 
+;******************************************************************************************************************************/
 
         MODULE  ?cstartup
 
