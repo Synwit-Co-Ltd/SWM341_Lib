@@ -1328,13 +1328,13 @@ typedef struct {
     
 	__IO uint32_t SEQCHN0;
 	
-	__IO uint32_t SEQCHN1;					//序列通道选择
+	__IO uint32_t SEQCHN1;					// Sequencer channel select
     
-	__IO uint32_t SEQTRG;					//序列触发选择
+	__IO uint32_t SEQTRG;					// Sequencer trigger select
 	
-	__IO uint32_t SEQCOV;					//序列转换次数，序列被触发启动后可连续转换多次，此处指定转换次数
+	__IO uint32_t SEQCOV;					// Sequencer conversion times
 	
-	__IO uint32_t SEQSMP;					//序列采样时间，采样保持时间
+	__IO uint32_t SEQSMP;					// Sequencer sample time
 	
 	     uint32_t RESERVED2[4];
 	
@@ -1348,16 +1348,16 @@ typedef struct {
 
 #define ADC_CR_EN_Pos				0
 #define ADC_CR_EN_Msk				(0x01 << ADC_CR_EN_Pos)
-#define ADC_CR_AVG_Pos				1		//0 1次采样	  1 2次采样取平均值	  2 4次采样取平均值	  3 8次采样取平均值
+#define ADC_CR_AVG_Pos				1
 #define ADC_CR_AVG_Msk				(0x03 << ADC_CR_AVG_Pos)
-#define ADC_CR_RESET_Pos			3		//复位模拟模块，置位至少需两个采样周期
+#define ADC_CR_RESET_Pos			3
 #define ADC_CR_RESET_Msk			(0x01 << ADC_CR_RESET_Pos)
-#define ADC_CR_DMAEN_Pos			4		//四位，每位对应一个序列，同一时刻只能一个有一个序列使能DMA，0 能通过CPU读取DATA_FIFO   1 只能通过DMA读取DATA_FIFO
+#define ADC_CR_DMAEN_Pos			4		// Sequencer DMA enable, 1-bit per Sequencer
 #define ADC_CR_DMAEN_Msk			(0x0F << ADC_CR_DMAEN_Pos)
-#define ADC_CR_FFCLR_Pos			8		//FIFO Clear，四位，每位对应一个序列
+#define ADC_CR_FFCLR_Pos			8		// FIFO Clear, 1-bit per Sequencer
 #define ADC_CR_FFCLR_Msk			(0x0F << ADC_CR_FFCLR_Pos)
 
-#define ADC_GO_SEQ0_Pos				0		//序列3转换启动位
+#define ADC_GO_SEQ0_Pos				0
 #define ADC_GO_SEQ0_Msk				(0x01 << ADC_GO_SEQ0_Pos)
 #define ADC_GO_SEQ1_Pos				1
 #define ADC_GO_SEQ1_Msk				(0x01 << ADC_GO_SEQ1_Pos)
@@ -1368,17 +1368,17 @@ typedef struct {
 #define ADC_GO_BUSY_Pos				4
 #define ADC_GO_BUSY_Msk				(0x01 << ADC_GO_BUSY_Pos)
 
-#define ADC_IE_SEQ0EOC_Pos			0		//序列0 End Of Convertion 中断使能
+#define ADC_IE_SEQ0EOC_Pos			0		// Sequencer 0 End Of Convertion interrupt enable
 #define ADC_IE_SEQ0EOC_Msk			(0x01 << ADC_IE_SEQ0EOC_Pos)
-#define ADC_IE_SEQ0OVF_Pos			1		//序列0 FIFO Overflow 中断使能
+#define ADC_IE_SEQ0OVF_Pos			1		// Sequencer 0 FIFO Overflow interrupt enable
 #define ADC_IE_SEQ0OVF_Msk			(0x01 << ADC_IE_SEQ0OVF_Pos)
-#define ADC_IE_SEQ0HALF_Pos			2       //序列0 FIFO Half Full 中断使能
+#define ADC_IE_SEQ0HALF_Pos			2       // Sequencer 0 FIFO Half Full interrupt enable
 #define ADC_IE_SEQ0HALF_Msk			(0x01 << ADC_IE_SEQ0HALF_Pos)
-#define ADC_IE_SEQ0FULL_Pos			3       //序列0 FIFO Full 中断使能
+#define ADC_IE_SEQ0FULL_Pos			3       // Sequencer 0 FIFO Full interrupt enable
 #define ADC_IE_SEQ0FULL_Msk			(0x01 << ADC_IE_SEQ0FULL_Pos)
-#define ADC_IE_SEQ0CMPMAX_Pos		4		//序列0转换结果大于COMP.MAX中断使能
+#define ADC_IE_SEQ0CMPMAX_Pos		4		// Sequencer 0 conversion result > COMP.MAX interrupt enable
 #define ADC_IE_SEQ0CMPMAX_Msk		(0x01 << ADC_IE_SEQ0CMPMAX_Pos)
-#define ADC_IE_SEQ0CMPMIN_Pos		5		//序列0转换结果小于COMP.MIN中断使能
+#define ADC_IE_SEQ0CMPMIN_Pos		5		// Sequencer 0 conversion result < COMP.MIN interrupt enable
 #define ADC_IE_SEQ0CMPMIN_Msk		(0x01 << ADC_IE_SEQ0CMPMIN_Pos)
 #define ADC_IE_SEQ1EOC_Pos			8
 #define ADC_IE_SEQ1EOC_Msk			(0x01 << ADC_IE_SEQ1EOC_Pos)
@@ -1417,17 +1417,17 @@ typedef struct {
 #define ADC_IE_SEQ3CMPMIN_Pos		29
 #define ADC_IE_SEQ3CMPMIN_Msk		(0x01 << ADC_IE_SEQ3CMPMIN_Pos)
 
-#define ADC_IF_SEQ0EOC_Pos			0		//序列0 End Of Convertion 中断标志
+#define ADC_IF_SEQ0EOC_Pos			0		// Sequencer 0 End Of Convertion interrupt flag
 #define ADC_IF_SEQ0EOC_Msk			(0x01 << ADC_IF_SEQ0EOC_Pos)
-#define ADC_IF_SEQ0OVF_Pos			1		//序列0 FIFO Overflow 中断标志
+#define ADC_IF_SEQ0OVF_Pos			1
 #define ADC_IF_SEQ0OVF_Msk			(0x01 << ADC_IF_SEQ0OVF_Pos)
-#define ADC_IF_SEQ0HALF_Pos			2       //序列0 FIFO Half Full 中断标志
+#define ADC_IF_SEQ0HALF_Pos			2
 #define ADC_IF_SEQ0HALF_Msk			(0x01 << ADC_IF_SEQ0HALF_Pos)
-#define ADC_IF_SEQ0FULL_Pos			3       //序列0 FIFO Full 中断标志
+#define ADC_IF_SEQ0FULL_Pos			3
 #define ADC_IF_SEQ0FULL_Msk			(0x01 << ADC_IF_SEQ0FULL_Pos)
-#define ADC_IF_SEQ0CMPMAX_Pos		4		//序列0转换结果大于COMP.MAX中断标志
+#define ADC_IF_SEQ0CMPMAX_Pos		4
 #define ADC_IF_SEQ0CMPMAX_Msk		(0x01 << ADC_IF_SEQ0CMPMAX_Pos)
-#define ADC_IF_SEQ0CMPMIN_Pos		5		//序列0转换结果小于COMP.MIN中断标志
+#define ADC_IF_SEQ0CMPMIN_Pos		5
 #define ADC_IF_SEQ0CMPMIN_Msk		(0x01 << ADC_IF_SEQ0CMPMIN_Pos)
 #define ADC_IF_SEQ1EOC_Pos			8
 #define ADC_IF_SEQ1EOC_Msk			(0x01 << ADC_IF_SEQ1EOC_Pos)
@@ -1466,17 +1466,17 @@ typedef struct {
 #define ADC_IF_SEQ3CMPMIN_Pos		29
 #define ADC_IF_SEQ3CMPMIN_Msk		(0x01 << ADC_IF_SEQ3CMPMIN_Pos)
 
-#define ADC_SR_EOC_Pos				0		//End Of Conversion，ADC开始转换时硬件清零
+#define ADC_SR_EOC_Pos				0		// End Of Conversion, automatically clear when next conersion start
 #define ADC_SR_EOC_Msk				(0x01 << ADC_SR_EOC_Pos)
-#define ADC_SR_OVF_Pos				1		//FIFO Overflow
+#define ADC_SR_OVF_Pos				1		// FIFO Overflow
 #define ADC_SR_OVF_Msk				(0x01 << ADC_SR_OVF_Pos)
-#define ADC_SR_HALF_Pos				2		//FIFO Half Full
+#define ADC_SR_HALF_Pos				2		// FIFO Half Full
 #define ADC_SR_HALF_Msk				(0x01 << ADC_SR_HALF_Pos)
-#define ADC_SR_FULL_Pos				3		//FIFO Full
+#define ADC_SR_FULL_Pos				3		// FIFO Full
 #define ADC_SR_FULL_Msk				(0x01 << ADC_SR_FULL_Pos)
-#define ADC_SR_EMPTY_Pos			4		//FIFO Empty
+#define ADC_SR_EMPTY_Pos			4		// FIFO Empty
 #define ADC_SR_EMPTY_Msk			(0x01 << ADC_SR_EMPTY_Pos)
-#define ADC_SR_LEVEL_Pos			5		//FIFO中数据个数，1~7：FIFO中有1~7个数据    0 FIFO Empty时表示0个数据，FIFO Full时表示8个数据
+#define ADC_SR_LEVEL_Pos			5		// the number of data in FIFO, value 0 indicates 0 or 8 data
 #define ADC_SR_LEVEL_Msk			(0x07 << ADC_SR_LEVEL_Pos)
 
 #define ADC_DR_VALUE_Pos			0
@@ -1489,7 +1489,7 @@ typedef struct {
 #define ADC_CMP_MIN_Pos				16
 #define ADC_CMP_MIN_Msk				(0xFFF<< ADC_CMP_MIN_Pos)
 
-#define ADC_SEQCHN0_SEQ0_Pos		0		//序列0通道选择，12位对应12个通道，bitx置位表示将通道x加入序列0
+#define ADC_SEQCHN0_SEQ0_Pos		0		// Sequencer 0 channel select, one bit per channel
 #define ADC_SEQCHN0_SEQ0_Msk		(0xFFF << ADC_SEQCHN0_SEQ0_Pos)
 #define ADC_SEQCHN0_SEQ1_Pos		16
 #define ADC_SEQCHN0_SEQ1_Msk		(0xFFF << ADC_SEQCHN0_SEQ1_Pos)
@@ -1499,7 +1499,7 @@ typedef struct {
 #define ADC_SEQCHN1_SEQ3_Pos		16
 #define ADC_SEQCHN1_SEQ3_Msk		(0xFFF << ADC_SEQCHN1_SEQ3_Pos)
 
-#define ADC_SEQTRG_SEQ0_Pos			0		//序列0触发选择，0x01 CPU   0x02 TIMR2   0x03 TIMR3   0x04-07 ADC_TRIG0-3引脚   0x10-1F PWM0A-PWM7B
+#define ADC_SEQTRG_SEQ0_Pos			0		// Sequencer 0 trigger select, 0x01 CPU, 0x02 TIMR2, 0x03 TIMR3, 0x04-07 ADC_TRIG0-3 pin, 0x10-1F PWM0A-PWM7B
 #define ADC_SEQTRG_SEQ0_Msk			(0x1F << ADC_SEQTRG_SEQ0_Pos)
 #define ADC_SEQTRG_SEQ1_Pos			8
 #define ADC_SEQTRG_SEQ1_Msk			(0x1F << ADC_SEQTRG_SEQ1_Pos)
@@ -1508,7 +1508,7 @@ typedef struct {
 #define ADC_SEQTRG_SEQ3_Pos			24
 #define ADC_SEQTRG_SEQ3_Msk			(0x1F << ADC_SEQTRG_SEQ3_Pos)
 
-#define ADC_SEQCOV_SEQ0_Pos			0		//序列0转换次数，0x00 转换1次
+#define ADC_SEQCOV_SEQ0_Pos			0		// Sequencer 0 conversion times, 0 indicates 1 time
 #define ADC_SEQCOV_SEQ0_Msk			(0xFF << ADC_SEQCOV_SEQ0_Pos)
 #define ADC_SEQCOV_SEQ1_Pos			8
 #define ADC_SEQCOV_SEQ1_Msk			(0xFF << ADC_SEQCOV_SEQ1_Pos)
@@ -1517,7 +1517,7 @@ typedef struct {
 #define ADC_SEQCOV_SEQ3_Pos			24
 #define ADC_SEQCOV_SEQ3_Msk			(0xFF << ADC_SEQCOV_SEQ3_Pos)
 
-#define ADC_SEQSMP_SEQ0_Pos			0		//序列0采样时间，0/1/2/3 采样建立时间保持1/2/4/8个采样时钟周期  
+#define ADC_SEQSMP_SEQ0_Pos			0		// Sequencer 0 sample time, 0/1/2/3 indicates 1/2/4/8 sample clock period respectively
 #define ADC_SEQSMP_SEQ0_Msk			(0x07 << ADC_SEQSMP_SEQ0_Pos)
 #define ADC_SEQSMP_SEQ1_Pos			4
 #define ADC_SEQSMP_SEQ1_Msk			(0x07 << ADC_SEQSMP_SEQ1_Pos)
@@ -1526,20 +1526,20 @@ typedef struct {
 #define ADC_SEQSMP_SEQ3_Pos			12
 #define ADC_SEQSMP_SEQ3_Msk			(0x07 << ADC_SEQSMP_SEQ3_Pos)
 
-#define ADC_CR2_ENLDO_Pos			2		//该信号由0变为1后，至少需要等20us才能使能ADC（将ADC_EN置为1）
+#define ADC_CR2_ENLDO_Pos			2		// LDO enable
 #define ADC_CR2_ENLDO_Msk			(0x01 << ADC_CR2_ENLDO_Pos)
-#define ADC_CR2_BITS_Pos			6		//ADC位数，0 6位   1 8位   2 10位   3 12位
+#define ADC_CR2_BITS_Pos			6		// the number of bits of ADC result, 0 6-bit, 1 8-bit, 2 10-bit, 3 12-bit
 #define ADC_CR2_BITS_Msk			(0x03 << ADC_CR2_BITS_Pos)
 
-#define ADC_CALIB_RESET_Pos			0		//校准模块复位，至少保持2个采样周期
+#define ADC_CALIB_RESET_Pos			0		// calibration block reset, keep at least 2 sampling cycles
 #define ADC_CALIB_RESET_Msk			(0x01 << ADC_CALIB_RESET_Pos)
-#define ADC_CALIB_START_Pos			1		//写1启动校准，硬件清零
+#define ADC_CALIB_START_Pos			1		// write 1 starts calibration, automatically clear when calibration done
 #define ADC_CALIB_START_Msk			(0x01 << ADC_CALIB_START_Pos)
-#define ADC_CALIB_BUSY_Pos			2		//1 正在执行校准
+#define ADC_CALIB_BUSY_Pos			2		// 1 calibration in process
 #define ADC_CALIB_BUSY_Msk			(0x01 << ADC_CALIB_BUSY_Pos)
-#define ADC_CALIB_LOAD_Pos			3		//写1将校准结果加载到ADC中，硬件清零
+#define ADC_CALIB_LOAD_Pos			3		// write 1 to load calibration result to ADC, automatically clear
 #define ADC_CALIB_LOAD_Msk			(0x01 << ADC_CALIB_LOAD_Pos)
-#define ADC_CALIB_BYPASS_Pos		4		//1 旁路校准模块
+#define ADC_CALIB_BYPASS_Pos		4		// 1 calibration block bypass
 #define ADC_CALIB_BYPASS_Msk		(0x01 << ADC_CALIB_BYPASS_Pos)
 #define ADC_CALIB_RESULT_Pos		8
 #define ADC_CALIB_RESULT_Msk		(0x7F << ADC_CALIB_RESULT_Pos)
@@ -1558,19 +1558,19 @@ typedef struct {
 	
 		 uint32_t RESERVED[4];
 	
-	__IO uint32_t PERIOD;                   //[15:0] 周期
+	__IO uint32_t PERIOD;                   // [15:0] period
 	
-	__IO uint32_t CMPA;                   	//[15:0] A路翻转点比较值
+	__IO uint32_t CMPA;                   	// [15:0] high level duration, for PWM_EDGE_ALIGNED mode, PWM_CENTER_ALIGNED mode and the first half cycle in PWM_ASYM_CENTER_ALIGNED mode
 	
-	__IO uint32_t CMPB;						//[15:0] B路翻转点比较值
+	__IO uint32_t CMPB;						// [15:0] same as CMPA but for channel B
 	
-	__IO uint32_t DZA;                      //[9:0] 死区
+	__IO uint32_t DZA;                      // [9:0] deadzone
 	
 	__IO uint32_t DZB;
 	
-	__IO uint32_t CMPA2;					//非对称中心对齐模式下，向下计数过程中，A路翻转点比较值
+	__IO uint32_t CMPA2;					// only for PWM_ASYM_CENTER_ALIGNED mode, high level duration for the second half cycle
 	
-	__IO uint32_t CMPB2;					//非对称中心对齐模式下，向下计数过程中，B路翻转点比较值
+	__IO uint32_t CMPB2;					// same as CMPA2 but for channel B
 	
 		 uint32_t RESERVED2[5];
 	
@@ -1596,54 +1596,54 @@ typedef struct {
 } PWM_TypeDef;
 
 
-#define PWM_CR_MODE_Pos				0		//0 边沿对齐模式   1 中心对齐模式   2 非对称中心对齐模式
+#define PWM_CR_MODE_Pos				0		// 0 edge alignment mode, 1 center alignment mode, 2 asymmetric center alignment mode
 #define PWM_CR_MODE_Msk				(0x03 << PWM_CR_MODE_Pos)
-#define PWM_CR_MULT_Pos				2		//0 单次计数模式   1 多次计数模式
+#define PWM_CR_MULT_Pos				2		// 0 one-shot mode
 #define PWM_CR_MULT_Msk				(0x01 << PWM_CR_MULT_Pos)
-#define PWM_CR_DIR_Pos				3		//计数器计数方向， 0 向上计数   1 向下计数
+#define PWM_CR_DIR_Pos				3		// 0 counting up, 1 counting down
 #define PWM_CR_DIR_Msk				(0x01 << PWM_CR_DIR_Pos)
-#define PWM_CR_CLKSRC_Pos			4		//计数时钟源，0 系统时钟   1 PWM_PULSE0输入   2 PWM_PULSE1输入
+#define PWM_CR_CLKSRC_Pos			4		// clock source, 0 system clock, 1 PWM_PULSE0 input, 2 PWM_PULSE1 input
 #define PWM_CR_CLKSRC_Msk			(0x03 << PWM_CR_CLKSRC_Pos)
-#define PWM_CR_CLKDIV_Pos			6		//计数时钟预分频， 0 1分频   1 2分频   ...   1023 1024分频
+#define PWM_CR_CLKDIV_Pos			6		// clock divider, 0 div1, 1 div2, ..., 1023 div1024
 #define PWM_CR_CLKDIV_Msk			(0x3FF<< PWM_CR_CLKDIV_Pos)
-#define PWM_CR_RPTNUM_Pos			16		//计数器溢出多少次执行一次寄存器重载，0 1次   1 2次   ...   255 256次
+#define PWM_CR_RPTNUM_Pos			16		// when the counter overflows RPTNUM+1 times, the register reloads once
 #define PWM_CR_RPTNUM_Msk			(0xFF << PWM_CR_RPTNUM_Pos)
 
-#define PWM_OCR_IDLEA_Pos			0		//A路空闲时输出电平
+#define PWM_OCR_IDLEA_Pos			0		// PWM channel A output level when stop state
 #define PWM_OCR_IDLEA_Msk			(0x01 << PWM_OCR_IDLEA_Pos)
-#define PWM_OCR_IDLEB_Pos			1		//B路空闲时输出电平
+#define PWM_OCR_IDLEB_Pos			1
 #define PWM_OCR_IDLEB_Msk			(0x01 << PWM_OCR_IDLEB_Pos)
-#define PWM_OCR_IDLEAN_Pos			2		//AN路空闲时输出电平
+#define PWM_OCR_IDLEAN_Pos			2
 #define PWM_OCR_IDLEAN_Msk			(0x01 << PWM_OCR_IDLEAN_Pos)
-#define PWM_OCR_IDLEBN_Pos			3		//BN路空闲时输出电平
+#define PWM_OCR_IDLEBN_Pos			3
 #define PWM_OCR_IDLEBN_Msk			(0x01 << PWM_OCR_IDLEBN_Pos)
-#define PWM_OCR_INVA_Pos			4		//A路输出是否取反
+#define PWM_OCR_INVA_Pos			4		// whether PWM channel A output inverse
 #define PWM_OCR_INVA_Msk			(0x01 << PWM_OCR_INVA_Pos)
-#define PWM_OCR_INVB_Pos			5		//B路输出是否取反
+#define PWM_OCR_INVB_Pos			5
 #define PWM_OCR_INVB_Msk			(0x01 << PWM_OCR_INVB_Pos)
-#define PWM_OCR_INVAN_Pos			6		//AN路输出是否取反
+#define PWM_OCR_INVAN_Pos			6
 #define PWM_OCR_INVAN_Msk			(0x01 << PWM_OCR_INVAN_Pos)
-#define PWM_OCR_INVBN_Pos			7		//BN路输出是否取反
+#define PWM_OCR_INVBN_Pos			7
 #define PWM_OCR_INVBN_Msk			(0x01 << PWM_OCR_INVBN_Pos)
 
-#define PWM_BRKCR_OUTA_Pos			0		//刹车状态下A路输出电平
+#define PWM_BRKCR_OUTA_Pos			0		// PWM channel A output level when brake state
 #define PWM_BRKCR_OUTA_Msk			(0x01 << PWM_BRKCR_OUTA_Pos)
-#define PWM_BRKCR_OFFA_Pos			1		//刹车信号撤销时A路输出，0 立即恢复正常输出   1 保持当前输出直到计数器溢出再恢复正常输出
+#define PWM_BRKCR_OFFA_Pos			1		// PWM channel A output when brake signal disappear: 0 immediately recover, 1 stay unchange until overflow
 #define PWM_BRKCR_OFFA_Msk			(0x01 << PWM_BRKCR_OFFA_Pos)
-#define PWM_BRKCR_OUTB_Pos			4		//刹车状态下B路输出电平
+#define PWM_BRKCR_OUTB_Pos			4
 #define PWM_BRKCR_OUTB_Msk			(0x01 << PWM_BRKCR_OUTB_Pos)
-#define PWM_BRKCR_OFFB_Pos			5		//刹车信号撤销时B路输出，0 立即恢复正常输出   1 保持当前输出直到计数器溢出再恢复正常输出
+#define PWM_BRKCR_OFFB_Pos			5
 #define PWM_BRKCR_OFFB_Msk			(0x01 << PWM_BRKCR_OFFB_Pos)
-#define PWM_BRKCR_OUTAN_Pos			8		//刹车状态下AN路输出电平
+#define PWM_BRKCR_OUTAN_Pos			8
 #define PWM_BRKCR_OUTAN_Msk			(0x01 << PWM_BRKCR_OUTAN_Pos)
-#define PWM_BRKCR_OUTBN_Pos			9		//刹车状态下BN路输出电平
+#define PWM_BRKCR_OUTBN_Pos			9
 #define PWM_BRKCR_OUTBN_Msk			(0x01 << PWM_BRKCR_OUTBN_Pos)
-#define PWM_BRKCR_STPCNT_Pos		10		//刹车状态下是否停止计数器，1 停止计数器   0 继续计数
+#define PWM_BRKCR_STPCNT_Pos		10		// PWM counter behave when brake signal active: 0 continue counting, 1 stop counting
 #define PWM_BRKCR_STPCNT_Msk		(0x01 << PWM_BRKCR_STPCNT_Pos)
-#define PWM_BRKCR_ACTIVE_Pos		17		//当前是否处于刹车状态
+#define PWM_BRKCR_ACTIVE_Pos		17		// whether it is currently in the brake state
 #define PWM_BRKCR_ACTIVE_Msk		(0x01 << PWM_BRKCR_ACTIVE_Pos)
 
-#define PWM_BRKIN_BRK0A_Pos			0		//A路是否受刹车输入PWM_BRK0影响
+#define PWM_BRKIN_BRK0A_Pos			0		// whether PWM channel A is affected by brake input PWM_BRK0
 #define PWM_BRKIN_BRK0A_Msk			(0x01 << PWM_BRKIN_BRK0A_Pos)
 #define PWM_BRKIN_BRK1A_Pos			1
 #define PWM_BRKIN_BRK1A_Msk			(0x01 << PWM_BRKIN_BRK1A_Pos)
@@ -1656,24 +1656,24 @@ typedef struct {
 #define PWM_BRKIN_BRK2B_Pos			6
 #define PWM_BRKIN_BRK2B_Msk			(0x01 << PWM_BRKIN_BRK2B_Pos)
 
-#define PWM_OVFTRG_UPEN_Pos			0		//计数器向上溢出Trigger使能
+#define PWM_OVFTRG_UPEN_Pos			0		// overflow trigger enable when counting-up
 #define PWM_OVFTRG_UPEN_Msk			(0x01 << PWM_OVFTRG_UPEN_Pos)
-#define PWM_OVFTRG_DNEN_Pos			1		//计数器向下溢出Trigger使能
+#define PWM_OVFTRG_DNEN_Pos			1		// overflow trigger enable when counting-down
 #define PWM_OVFTRG_DNEN_Msk			(0x01 << PWM_OVFTRG_DNEN_Pos)
-#define PWM_OVFTRG_MUX_Pos			2		//Trigger输出到哪一路，0 trig[0]   1 trig[1]   2 trig[2]   ...   7 trig[7]
+#define PWM_OVFTRG_MUX_Pos			2		// select which the generated trigger signal will be used as: 0 PWM_TRG_0, 1 PWM_TRG_1, ..., or 7 PWM_TRG_7
 #define PWM_OVFTRG_MUX_Msk			(0x07 << PWM_OVFTRG_MUX_Pos)
 
-#define PWM_CMPTRG_CMP_Pos			0		//计数器值与此比较值相等时产生Trigger信号
+#define PWM_CMPTRG_CMP_Pos			0		// when PWM counter == CMP, PWM will generate a trigger signal
 #define PWM_CMPTRG_CMP_Msk			(0xFFFF<<PWM_CMPTRG_CMP_Pos)
 #define PWM_CMPTRG_EN_Pos			16
 #define PWM_CMPTRG_EN_Msk			(0x01 << PWM_CMPTRG_EN_Pos)
-#define PWM_CMPTRG_MUX_Pos			17		//Trigger输出到哪一路，0 trig[0]   1 trig[1]   2 trig[2]   ...   7 trig[7]
+#define PWM_CMPTRG_MUX_Pos			17		// select which the generated trigger signal will be used as: 0 PWM_TRG_0, 1 PWM_TRG_1, ..., or 7 PWM_TRG_7
 #define PWM_CMPTRG_MUX_Msk			(0x07 << PWM_CMPTRG_MUX_Pos)
-#define PWM_CMPTRG_WIDTH_Pos		20		//Trigger输出信号宽度，0 无输出   1 4个计数时钟   2 8个计数时钟   ...   63 252个计数时钟
+#define PWM_CMPTRG_WIDTH_Pos		20		// the trigger signal width =  WIDTH * 4 clock cycle, so no trigger signal output when width == 0
 #define PWM_CMPTRG_WIDTH_Msk		(0x3F << PWM_CMPTRG_WIDTH_Pos)
-#define PWM_CMPTRG_DIR_Pos			28		//0 向上计数过程中产生Trigger   1 向下计数过程中产生Trigger
+#define PWM_CMPTRG_DIR_Pos			28		// 0: when counting up, do the compare; 1: when counting down, do the compare
 #define PWM_CMPTRG_DIR_Msk			(0x01 << PWM_CMPTRG_DIR_Pos)
-#define PWM_CMPTRG_ATP_Pos			29		//AD触发信号在所挖坑中的位置：0 0/8处   1 1/8处   ...   7 7/8处
+#define PWM_CMPTRG_ATP_Pos			29
 #define PWM_CMPTRG_ATP_Msk			(0x07u<< PWM_CMPTRG_ATP_Pos)
 
 #define PWM_EVMUX_START_Pos			0
@@ -1701,22 +1701,22 @@ typedef struct {
 #define PWM_EVMSK_OUTAN_Msk			(0x01 << PWM_EVMSK_OUTAN_Pos)
 #define PWM_EVMSK_OUTBN_Pos			3
 #define PWM_EVMSK_OUTBN_Msk			(0x01 << PWM_EVMSK_OUTBN_Pos)
-#define PWM_EVMSK_IMME_Pos			4		//1 MASK立即生效   0 计数器溢出时生效
+#define PWM_EVMSK_IMME_Pos			4		// 1 MASK take effect immediately, 0 MASK take effect when the counter overflows
 #define PWM_EVMSK_IMME_Msk			(0x01 << PWM_EVMSK_IMME_Pos)
-#define PWM_EVMSK_STPCLR_Pos		8		//外部事件导致计数器停止时计数器是否清零，1 清零   0 保持当前值
+#define PWM_EVMSK_STPCLR_Pos		8		// whether the counter clears when an external event causes it to stop
 #define PWM_EVMSK_STPCLR_Msk		(0x01 << PWM_EVMSK_STPCLR_Pos)
 
-#define PWM_IE_UPOVF_Pos			0		//向上计数时计数器溢出中断使能
+#define PWM_IE_UPOVF_Pos			0		// counting up overflow interrupt enable
 #define PWM_IE_UPOVF_Msk			(0x01 << PWM_IE_UPOVF_Pos)
-#define PWM_IE_DNOVF_Pos			1		//向下计数时计数器溢出中断使能
+#define PWM_IE_DNOVF_Pos			1		// counting down overflow interrupt enable
 #define PWM_IE_DNOVF_Msk			(0x01 << PWM_IE_DNOVF_Pos)
-#define PWM_IE_UPCMPA_Pos			2		//向上计数时计数器值与CMPA相等中断使能
+#define PWM_IE_UPCMPA_Pos			2		// when counting up, the counter match CMPA interrupt enabled
 #define PWM_IE_UPCMPA_Msk			(0x01 << PWM_IE_UPCMPA_Pos)
-#define PWM_IE_UPCMPB_Pos			3		//向上计数时计数器值与CMPB相等中断使能
+#define PWM_IE_UPCMPB_Pos			3		// when counting up, the counter match CMPB interrupt enabled
 #define PWM_IE_UPCMPB_Msk			(0x01 << PWM_IE_UPCMPB_Pos)
-#define PWM_IE_DNCMPA_Pos			4		//向下计数时计数器值与CMPA相等中断使能
+#define PWM_IE_DNCMPA_Pos			4		// when counting down, the counter match CMPA/CMPA2 interrupt enabled
 #define PWM_IE_DNCMPA_Msk			(0x01 << PWM_IE_DNCMPA_Pos)
-#define PWM_IE_DNCMPB_Pos			5		//向下计数时计数器值与CMPB相等中断使能
+#define PWM_IE_DNCMPB_Pos			5		// when counting down, the counter match CMPB/CMPB2 interrupt enabled
 #define PWM_IE_DNCMPB_Msk			(0x01 << PWM_IE_DNCMPB_Pos)
 
 #define PWM_IF_UPOVF_Pos			0
@@ -1732,9 +1732,9 @@ typedef struct {
 #define PWM_IF_DNCMPB_Pos			5
 #define PWM_IF_DNCMPB_Msk			(0x01 << PWM_IF_DNCMPB_Pos)
 
-#define PWM_SR_STAT_Pos				0		//0 IDLE   1 ACTIVE   2 PAUSE
+#define PWM_SR_STAT_Pos				0		// 0 IDLE, 1 ACTIVE, 2 PAUSE
 #define PWM_SR_STAT_Msk				(0x03 << PWM_SR_STAT_Pos)
-#define PWM_SR_DIR_Pos				4		//0 向上计数   1 向下计数
+#define PWM_SR_DIR_Pos				4		// 0 counting up, 1 counting down
 #define PWM_SR_DIR_Msk				(0x01 << PWM_SR_DIR_Pos)
 #define PWM_SR_OUTA_Pos				5
 #define PWM_SR_OUTA_Msk				(0x01 << PWM_SR_OUTA_Pos)
@@ -1749,7 +1749,7 @@ typedef struct {
 typedef struct {
 	__IO uint32_t START;
 	
-	__IO uint32_t SWBRK;					//Software Brake，软件刹车
+	__IO uint32_t SWBRK;					// Software Brake
     
     __IO uint32_t RESET;
 	
@@ -1761,9 +1761,9 @@ typedef struct {
 	
     __IO uint32_t PULSE;
 	
-    __IO uint32_t FILTER;					//外部信号滤波，0 无滤波   1 4个PCLK周期   2 8个PCLK周期   3 16个PCLK周期
+    __IO uint32_t FILTER;					// external signal filter, 0 no filter, 1 4 PCLK cycle, 2 8 PCLK cycle, 3 16 PCLK cycle
 	
-    __IO uint32_t BRKPOL;					//刹车信号极性，
+    __IO uint32_t BRKPOL;					// brake signal polarity
 	
     __IO uint32_t BRKIE;
     
@@ -1842,12 +1842,12 @@ typedef struct {
 #define PWMG_RESTART_PWM4_Pos		12
 #define PWMG_RESTART_PWM4_Msk		(0x01 << PWMG_RESTART_PWM4_Pos)
 
-#define PWMG_PULSE_EDGE0_Pos		0		//PWM_PULSE0 计数边沿，0 上升沿   1 下降沿
+#define PWMG_PULSE_EDGE0_Pos		0		// PWM_PULSE0 counting edge, 0 rising edge, 1 falling edge
 #define PWMG_PULSE_EDGE0_Msk		(0x01 << PWMG_PULSE_EDGE0_Pos)
 #define PWMG_PULSE_EDGE1_Pos		1
 #define PWMG_PULSE_EDGE1_Msk		(0x01 << PWMG_PULSE_EDGE1_Pos)
 
-#define PWMG_BRKPOL_BRK0_Pos		0		//PWMG_BRK0 刹车信号极性，0 低电平刹车   1 高电平刹车
+#define PWMG_BRKPOL_BRK0_Pos		0		// PWMG_BRK0 brake signal polarity, 0 low level brake, 1 high level brake
 #define PWMG_BRKPOL_BRK0_Msk		(0x01 << PWMG_BRKPOL_BRK0_Pos)
 #define PWMG_BRKPOL_BRK1_Pos		1
 #define PWMG_BRKPOL_BRK1_Msk		(0x01 << PWMG_BRKPOL_BRK1_Pos)
@@ -1868,14 +1868,14 @@ typedef struct {
 #define PWMG_BRKIF_BRK2_Pos			2
 #define PWMG_BRKIF_BRK2_Msk			(0x01 << PWMG_BRKIF_BRK2_Pos)
 
-#define PWMG_BRKSR_BRK0_Pos			4		//刹车引脚电平值
+#define PWMG_BRKSR_BRK0_Pos			4		// brake pin current level
 #define PWMG_BRKSR_BRK0_Msk			(0x01 << PWMG_BRKSR_BRK0_Pos)
 #define PWMG_BRKSR_BRK1_Pos			5
 #define PWMG_BRKSR_BRK1_Msk			(0x01 << PWMG_BRKSR_BRK1_Pos)
 #define PWMG_BRKSR_BRK2_Pos			6
 #define PWMG_BRKSR_BRK2_Msk			(0x01 << PWMG_BRKSR_BRK2_Pos)
 
-#define PWMG_EVSR_EV0_Pos			0		//外部事件信号电平值
+#define PWMG_EVSR_EV0_Pos			0		// external event signal level value
 #define PWMG_EVSR_EV0_Msk			(0x01 << PWMG_EVSR_EV0_Pos)
 #define PWMG_EVSR_EV1_Pos			1
 #define PWMG_EVSR_EV1_Msk			(0x01 << PWMG_EVSR_EV1_Pos)
@@ -1896,45 +1896,45 @@ typedef struct {
 typedef struct {
 	__IO uint32_t CR;
 	
-	__IO uint32_t POSCNT;					//[15:0] 位置计数器
-	__IO uint32_t MAXCNT;					//[15:0] 最大计数值
+	__IO uint32_t POSCNT;					//[15:0] position counter
+	__IO uint32_t MAXCNT;					//[15:0] maximum count value
 		
 		 uint32_t RESERVED[5];
 	
-	__IO uint32_t IE;						//Interrupt Enable，为0时IF相应位不置位
+	__IO uint32_t IE;						// Interrupt Enable
 	
-	__IO uint32_t IM;						//Interrupt Mask，为0时即使IF相应位置位也不触发 QEI_IRQn 中断
+	__IO uint32_t IM;						// Interrupt Mask, QEI_IRQn = IM & IF
 	
-	__O  uint32_t IC;						//Interrupt Clear
+	__O  uint32_t IC;						// Interrupt Clear
 	
-	__I  uint32_t IF;						//Interrupt Flag
+	__I  uint32_t IF;						// Interrupt Flag, IF = IE & raw interrupt request
 	
-	__IO uint32_t IFOV;						//interrupt Interrupt Overrun
+	__IO uint32_t IFOV;						// Interrupt Overrun
 } QEI_TypeDef;
 
 
 #define QEI_CR_ENA_Pos   			0
 #define QEI_CR_ENA_Msk				(0x01 << QEI_CR_ENA_Pos)
-#define QEI_CR_ABSWAP_Pos  			4		//1 A、B引脚交换
+#define QEI_CR_ABSWAP_Pos  			4		// 1 swap pin A and B
 #define QEI_CR_ABSWAP_Msk			(0x01 << QEI_CR_ABSWAP_Pos)
-#define QEI_CR_X2X4_Pos  			5		//0 X2计数模式		1 X4计数模式
+#define QEI_CR_X2X4_Pos  			5		// 0 X2 counting mode, 1 X4 counting mode
 #define QEI_CR_X2X4_Msk				(0x01 << QEI_CR_X2X4_Pos)
-#define QEI_CR_RSTSRC_Pos  			6		//Reset Source		0 计数匹配复位		1 索引信号复位
+#define QEI_CR_RSTSRC_Pos  			6		// Reset Source, 0 reset when counting match, 1 reset by index signal
 #define QEI_CR_RSTSRC_Msk			(0x01 << QEI_CR_RSTSRC_Pos)
-#define QEI_CR_MODE_Pos  			7		//工作模式选择		1 QEI模式
+#define QEI_CR_MODE_Pos  			7		// working mode, 1 QEI mode
 #define QEI_CR_MODE_Msk				(0x01 << QEI_CR_MODE_Pos)
-#define QEI_CR_INDEX_Pos 			9		//0 索引引脚为低电平		1 索引引脚为高电平
+#define QEI_CR_INDEX_Pos 			9		// 0 index pin is low level, 1 index pin is high level
 #define QEI_CR_INDEX_Msk			(0x01 << QEI_CR_INDEX_Pos)
-#define QEI_CR_PAUSE_Pos 			10		//1 空闲模式停止位
+#define QEI_CR_PAUSE_Pos 			10
 #define QEI_CR_PAUSE_Msk			(0x01 << QEI_CR_PAUSE_Pos)
 
-#define QEI_IE_INDEX_Pos 			0		//检测到Index脉冲
+#define QEI_IE_INDEX_Pos 			0		// Index pulse detected interrupt enable
 #define QEI_IE_INDEX_Msk			(0x01 << QEI_IE_INDEX_Pos)
-#define QEI_IE_MATCH_Pos 			1		//POSCNT递增到与MAXCNT相等，或POSCNT从MAXCNT递减到0
+#define QEI_IE_MATCH_Pos 			1		// POSCNT increments to equal MAXCNT, or POSCNT decrement from MAXCNT to 0 interrupt enable
 #define QEI_IE_MATCH_Msk			(0x01 << QEI_IE_MATCH_Pos)
-#define QEI_IE_CNTOV_Pos 			2		//Counter Overrun，计数器溢出
+#define QEI_IE_CNTOV_Pos 			2		// Counter Overrun interrupt enable
 #define QEI_IE_CNTOV_Msk			(0x01 << QEI_IE_CNTOV_Pos)
-#define QEI_IE_ERROR_Pos 			3		//计数器错误
+#define QEI_IE_ERROR_Pos 			3		// Counter Error interrupt enable
 #define QEI_IE_ERROR_Msk			(0x01 << QEI_IE_ERROR_Pos)
 
 #define QEI_IM_INDEX_Pos 			0
@@ -1977,52 +1977,52 @@ typedef struct {
 
 
 typedef struct {
-	__IO uint32_t EN;                       //[0] ENABLE
+	__IO uint32_t EN;                       // [0] ENABLE
     
-	__IO uint32_t IE;                       //只有为1时，IF[CHx]在DMA传输结束时才能变为1，否则将一直保持在0
+	__IO uint32_t IE;                       // Interrupt Enable
     
-	__IO uint32_t IM;                       //当为1时，即使IF[CHx]为1，dma_int也不会因此变1
+	__IO uint32_t IM;                       // Interrupt Mask, DMA_IRQn = IM & IF
     
-	__IO uint32_t IF;                       //写1清零
+	__IO uint32_t IF;                       // Interrupt Flag, IF = IE & raw interrupt request
 	
-	__IO uint32_t DSTSGIE;					//只在Scatter Gather模式下使用
+	__IO uint32_t DSTSGIE;					// Only used in Scatter Gather mode
 	
-	__IO uint32_t DSTSGIM;					//只在Scatter Gather模式下使用
+	__IO uint32_t DSTSGIM;					// Only used in Scatter Gather mode
 	
-	__IO uint32_t DSTSGIF;					//只在Scatter Gather模式下使用
+	__IO uint32_t DSTSGIF;					// Only used in Scatter Gather mode
 	
-	__IO uint32_t SRCSGIE;					//只在Scatter Gather模式下使用
+	__IO uint32_t SRCSGIE;					// Only used in Scatter Gather mode
 	
-	__IO uint32_t SRCSGIM;					//只在Scatter Gather模式下使用
+	__IO uint32_t SRCSGIM;					// Only used in Scatter Gather mode
 	
-	__IO uint32_t SRCSGIF;					//只在Scatter Gather模式下使用
+	__IO uint32_t SRCSGIF;					// Only used in Scatter Gather mode
 	
 		 uint32_t RESERVED[5];
 	
-	__IO uint32_t PRI;						//优先级，1 高优先级    0 低优先级
+	__IO uint32_t PRI;						// priority, 1 high priority, 0 low priority
 	
 	struct {
 		__IO uint32_t CR;
 		
-		__IO uint32_t AM;                   //Adress Mode
+		__IO uint32_t AM;                   // Adress Mode
 		
 		__IO uint32_t DST;
 		
-		__IO uint32_t DSTSGADDR1;			//只在Scatter Gather模式下使用
+		__IO uint32_t DSTSGADDR1;			// Only used in Scatter Gather mode
 		
-		__IO uint32_t DSTSGADDR2;			//只在Scatter Gather模式下使用
+		__IO uint32_t DSTSGADDR2;			// Only used in Scatter Gather mode
 		
-		__IO uint32_t DSTSGADDR3;			//只在Scatter Gather模式下使用
+		__IO uint32_t DSTSGADDR3;			// Only used in Scatter Gather mode
 		
 		__IO uint32_t MUX;
 		
 		__IO uint32_t SRC;
 		
-		__IO uint32_t SRCSGADDR1;			//只在Scatter Gather模式下使用
+		__IO uint32_t SRCSGADDR1;			// Only used in Scatter Gather mode
 		
-		__IO uint32_t SRCSGADDR2;			//只在Scatter Gather模式下使用
+		__IO uint32_t SRCSGADDR2;			// Only used in Scatter Gather mode
 		
-		__IO uint32_t SRCSGADDR3;			//只在Scatter Gather模式下使用
+		__IO uint32_t SRCSGADDR3;			// Only used in Scatter Gather mode
 		
 		__I  uint32_t DSTSR;
 		
@@ -2060,22 +2060,22 @@ typedef struct {
 #define DMA_IF_CH3_Pos			    3		
 #define DMA_IF_CH3_Msk			    (0x01 << DMA_IF_CH3_Pos)
 
-#define DMA_CR_LEN_Pos				0       //此通道传输单位个数
+#define DMA_CR_LEN_Pos				0       // length, number of transmitted data
 #define DMA_CR_LEN_Msk				(0xFFFFF<< DMA_CR_LEN_Pos)
-#define DMA_CR_RXEN_Pos				24		//软件启动传输，传输方向为SRC-->DST
+#define DMA_CR_RXEN_Pos				24		// start transmission by software, direction is SRC-->DST
 #define DMA_CR_RXEN_Msk				(0x01 << DMA_CR_RXEN_Pos)
-#define DMA_CR_TXEN_Pos				25		//软件启动传输，传输方向为DST-->SRC
+#define DMA_CR_TXEN_Pos				25		// start transmission by software, direction is DST-->SRC
 #define DMA_CR_TXEN_Msk				(0x01 << DMA_CR_TXEN_Pos)
-#define DMA_CR_AUTORE_Pos			26      //Auto Restart, 通道在传输完成后，是否自动重新启动
+#define DMA_CR_AUTORE_Pos			26      // Auto Restart enable, i.e. circle mode
 #define DMA_CR_AUTORE_Msk			(0x01 << DMA_CR_AUTORE_Pos)
-#define DMA_CR_STEPOP_Pos			27		//Step Operation, 步进传输，触发1次传送1个单位数据
+#define DMA_CR_STEPOP_Pos			27		// Step Operation, trigger once to transmit 1 data
 #define DMA_CR_STEPOP_Msk			(0x01 << DMA_CR_STEPOP_Pos)
 
-#define DMA_AM_DSTAM_Pos			0       //Address Mode	0 地址固定    1 地址递增    2 scatter gather模式
+#define DMA_AM_DSTAM_Pos			0       // Address Mode	0 Fixed address, 1 Address increment, 2 scatter gather mode
 #define DMA_AM_DSTAM_Msk			(0x03 << DMA_AM_DSTAM_Pos)
-#define DMA_AM_DSTBIT_Pos			2		//传输位宽，0 字节    1 半字    2 字
+#define DMA_AM_DSTBIT_Pos			2		// Transmission bit width, 0 byte, 1 half-word, 2 word
 #define DMA_AM_DSTBIT_Msk			(0x03 << DMA_AM_DSTBIT_Pos)
-#define DMA_AM_DSTBURST_Pos			4		//传输类型，0 Single    1 Burst（Inc4）
+#define DMA_AM_DSTBURST_Pos			4		// 0 Single, 1 Burst (INC4)
 #define DMA_AM_DSTBURST_Msk			(0x01 << DMA_AM_DSTBURST_Pos)
 #define DMA_AM_SRCAM_Pos			8
 #define DMA_AM_SRCAM_Msk			(0x03 << DMA_AM_SRCAM_Pos)
@@ -2084,22 +2084,22 @@ typedef struct {
 #define DMA_AM_SRCBURST_Pos			12
 #define DMA_AM_SRCBURST_Msk			(0x01 << DMA_AM_SRCBURST_Pos)
 
-#define DMA_MUX_DSTHSSIG_Pos		0		//目标侧握手信号（handshake signal）
+#define DMA_MUX_DSTHSSIG_Pos		0		// Target side handshake signal
 #define DMA_MUX_DSTHSSIG_Msk		(0x03 << DMA_MUX_DSTHSSIG_Pos)
-#define DMA_MUX_DSTHSEN_Pos			2		//目标侧握手使能（handshake enable）
+#define DMA_MUX_DSTHSEN_Pos			2		// Target side handshake enable
 #define DMA_MUX_DSTHSEN_Msk			(0x01 << DMA_MUX_DSTHSEN_Pos)
-#define DMA_MUX_SRCHSSIG_Pos		8		//源侧握手信号
+#define DMA_MUX_SRCHSSIG_Pos		8		// Source side handshake signal
 #define DMA_MUX_SRCHSSIG_Msk		(0x03 << DMA_MUX_SRCHSSIG_Pos)
-#define DMA_MUX_SRCHSEN_Pos			10		//源侧握手使能
+#define DMA_MUX_SRCHSEN_Pos			10		// Source side handshake enable
 #define DMA_MUX_SRCHSEN_Msk			(0x01 << DMA_MUX_SRCHSEN_Pos)
-#define DMA_MUX_EXTHSSIG_Pos		16		//外部握手信号，0 TIMR0   1 TIMR1   2 TIMR2   3 TIMR3   4 TIMR4   5 DMA_TRIG0   6 DMA_TRIG1
+#define DMA_MUX_EXTHSSIG_Pos		16		// External handshake signal, 0 TIMR0, 1 TIMR1, 2 TIMR2, 3 TIMR3, 4 TIMR4, 5 DMA_TRIG0, 6 DMA_TRIG1
 #define DMA_MUX_EXTHSSIG_Msk		(0x07 << DMA_MUX_EXTHSSIG_Pos)
-#define DMA_MUX_EXTHSEN_Pos			19		//外部握手使能，0 软件置位CR.RXEN/TXEN启动传输   1 EXTHSSRC选中的触发源启动传输
+#define DMA_MUX_EXTHSEN_Pos			19		// External handshake enable
 #define DMA_MUX_EXTHSEN_Msk			(0x01 << DMA_MUX_EXTHSEN_Pos)
 
-#define DMA_DSTSR_LEN_Pos			0		//剩余传输量
+#define DMA_DSTSR_LEN_Pos			0		// Residual number of transmitted data
 #define DMA_DSTSR_LEN_Msk			(0xFFFFF<<DMA_DSTSR_LEN_Pos)
-#define DMA_DSTSR_ERR_Pos			31		//长度配置错误
+#define DMA_DSTSR_ERR_Pos			31		// Length configuration error
 #define DMA_DSTSR_ERR_Msk			(0x01u<< DMA_DSTSR_ERR_Pos)
 
 #define DMA_SRCSR_LEN_Pos			0
@@ -2111,108 +2111,108 @@ typedef struct {
 
 
 typedef struct {
-	__IO uint32_t CR;						//Control Register
+	__IO uint32_t CR;						// Control Register
 	
-	__O  uint32_t CMD;						//Command Register
+	__O  uint32_t CMD;						// Command Register
 	
-	__I  uint32_t SR;						//Status Register
+	__I  uint32_t SR;						// Status Register
 	
-	__IO uint32_t IF;						//Interrupt Flag，读取清零
+	__IO uint32_t IF;						// Interrupt Flag, clear by read
 	
-	__IO uint32_t IE;						//Interrupt Enable
+	__IO uint32_t IE;						// Interrupt Enable
 	
 	__IO uint32_t BT2;
 	
-	__IO uint32_t BT0;						//Bit Time Register 0
+	__IO uint32_t BT0;						// Bit Time Register 0
 	
-	__IO uint32_t BT1;						//Bit Time Register 1
+	__IO uint32_t BT1;						// Bit Time Register 1
 	
 	     uint32_t RESERVED;
 	
-	__IO uint32_t AFM;						//Acceptance Filter Mode
+	__IO uint32_t AFM;						// Acceptance Filter Mode
 	
-	__IO uint32_t AFE;						//Acceptance Filter Enable
+	__IO uint32_t AFE;						// Acceptance Filter Enable
 	
-	__I  uint32_t ALC;						//Arbitration Lost Capture, 仲裁丢失捕捉
+	__I  uint32_t ALC;						// Arbitration Lost Capture
 	
-	__I  uint32_t ECC;						//Error code capture, 错误代码捕捉
+	__I  uint32_t ECC;						// Error code capture
 	
-	__IO uint32_t EWLIM;					//Error Warning Limit, 错误报警限制
+	__IO uint32_t EWLIM;					// Error Warning Limit
 	
-	__IO uint32_t RXERR;					//RX错误计数
+	__IO uint32_t RXERR;					// RX error count
 	
-	__IO uint32_t TXERR;					//TX错误计数
+	__IO uint32_t TXERR;					// TX error count
 	
 	struct {
-		__IO uint32_t INFO;					//读访问接收Buffer，写访问发送Buffer
+		__IO uint32_t INFO;
 	
 		__IO uint32_t DATA[12];
 	} FRAME;
 	
-	__I  uint32_t RMCNT;					//Receive Message Count
+	__I  uint32_t RMCNT;					// Receive Message Count
 	
 		 uint32_t RESERVED2[162];
 	
-	__IO uint32_t ACR[16];					//Acceptance Check Register, 验收寄存器
+	__IO uint32_t ACR[16];					// Acceptance Check Register
 	
 		 uint32_t RESERVED3[16];
 	
-	__IO uint32_t AMR[16];					//Acceptance Mask Register, 验收屏蔽寄存器；对应位写0，ID必须和验收寄存器匹配
+	__IO uint32_t AMR[16];					// Acceptance Mask Register
 } CAN_TypeDef;
 
 
 #define CAN_CR_RST_Pos				0
 #define CAN_CR_RST_Msk				(0x01 << CAN_CR_RST_Pos)
-#define CAN_CR_LOM_Pos				1		//Listen Only Mode
+#define CAN_CR_LOM_Pos				1		// Listen Only Mode
 #define CAN_CR_LOM_Msk				(0x01 << CAN_CR_LOM_Pos)
-#define CAN_CR_STM_Pos				2		//Self Test Mode, 此模式下即使没有应答，CAN控制器也可以成功发送
+#define CAN_CR_STM_Pos				2		// Self Test Mode, In this mode, the CAN controller can successfully send even if there is no response
 #define CAN_CR_STM_Msk				(0x01 << CAN_CR_STM_Pos)
-#define CAN_CR_SLEEP_Pos			4		//写1进入睡眠模式，有总线活动或中断时唤醒并自动清零此位
+#define CAN_CR_SLEEP_Pos			4		// Write 1 into sleep mode, wake up when there is bus activity or interruption and automatically clear this bit
 #define CAN_CR_SLEEP_Msk			(0x01 << CAN_CR_SLEEP_Pos)
 
-#define CAN_CMD_TXREQ_Pos			0		//Transmission Request
+#define CAN_CMD_TXREQ_Pos			0		// Transmission Request
 #define CAN_CMD_TXREQ_Msk			(0x01 << CAN_CMD_TXREQ_Pos)
-#define CAN_CMD_ABTTX_Pos			1		//Abort Transmission
+#define CAN_CMD_ABTTX_Pos			1		// Abort Transmission
 #define CAN_CMD_ABTTX_Msk			(0x01 << CAN_CMD_ABTTX_Pos)
-#define CAN_CMD_RRB_Pos				2		//Release Receive Buffer
+#define CAN_CMD_RRB_Pos				2		// Release Receive Buffer
 #define CAN_CMD_RRB_Msk				(0x01 << CAN_CMD_RRB_Pos)
-#define CAN_CMD_CLROV_Pos			3		//Clear Data Overrun
+#define CAN_CMD_CLROV_Pos			3		// Clear Data Overrun
 #define CAN_CMD_CLROV_Msk			(0x01 << CAN_CMD_CLROV_Pos)
-#define CAN_CMD_SRR_Pos				4		//Self Reception Request
+#define CAN_CMD_SRR_Pos				4		// Self Reception Request
 #define CAN_CMD_SRR_Msk				(0x01 << CAN_CMD_SRR_Pos)
 
-#define CAN_SR_RXDA_Pos				0		//Receive Data Available，接收FIFO中有完整消息可以读取
+#define CAN_SR_RXDA_Pos				0		// Receive Data Available
 #define CAN_SR_RXDA_Msk				(0x01 << CAN_SR_RXDA_Pos)
-#define CAN_SR_RXOV_Pos				1		//Receive FIFO Overrun，新接收的信息由于接收FIFO已满而丢掉
+#define CAN_SR_RXOV_Pos				1		// Receive FIFO Overrun
 #define CAN_SR_RXOV_Msk				(0x01 << CAN_SR_RXOV_Pos)
-#define CAN_SR_TXBR_Pos				2		//Transmit Buffer Release，0 正在处理前面的发送，现在不能写新的消息    1 可以写入新的消息发送
+#define CAN_SR_TXBR_Pos				2		// Transmit Buffer Release
 #define CAN_SR_TXBR_Msk				(0x01 << CAN_SR_TXBR_Pos)
-#define CAN_SR_TXOK_Pos				3		//Transmit OK，successfully completed
+#define CAN_SR_TXOK_Pos				3		// Transmit OK, successfully completed
 #define CAN_SR_TXOK_Msk				(0x01 << CAN_SR_TXOK_Pos)
-#define CAN_SR_RXBUSY_Pos			4		//Receive Busy，正在接收
+#define CAN_SR_RXBUSY_Pos			4		// Receive Busy
 #define CAN_SR_RXBUSY_Msk			(0x01 << CAN_SR_RXBUSY_Pos)
-#define CAN_SR_TXBUSY_Pos			5		//Transmit Busy，正在发送
+#define CAN_SR_TXBUSY_Pos			5		// Transmit Busy
 #define CAN_SR_TXBUSY_Msk			(0x01 << CAN_SR_TXBUSY_Pos)
-#define CAN_SR_ERRWARN_Pos			6		//1 至少一个错误计数器达到 Warning Limit
+#define CAN_SR_ERRWARN_Pos			6		// RXERR/TXERR > Warning Limit
 #define CAN_SR_ERRWARN_Msk			(0x01 << CAN_SR_ERRWARN_Pos)
-#define CAN_SR_BUSOFF_Pos			7		//1 CAN 控制器处于总线关闭状态，没有参与到总线活动
+#define CAN_SR_BUSOFF_Pos			7
 #define CAN_SR_BUSOFF_Msk			(0x01 << CAN_SR_BUSOFF_Pos)
 
-#define CAN_IF_RXDA_Pos				0		//IF.RXDA = SR.RXDA & IE.RXDA
+#define CAN_IF_RXDA_Pos				0		// IF.RXDA = SR.RXDA & IE.RXDA
 #define CAN_IF_RXDA_Msk				(0x01 << CAN_IF_RXDA_Pos)
-#define CAN_IF_TXBR_Pos				1		//当IE.TXBR=1时，SR.TXBR由0变成1将置位此位
+#define CAN_IF_TXBR_Pos				1		// IF.TXBR = SR.TXBR & IE.TXBR
 #define CAN_IF_TXBR_Msk				(0x01 << CAN_IF_TXBR_Pos)
-#define CAN_IF_ERRWARN_Pos			2		//当IE.ERRWARN=1时，SR.ERRWARN或SR.BUSOFF 0-to-1 或 1-to-0将置位此位
+#define CAN_IF_ERRWARN_Pos			2		// IF.ERRWARN = (SR.ERRWARN | SR.BUSOFF 0-to-1/1-to-0) & IE.ERRWARN
 #define CAN_IF_ERRWARN_Msk			(0x01 << CAN_IF_ERRWARN_Pos)
-#define CAN_IF_RXOV_Pos				3		//IF.RXOV = SR.RXOV & IE.RXOV
+#define CAN_IF_RXOV_Pos				3		// IF.RXOV = SR.RXOV & IE.RXOV
 #define CAN_IF_RXOV_Msk				(0x01 << CAN_IF_RXOV_Pos)
-#define CAN_IF_WKUP_Pos				4		//当IE.WKUP=1时，在睡眠模式下的CAN控制器检测到总线活动时硬件置位
+#define CAN_IF_WKUP_Pos				4		// IF.WKUP = IE.WKUP & CAN controller in sleep mode detects bus activity
 #define CAN_IF_WKUP_Msk				(0x01 << CAN_IF_WKUP_Pos)
-#define CAN_IF_ERRPASS_Pos			5		//
+#define CAN_IF_ERRPASS_Pos			5		// IF.ERRPASS = IE.ERRPASS & ( RXERR/TXERR > 127)
 #define CAN_IF_ERRPASS_Msk			(0x01 << CAN_IF_ERRPASS_Pos)
-#define CAN_IF_ARBLOST_Pos			6		//Arbitration Lost，当IE.ARBLOST=1时，CAN控制器丢失仲裁变成接收方时硬件置位
+#define CAN_IF_ARBLOST_Pos			6
 #define CAN_IF_ARBLOST_Msk			(0x01 << CAN_IF_ARBLOST_Pos)
-#define CAN_IF_BUSERR_Pos			7		//当IE.BUSERR=1时，CAN控制器检测到总线错误时硬件置位
+#define CAN_IF_BUSERR_Pos			7
 #define CAN_IF_BUSERR_Msk			(0x01 << CAN_IF_BUSERR_Pos)
 
 #define CAN_IE_RXDA_Pos				0
@@ -2235,30 +2235,30 @@ typedef struct {
 #define CAN_BT2_BRP_Pos				0
 #define CAN_BT2_BRP_Msk				(0x0F << CAN_BT2_BRP_Pos)
 
-#define CAN_BT0_BRP_Pos				0		//Baud Rate Prescaler，CAN时间单位=2*Tsysclk*((BT2.BRP<<6) + BT0.BRP + 1)
+#define CAN_BT0_BRP_Pos				0		// Baud Rate Prescaler, CAN_TQ = 2*Tsysclk*((BT2.BRP<<6) + BT0.BRP + 1)
 #define CAN_BT0_BRP_Msk				(0x3F << CAN_BT0_BRP_Pos)
-#define CAN_BT0_SJW_Pos				6		//Synchronization Jump Width
+#define CAN_BT0_SJW_Pos				6		// Synchronization Jump Width
 #define CAN_BT0_SJW_Msk				(0x03 << CAN_BT0_SJW_Pos)
 
-#define CAN_BT1_TSEG1_Pos			0		//t_tseg1 = CAN时间单位 * (TSEG1+1)
+#define CAN_BT1_TSEG1_Pos			0		// t_tseg1 = CAN_TQ * (TSEG1+1)
 #define CAN_BT1_TSEG1_Msk			(0x0F << CAN_BT1_TSEG1_Pos)
-#define CAN_BT1_TSEG2_Pos			4		//t_tseg2 = CAN时间单位 * (TSEG2+1)
+#define CAN_BT1_TSEG2_Pos			4		// t_tseg2 = CAN_TQ * (TSEG2+1)
 #define CAN_BT1_TSEG2_Msk			(0x07 << CAN_BT1_TSEG2_Pos)
-#define CAN_BT1_SAM_Pos				7		//采样次数  0: sampled once  1: sampled three times
+#define CAN_BT1_SAM_Pos				7		// sample times, 0: sampled once, 1: sampled three times
 #define CAN_BT1_SAM_Msk				(0x01 << CAN_BT1_SAM_Pos)
 
-#define CAN_ECC_SEGCODE_Pos			0		//Segment Code
+#define CAN_ECC_SEGCODE_Pos			0		// Segment Code
 #define CAN_ECC_SEGCODE_Msk			(0x1F << CAN_ECC_SEGCODE_Pos)
-#define CAN_ECC_DIR_Pos				5		//0 error occurred during transmission   1 during reception
+#define CAN_ECC_DIR_Pos				5		// 0 error occurred during transmission, 1 during reception
 #define CAN_ECC_DIR_Msk				(0x01 << CAN_ECC_DIR_Pos)
-#define CAN_ECC_ERRCODE_Pos			6		//Error Code：0 Bit error   1 Form error   2 Stuff error   3 other error
+#define CAN_ECC_ERRCODE_Pos			6		// Error Code: 0 Bit error, 1 Form error, 2 Stuff error, 3 other error
 #define CAN_ECC_ERRCODE_Msk			(0x03 << CAN_ECC_ERRCODE_Pos)
 
-#define CAN_INFO_DLC_Pos			0		//Data Length Control
+#define CAN_INFO_DLC_Pos			0		// Data Length Control
 #define CAN_INFO_DLC_Msk			(0x0F << CAN_INFO_DLC_Pos)
-#define CAN_INFO_RTR_Pos			6		//Remote Frame，1 远程帧    0 数据帧
+#define CAN_INFO_RTR_Pos			6		// 1 remote frame, 0 data frame
 #define CAN_INFO_RTR_Msk			(0x01 << CAN_INFO_RTR_Pos)
-#define CAN_INFO_FF_Pos				7		//Frame Format，0 标准帧格式    1 扩展帧格式
+#define CAN_INFO_FF_Pos				7		// Frame Format, 0 standard frame, 1 extended frame
 #define CAN_INFO_FF_Msk				(0x01 << CAN_INFO_FF_Pos)
 
 
@@ -2267,13 +2267,13 @@ typedef struct {
 typedef struct {
     __IO uint32_t DMA_MEM_ADDR;
     
-    __IO uint32_t BLK;                      //Block Size and Count
+    __IO uint32_t BLK;                      // Block Size and Count
     
-    __IO uint32_t ARG;                      //Argument
+    __IO uint32_t ARG;                      // Argument
     
-    __IO uint32_t CMD;                      //Command
+    __IO uint32_t CMD;                      // Command
     
-    __IO uint32_t RESP[4];                  //Response
+    __IO uint32_t RESP[4];                  // Response
     
     __IO uint32_t DATA;
     
@@ -2285,17 +2285,17 @@ typedef struct {
     
     __IO uint32_t IF;
     
-    __IO uint32_t IM;						//Interrupt Mask (Interrupt Flag Enable)
+    __IO uint32_t IM;						// Interrupt Mask (Interrupt Flag Enable)
     
-    __IO uint32_t IE;						//Interrupt Enalbe
+    __IO uint32_t IE;						// Interrupt Enalbe
     
-    __IO uint32_t CMD12ERR;					//Auto CMD12 error status
+    __IO uint32_t CMD12ERR;					// Auto CMD12 error status
 } SDIO_TypeDef;
 
 
-#define SDIO_BLK_SIZE_Pos			0		//0x200 512字节   0x400 1024字节   0x800 2048字节
+#define SDIO_BLK_SIZE_Pos			0		// block size, 0x200 512 bytes, 0x400 1024 bytes
 #define SDIO_BLK_SIZE_Msk			(0xFFF << SDIO_BLK_SIZE_Pos)
-#define SDIO_BLK_COUNT_Pos			16		//0 Stop Transfer    1 1块    2 2块    ... ...
+#define SDIO_BLK_COUNT_Pos			16		// block count, 0 Stop Transfer, 1 1 block, 2 2 block, ...
 #define SDIO_BLK_COUNT_Msk			(0xFFF << SDIO_BLK_COUNT_Pos)
 
 #define SDIO_CMD_DMAEN_Pos			0
@@ -2304,51 +2304,51 @@ typedef struct {
 #define SDIO_CMD_BLKCNTEN_Msk		(0x01 << SDIO_CMD_BLKCNTEN_Pos)
 #define SDIO_CMD_AUTOCMD12_Pos		2
 #define SDIO_CMD_AUTOCMD12_Msk		(0x01 << SDIO_CMD_AUTOCMD12_Pos)
-#define SDIO_CMD_DIRREAD_Pos		4       //0 Write, Host to Card    1 Read, Card to Host
+#define SDIO_CMD_DIRREAD_Pos		4       // 0 Write, Host to Card, 1 Read, Card to Host
 #define SDIO_CMD_DIRREAD_Msk		(0x01 << SDIO_CMD_DIRREAD_Pos)
-#define SDIO_CMD_MULTBLK_Pos		5       //0 Single Block    1  Multiple Block
+#define SDIO_CMD_MULTBLK_Pos		5       // 0 Single Block, 1 Multiple Block
 #define SDIO_CMD_MULTBLK_Msk		(0x01 << SDIO_CMD_MULTBLK_Pos)
-#define SDIO_CMD_RESPTYPE_Pos		16       //响应类型，0 无响应    1 136位响应    2 48位响应    3 48位响应，Busy after response
+#define SDIO_CMD_RESPTYPE_Pos		16		// response type, 0 no response, 1 136-bit response, 2 48-bit response, 3 48-bit response, Busy after response
 #define SDIO_CMD_RESPTYPE_Msk		(0x03 << SDIO_CMD_RESPTYPE_Pos)
-#define SDIO_CMD_CRCCHECK_Pos		19       //Command CRC Check Enable
+#define SDIO_CMD_CRCCHECK_Pos		19		// Command CRC Check Enable
 #define SDIO_CMD_CRCCHECK_Msk		(0x01 << SDIO_CMD_CRCCHECK_Pos)
-#define SDIO_CMD_IDXCHECK_Pos		20       //Command Index Check Enable
+#define SDIO_CMD_IDXCHECK_Pos		20		// Command Index Check Enable
 #define SDIO_CMD_IDXCHECK_Msk		(0x01 << SDIO_CMD_IDXCHECK_Pos)
-#define SDIO_CMD_HAVEDATA_Pos		21       //0 No Data Present    1 Data Present
+#define SDIO_CMD_HAVEDATA_Pos		21		// 0 No Data Present, 1 Data Present
 #define SDIO_CMD_HAVEDATA_Msk		(0x01 << SDIO_CMD_HAVEDATA_Pos)
-#define SDIO_CMD_CMDTYPE_Pos		22       //0 NORMAL   1 SUSPEND    2 RESUME    3 ABORT
+#define SDIO_CMD_CMDTYPE_Pos		22		// 0 NORMAL, 1 SUSPEND, 2 RESUME, 3 ABORT
 #define SDIO_CMD_CMDTYPE_Msk		(0x03 << SDIO_CMD_CMDTYPE_Pos)
-#define SDIO_CMD_CMDINDX_Pos		24       //Command Index，CMD0-63、ACMD0-63
+#define SDIO_CMD_CMDINDX_Pos		24		// Command Index, CMD0-63, ACMD0-63
 #define SDIO_CMD_CMDINDX_Msk		(0x3F << SDIO_CMD_CMDINDX_Pos)
 
-#define SDIO_CR1_4BIT_Pos			1		//1 4 bit mode    0 1 bit mode
+#define SDIO_CR1_4BIT_Pos			1		// 1 4 bit mode, 0 1 bit mode
 #define SDIO_CR1_4BIT_Msk			(0x01 << SDIO_CR1_4BIT_Pos)
-#define SDIO_CR1_8BIT_Pos			5		//1 8 bit mode is selected    0 8 bit mode is not selected
+#define SDIO_CR1_8BIT_Pos			5		// 1 8 bit mode is selected, 0 8 bit mode is not selected
 #define SDIO_CR1_8BIT_Msk			(0x01 << SDIO_CR1_8BIT_Pos)
-#define SDIO_CR1_CDBIT_Pos			6		//0 No Card    1 Card Inserted
+#define SDIO_CR1_CDBIT_Pos			6		// 0 No Card, 1 Card Inserted
 #define SDIO_CR1_CDBIT_Msk			(0x01 << SDIO_CR1_CDBIT_Pos)
-#define SDIO_CR1_CDSRC_Pos			7		//Card Detect Source, 1 CR1.CDBIT位    0 SD_Detect引脚
+#define SDIO_CR1_CDSRC_Pos			7		// Card Detect Source, 1 CR1.CDBIT bit, 0 SD_Detect pin
 #define SDIO_CR1_CDSRC_Msk			(0x01 << SDIO_CR1_CDSRC_Pos)
-#define SDIO_CR1_PWRON_Pos			8		//1 Power on    0 Power off
+#define SDIO_CR1_PWRON_Pos			8		// 1 Power on, 0 Power off
 #define SDIO_CR1_PWRON_Msk			(0x01 << SDIO_CR1_PWRON_Pos)
-#define SDIO_CR1_VOLT_Pos			9		//7 3.3V    6 3.0V    5 1.8V
+#define SDIO_CR1_VOLT_Pos			9		// 7 3.3V, 6 3.0V, 5 1.8V
 #define SDIO_CR1_VOLT_Msk			(0x07 << SDIO_CR1_VOLT_Pos)
 
-#define SDIO_CR2_CLKEN_Pos			0		//Internal Clock Enable
+#define SDIO_CR2_CLKEN_Pos			0		// Internal Clock Enable
 #define SDIO_CR2_CLKEN_Msk			(0x01 << SDIO_CR2_CLKEN_Pos)
-#define SDIO_CR2_CLKRDY_Pos			1		//Internal Clock Stable/Ready
+#define SDIO_CR2_CLKRDY_Pos			1		// Internal Clock Stable/Ready
 #define SDIO_CR2_CLKRDY_Msk			(0x01 << SDIO_CR2_CLKRDY_Pos)
-#define SDIO_CR2_SDCLKEN_Pos		2		//SDCLK Enable
+#define SDIO_CR2_SDCLKEN_Pos		2		// SDCLK Enable
 #define SDIO_CR2_SDCLKEN_Msk		(0x01 << SDIO_CR2_SDCLKEN_Pos)
-#define SDIO_CR2_SDCLKDIV_Pos		8		//SDCLK Frequency Div, 0x00 不分频    0x01 2分频    0x02 4分频    0x04 8分频    0x08    16分频    ...    0x80 256分频
+#define SDIO_CR2_SDCLKDIV_Pos		8		// SDCLK Frequency Div, 0x00 div1, 0x01 div2, 0x02 div4, 0x04 div8, 0x08, div16, ..., 0x80 div256
 #define SDIO_CR2_SDCLKDIV_Msk		(0xFF << SDIO_CR2_SDCLKDIV_Pos)
-#define SDIO_CR2_TIMEOUT_Pos		16		//0 TMCLK*2^13   1 TMCLK*2^14   ...   14 TMCLK*2^27
+#define SDIO_CR2_TIMEOUT_Pos		16		// 0 TMCLK*2^13, 1 TMCLK*2^14, ..., 14 TMCLK*2^27
 #define SDIO_CR2_TIMEOUT_Msk		(0x0F << SDIO_CR2_TIMEOUT_Pos)
-#define SDIO_CR2_RSTALL_Pos			24		//Software Reset for All
+#define SDIO_CR2_RSTALL_Pos			24		// Software Reset for All
 #define SDIO_CR2_RSTALL_Msk			(0x01 << SDIO_CR2_RSTALL_Pos)
-#define SDIO_CR2_RSTCMD_Pos			25		//Software Reset for CMD Line
+#define SDIO_CR2_RSTCMD_Pos			25		// Software Reset for CMD Line
 #define SDIO_CR2_RSTCMD_Msk			(0x01 << SDIO_CR2_RSTCMD_Pos)
-#define SDIO_CR2_RSTDAT_Pos			26		//Software Reset for DAT Line
+#define SDIO_CR2_RSTDAT_Pos			26		// Software Reset for DAT Line
 #define SDIO_CR2_RSTDAT_Msk			(0x01 << SDIO_CR2_RSTDAT_Pos)
 
 #define SDIO_IF_CMDDONE_Pos			0
@@ -2394,45 +2394,45 @@ typedef struct {
 #define SDIO_IF_RESPERR_Pos			28
 #define SDIO_IF_RESPERR_Msk			(0x01 << SDIO_IF_RESPERR_Pos)
 
-#define SDIO_IE_CMDDONE_Pos			0		//Command Complete Status Enable
+#define SDIO_IE_CMDDONE_Pos			0		// Command Complete Status Enable
 #define SDIO_IE_CMDDONE_Msk			(0x01 << SDIO_IE_CMDDONE_Pos)
-#define SDIO_IE_TRXDONE_Pos			1		//Transfer Complete Status Enable
+#define SDIO_IE_TRXDONE_Pos			1		// Transfer Complete Status Enable
 #define SDIO_IE_TRXDONE_Msk			(0x01 << SDIO_IE_TRXDONE_Pos)
-#define SDIO_IE_BLKGAP_Pos			2		//Block Gap Event Status Enable
+#define SDIO_IE_BLKGAP_Pos			2		// Block Gap Event Status Enable
 #define SDIO_IE_BLKGAP_Msk			(0x01 << SDIO_IE_BLKGAP_Pos)
-#define SDIO_IE_DMADONE_Pos			3		//DMA Interrupt Status Enable
+#define SDIO_IE_DMADONE_Pos			3		// DMA Interrupt Status Enable
 #define SDIO_IE_DMADONE_Msk			(0x01 << SDIO_IE_DMADONE_Pos)
-#define SDIO_IE_BUFWRRDY_Pos		4		//Buffer Write Ready Status Enable
+#define SDIO_IE_BUFWRRDY_Pos		4		// Buffer Write Ready Status Enable
 #define SDIO_IE_BUFWRRDY_Msk		(0x01 << SDIO_IE_BUFWRRDY_Pos)
-#define SDIO_IE_BUFRDRDY_Pos		5		//Buffer Read Ready Status Enable
+#define SDIO_IE_BUFRDRDY_Pos		5		// Buffer Read Ready Status Enable
 #define SDIO_IE_BUFRDRDY_Msk		(0x01 << SDIO_IE_BUFRDRDY_Pos)
-#define SDIO_IE_CARDINSR_Pos		6		//Card Insertion Status Enable
+#define SDIO_IE_CARDINSR_Pos		6		// Card Insertion Status Enable
 #define SDIO_IE_CARDINSR_Msk		(0x01 << SDIO_IE_CARDINSR_Pos)
-#define SDIO_IE_CARDRMOV_Pos		7		//Card Removal Status Enable
+#define SDIO_IE_CARDRMOV_Pos		7		// Card Removal Status Enable
 #define SDIO_IE_CARDRMOV_Msk		(0x01 << SDIO_IE_CARDRMOV_Pos)
 #define SDIO_IE_CARD_Pos			8
 #define SDIO_IE_CARD_Msk			(0x01 << SDIO_IE_CARD_Pos)
-#define SDIO_IE_CMDTIMEOUT_Pos		16		//Command Timeout Error Status Enable
+#define SDIO_IE_CMDTIMEOUT_Pos		16		// Command Timeout Error Status Enable
 #define SDIO_IE_CMDTIMEOUT_Msk		(0x01 << SDIO_IE_CMDTIMEOUT_Pos)
-#define SDIO_IE_CMDCRCERR_Pos		17		//Command CRC Error Status Enable
+#define SDIO_IE_CMDCRCERR_Pos		17		// Command CRC Error Status Enable
 #define SDIO_IE_CMDCRCERR_Msk		(0x01 << SDIO_IE_CMDCRCERR_Pos)
-#define SDIO_IE_CMDENDERR_Pos		18		//Command End Bit Error Status Enable
+#define SDIO_IE_CMDENDERR_Pos		18		// Command End Bit Error Status Enable
 #define SDIO_IE_CMDENDERR_Msk		(0x01 << SDIO_IE_CMDENDCERR_Pos)
-#define SDIO_IE_CMDIDXERR_Pos		19		//Command Index Error Status Enable
+#define SDIO_IE_CMDIDXERR_Pos		19		// Command Index Error Status Enable
 #define SDIO_IE_CMDIDXERR_Msk		(0x01 << SDIO_IE_CMDIDXCERR_Pos)
-#define SDIO_IE_DATTIMEOUT_Pos		20		//Data Timeout Error Status Enable
+#define SDIO_IE_DATTIMEOUT_Pos		20		// Data Timeout Error Status Enable
 #define SDIO_IE_DATTIMEOUT_Msk		(0x01 << SDIO_IE_DATTIMEOUT_Pos)
-#define SDIO_IE_DATCRCERR_Pos		21		//Data CRC Error Status Enable
+#define SDIO_IE_DATCRCERR_Pos		21		// Data CRC Error Status Enable
 #define SDIO_IE_DATCRCERR_Msk		(0x01 << SDIO_IE_DATCRCERR_Pos)
-#define SDIO_IE_DATENDERR_Pos		22		//Data End Bit Error Status Enable
+#define SDIO_IE_DATENDERR_Pos		22		// Data End Bit Error Status Enable
 #define SDIO_IE_DATENDERR_Msk		(0x01 << SDIO_IE_DATENDCERR_Pos)
-#define SDIO_IE_CURLIMERR_Pos		23		//Current Limit Error Status Enable
+#define SDIO_IE_CURLIMERR_Pos		23		// Current Limit Error Status Enable
 #define SDIO_IE_CURLIMERR_Msk		(0x01 << SDIO_IE_CURLIMERR_Pos)
-#define SDIO_IE_CMD12ERR_Pos		24		//Auto CMD12 Error Status Enable
+#define SDIO_IE_CMD12ERR_Pos		24		// Auto CMD12 Error Status Enable
 #define SDIO_IE_CMD12ERR_Msk		(0x01 << SDIO_IE_CMD12ERR_Pos)
-#define SDIO_IE_DMAERR_Pos			25		//ADMA Error Status Enable
+#define SDIO_IE_DMAERR_Pos			25		// ADMA Error Status Enable
 #define SDIO_IE_DMAERR_Msk			(0x01 << SDIO_IE_DMAERR_Pos)
-#define SDIO_IE_RESPERR_Pos			28		//Target Response Error Status Enable
+#define SDIO_IE_RESPERR_Pos			28		// Target Response Error Status Enable
 #define SDIO_IE_RESPERR_Msk			(0x01 << SDIO_IE_RESPERR_Pos)
 
 #define SDIO_IM_CMDDONE_Pos			0
@@ -2476,22 +2476,22 @@ typedef struct {
 #define SDIO_IM_RESPERR_Pos			28
 #define SDIO_IM_RESPERR_Msk			(0x01 << SDIO_IM_RESPERR_Pos)
 
-#define SDIO_CMD12ERR_NE_Pos		0		//Auto CMD12 not Executed
+#define SDIO_CMD12ERR_NE_Pos		0		// Auto CMD12 not Executed
 #define SDIO_CMD12ERR_NE_Msk		(0x01 << SDIO_CMD12ERR_NE_Pos)
-#define SDIO_CMD12ERR_TO_Pos		1		//Auto CMD12 Timeout Error
+#define SDIO_CMD12ERR_TO_Pos		1		// Auto CMD12 Timeout Error
 #define SDIO_CMD12ERR_TO_Msk		(0x01 << SDIO_CMD12ERR_TO_Pos)
-#define SDIO_CMD12ERR_CRC_Pos		2		//Auto CMD12 CRC Error
+#define SDIO_CMD12ERR_CRC_Pos		2		// Auto CMD12 CRC Error
 #define SDIO_CMD12ERR_CRC_Msk		(0x01 << SDIO_CMD12ERR_CRC_Pos)
-#define SDIO_CMD12ERR_END_Pos		3		//Auto CMD12 End Bit Error
+#define SDIO_CMD12ERR_END_Pos		3		// Auto CMD12 End Bit Error
 #define SDIO_CMD12ERR_END_Msk		(0x01 << SDIO_CMD12ERR_END_Pos)
-#define SDIO_CMD12ERR_INDEX_Pos		4		//Auto CMD12 Index Error
+#define SDIO_CMD12ERR_INDEX_Pos		4		// Auto CMD12 Index Error
 #define SDIO_CMD12ERR_INDEX_Msk		(0x01 << SDIO_CMD12ERR_INDEX_Pos)
 
 
 
 
 typedef struct {
-	__IO uint32_t IF;						//[0] 数据传输结束时置位，写1清零
+	__IO uint32_t IF;						// [0] frame transfer done, write 1 to clear
 	
 	__IO uint32_t IE;
 
@@ -2509,25 +2509,25 @@ typedef struct {
 	    
 		 uint32_t RESERVED3;
 	
-	__IO uint32_t BGC;						//Background color
+	__IO uint32_t BGC;						// Background color
 			
 		 uint32_t RESERVED4[6];
 	
 	struct {
-		__IO uint32_t LCR;					//Layer Control Register
+		__IO uint32_t LCR;					// Layer Control Register
 		
-		__IO uint32_t WHP;					//Window Horizon Position
+		__IO uint32_t WHP;					// Window Horizon Position
 		
-		__IO uint32_t WVP;					//Window Vertical Position
+		__IO uint32_t WVP;					// Window Vertical Position
 		
-		__IO uint32_t ADDR;					//display data Address
+		__IO uint32_t ADDR;					// display data Address
 		
-		__IO uint32_t LLEN;					//display data Line Length
+		__IO uint32_t LLEN;					// display data Line Length
 		
-		__IO uint32_t CK;					//Color Key
+		__IO uint32_t CK;					// Color Key
 		
 			 uint32_t RESERVED5[10];
-	} L[2];									//Layer
+	} L[2];									// Layer
 	
 		 uint32_t RESERVED5[16];
 	
@@ -2543,87 +2543,87 @@ typedef struct {
 } LCD_TypeDef;
 
 
-#define LCD_START_GO_Pos			1		//写1开始传输数据，数据传输结束后自动清零
+#define LCD_START_GO_Pos			1		// Write 1 Starts data transmission and automatically clears after transmission ends
 #define LCD_START_GO_Msk			(0x01 << LCD_START_GO_Pos)
 
-#define LCD_CR_CLKDIV_Pos			0      	//DOTCLK相对于模块时钟的分频比，0表示2分频，1表示3分频 ...
+#define LCD_CR_CLKDIV_Pos			0      	// clock divider, 0 div2, 1 div3, ...
 #define LCD_CR_CLKDIV_Msk			(0x3F << LCD_CR_CLKDIV_Pos)
-#define LCD_CR_CLKINV_Pos			6      	//1 输出DOTCLK反向，用于DOTCLK下降沿采样数据的屏
+#define LCD_CR_CLKINV_Pos			6      	// DOTCLK invert, used for LCD that samples at falling edge of DOTCLK
 #define LCD_CR_CLKINV_Msk			(0x01 << LCD_CR_CLKINV_Pos)
-#define LCD_CR_CLKALW_Pos			7		//DOTCLK Always，1 DOTCLK一直翻转    0 DOTCLK在空闲时停在1
+#define LCD_CR_CLKALW_Pos			7		// DOTCLK Always, 0 DOTCLK keep at high level when idle
 #define LCD_CR_CLKALW_Msk			(0x01 << LCD_CR_CLKALW_Pos)
-#define LCD_CR_BURSTEN_Pos			8		//Burst Enable，0 只进行SINGLE读   1 优先Burst读
+#define LCD_CR_BURSTEN_Pos			8		// Burst Enable
 #define LCD_CR_BURSTEN_Msk			(0x01 << LCD_CR_BURSTEN_Pos)
-#define LCD_CR_BURSTLEN_Pos			9		//Burst Length，0 Burst INCR4   1 Burst INCR8
+#define LCD_CR_BURSTLEN_Pos			9		// Burst Length, 0 Burst INCR4, 1 Burst INCR8
 #define LCD_CR_BURSTLEN_Msk			(0x01 << LCD_CR_BURSTLEN_Pos)
-#define LCD_CR_AUTORESTA_Pos		13		//Auto Restart，1 刷新完一帧后自动重启刷新
+#define LCD_CR_AUTORESTA_Pos		13		// Auto Restart
 #define LCD_CR_AUTORESTA_Msk		(0x01 << LCD_CR_AUTORESTA_Pos)
-#define LCD_CR_IMMRELOAD_Pos		14		//Immediate Reload，立即将层配置寄存器的值加载到层工作寄存器
+#define LCD_CR_IMMRELOAD_Pos		14		// Immediate Reload, Immediately loads the value of the layer configuration register into the layer working register
 #define LCD_CR_IMMRELOAD_Msk		(0x01 << LCD_CR_IMMRELOAD_Pos)
-#define LCD_CR_VBPRELOAD_Pos		15		//VBP Period Relaod
+#define LCD_CR_VBPRELOAD_Pos		15		// VBP Period Relaod
 #define LCD_CR_VBPRELOAD_Msk		(0x01 << LCD_CR_VBPRELOAD_Pos)
-#define LCD_CR_FORMAT_Pos			16		//0 RGB565    1 RGB888
+#define LCD_CR_FORMAT_Pos			16		// 0 RGB565, 1 RGB888
 #define LCD_CR_FORMAT_Msk			(0x01 << LCD_CR_FORMAT_Pos)
-#define LCD_CR_SEREN_Pos			17		//Serial RGB Enable
+#define LCD_CR_SEREN_Pos			17		// Serial RGB Enable
 #define LCD_CR_SEREN_Msk			(0x01 << LCD_CR_SEREN_Pos)
-#define LCD_CR_MPUEN_Pos			18		//MPU Interface Enable
+#define LCD_CR_MPUEN_Pos			18		// MPU Interface Enable
 #define LCD_CR_MPUEN_Msk			(0x01 << LCD_CR_MPUEN_Pos)
-#define LCD_CR_VSYNCINV_Pos			19		//1 VSYNC反相输出
+#define LCD_CR_VSYNCINV_Pos			19		// 1 VSYNC invert
 #define LCD_CR_VSYNCINV_Msk			(0x01 << LCD_CR_VSYNCINV_Pos)
-#define LCD_CR_HSYNCINV_Pos			20		//1 HSYNC反相输出
+#define LCD_CR_HSYNCINV_Pos			20		// 1 HSYNC invert
 #define LCD_CR_HSYNCINV_Msk			(0x01 << LCD_CR_HSYNCINV_Pos)
 
-#define LCD_CRH_HSW_Pos				0		//Hsync Width, 输出HSYNC低电平持续多少个DOTCLK周期，0表示1个周期
+#define LCD_CRH_HSW_Pos				0		// Hsync Width, Output HSYNC low for how many DOTCLK cycles. 0 indicates 1 cycle
 #define LCD_CRH_HSW_Msk				(0xFF << LCD_CRH_HSW_Pos)
-#define LCD_CRH_HBP_Pos			    8		//0表示1个DOTCLK周期
+#define LCD_CRH_HBP_Pos			    8		// 0 indicates one DOTCLK period
 #define LCD_CRH_HBP_Msk			    (0xFF << LCD_CRH_HBP_Pos)
-#define LCD_CRH_PIX_Pos				16		//水平方向的像素个数，0表示1个，最大为1023
+#define LCD_CRH_PIX_Pos				16		// number of horizontal pixels. 0 indicates 1 and the maximum value is 1023
 #define LCD_CRH_PIX_Msk				(0x3FF<< LCD_CRH_PIX_Pos)
-#define LCD_CRH_HFP_Pos			    26		//0表示1个DOTCLK周期
+#define LCD_CRH_HFP_Pos			    26		// 0 indicates one DOTCLK period
 #define LCD_CRH_HFP_Msk			    (0x3Fu<< LCD_CRH_HFP_Pos)
 
-#define LCD_CRV_VSW_Pos				0		//Vsync Width，输出VSYNC低电平持续多少个行周期，0表示1个周期
+#define LCD_CRV_VSW_Pos				0		//Vsync Width, Output VSYNC low level for how many line cycles, 0 indicates 1 cycle
 #define LCD_CRV_VSW_Msk				(0xFF << LCD_CRV_VSW_Pos)
-#define LCD_CRV_VBP_Pos			    8		//0表示1个水平行周期
+#define LCD_CRV_VBP_Pos			    8		// 0 indicates 1 horizontal row cycle
 #define LCD_CRV_VBP_Msk			    (0xFF << LCD_CRV_VBP_Pos)
-#define LCD_CRV_PIX_Pos				16		//垂直方向的像素个数，0表示1个，最大为1023
+#define LCD_CRV_PIX_Pos				16		// number of vertical pixels. 0 indicates 1, and the maximum value is 1023
 #define LCD_CRV_PIX_Msk				(0x3FF<< LCD_CRV_PIX_Pos)
-#define LCD_CRV_VFP_Pos			    26		//0表示1个水平行周期
+#define LCD_CRV_VFP_Pos			    26		// 0 indicates 1 horizontal row cycle
 #define LCD_CRV_VFP_Msk			    (0x3Fu<< LCD_CRV_VFP_Pos)
 
-#define LCD_LCR_ALPHA_Pos			0		//Blend时该层的Alpha值
+#define LCD_LCR_ALPHA_Pos			0		// Alpha value of this layer
 #define LCD_LCR_ALPHA_Msk			(0xFF << LCD_LCR_ALPHA_Pos)
-#define LCD_LCR_EN_Pos				8		//Layer Enable
+#define LCD_LCR_EN_Pos				8		// Layer Enable
 #define LCD_LCR_EN_Msk				(0x01 << LCD_LCR_EN_Pos)
-#define LCD_LCR_CKEN_Pos			9		//Layer Color Key Enable
+#define LCD_LCR_CKEN_Pos			9		// Layer Color Key Enable
 #define LCD_LCR_CKEN_Msk			(0x01 << LCD_LCR_CKEN_Pos)
 
-#define LCD_WHP_STA_Pos				0		//Layer Window 水平起始点
+#define LCD_WHP_STA_Pos				0		// Layer Window Horizontal start point
 #define LCD_WHP_STA_Msk				(0x3FF<< LCD_WHP_STA_Pos)
-#define LCD_WHP_STP_Pos				16		//Layer Window 水平结束点
+#define LCD_WHP_STP_Pos				16		// Layer Window Horizontal end point
 #define LCD_WHP_STP_Msk				(0x3FF<< LCD_WHP_STP_Pos)
 
-#define LCD_WVP_STA_Pos				0		//Layer Window 竖直起始点
+#define LCD_WVP_STA_Pos				0		// Layer Window Vertical start point
 #define LCD_WVP_STA_Msk				(0x3FF<< LCD_WVP_STA_Pos)
-#define LCD_WVP_STP_Pos				16		//Layer Window 竖直结束点
+#define LCD_WVP_STP_Pos				16		// Layer Window Vertical end point
 #define LCD_WVP_STP_Msk				(0x3FF<< LCD_WVP_STP_Pos)
 
-#define LCD_MPUCR_RCS1_0_Pos		0		//读操作时，CS上升沿到下降沿时间间隔，0  1个时钟中期
+#define LCD_MPUCR_RCS1_0_Pos		0		// for read, LCD_CS rising edge to falling edge delay
 #define LCD_MPUCR_RCS1_0_Msk		(0x1F << LCD_MPUCR_RCS1_0_Pos)
-#define LCD_MPUCR_RDHOLD_Pos		5		//RD低电平保持时间
+#define LCD_MPUCR_RDHOLD_Pos		5		// LCD_RD Low level holding time
 #define LCD_MPUCR_RDHOLD_Msk		(0x1F << LCD_MPUCR_RDHOLD_Pos)
-#define LCD_MPUCR_WCS1_0_Pos		10		//写操作时，CS上升沿到下降沿时间间隔
+#define LCD_MPUCR_WCS1_0_Pos		10		// for write, LCD_CS rising edge to falling edge delay
 #define LCD_MPUCR_WCS1_0_Msk		(0x0F << LCD_MPUCR_WCS1_0_Pos)
-#define LCD_MPUCR_WR1CS1_Pos		14		//WR上升沿到CS上升沿延时
+#define LCD_MPUCR_WR1CS1_Pos		14		// LCD_WR rising edge to LCD_CS rising edge delay
 #define LCD_MPUCR_WR1CS1_Msk		(0x03 << LCD_MPUCR_WR1CS1_Pos)
-#define LCD_MPUCR_WRHOLD_Pos		16		//WR低电平保持时间
+#define LCD_MPUCR_WRHOLD_Pos		16		// LCD_WR Low level holding time
 #define LCD_MPUCR_WRHOLD_Msk		(0x0F << LCD_MPUCR_WRHOLD_Pos)
-#define LCD_MPUCR_CS0WR0_Pos		20		//CS下降沿到WR下降沿延时
+#define LCD_MPUCR_CS0WR0_Pos		20		// LCD_CS falling edge to LCD_WR falling edge delay
 #define LCD_MPUCR_CS0WR0_Msk		(0x03 << LCD_MPUCR_CS0WR0_Pos)
 
-#define LCD_MPULEN_VPIX_Pos			0		//行数，0表示1行
+#define LCD_MPULEN_VPIX_Pos			0		// number of lines. 0 indicates 1 line
 #define LCD_MPULEN_VPIX_Msk			(0x3FF<< LCD_MPULEN_VPIX_Pos)
-#define LCD_MPULEN_HPIX_Pos			16		//每行像素数，0表示1个像素，只能赋奇数值，保证偶数个像素
+#define LCD_MPULEN_HPIX_Pos			16		// number of pixels per line, 0 represents 1 pixel
 #define LCD_MPULEN_HPIX_Msk			(0x3FF<< LCD_MPULEN_HPIX_Pos)
 
 
@@ -2639,85 +2639,85 @@ typedef struct {
 		 uint32_t RESERVED;
 	
 	struct {
-		__IO uint32_t MAR;					//Memory Address Register，word对齐（低两位固定为0）
+		__IO uint32_t MAR;					// Memory Address Register, word alignment
 		
-		__IO uint32_t OR;					//Offset Register, added at the end of each line to determine the starting address of the next line
+		__IO uint32_t OR;					// Offset Register, added at the end of each line to determine the starting address of the next line
 		
-		__IO uint32_t PFCCR;				//Pixel Format Converter Control Register
+		__IO uint32_t PFCCR;				// Pixel Format Converter Control Register
 		
 		__IO uint32_t COLOR;
-	} L[3];									//Layer: 0 Foreground   1 Background   2 Output
+	} L[3];									// Layer: 0 Foreground, 1 Background, 2 Output
 	
-	__IO uint32_t NLR;						//Number of Line Register
+	__IO uint32_t NLR;						// Number of Line Register
 } DMA2D_TypeDef;
 
 
-#define DMA2D_IF_DONE_Pos			1		//传输完成，写1清零
+#define DMA2D_IF_DONE_Pos			1		// transfer done, wirte 1 to clear
 #define DMA2D_IF_DONE_Msk			(0x01 << DMA2D_IF_DONE_Pos)
 
 #define DMA2D_IE_DONE_Pos			1
 #define DMA2D_IE_DONE_Msk			(0x01 << DMA2D_IE_DONE_Pos)
 
-#define DMA2D_CR_START_Pos			0		//开始传输
+#define DMA2D_CR_START_Pos			0		// start transfer
 #define DMA2D_CR_START_Msk			(0x01 << DMA2D_CR_START_Pos)
-#define DMA2D_CR_MODE_Pos			8		//0 存储器到存储器   1 存储器到存储器并执行PFC   2 存储器到存储器并执行混合   3 寄存器到存储器（仅输出阶段激合）
+#define DMA2D_CR_MODE_Pos			8		// 0 memory to memory, 1 memory to memory and do PFC, 2 memory to memory and do blend, 3 register to memory
 #define DMA2D_CR_MODE_Msk			(0x03 << DMA2D_CR_MODE_Pos)
-#define DMA2D_CR_WAIT_Pos			22		//每传输一块数据（64个字），等待指定个系统周期后再传输下一个块，防止DMA2D占用过多SDRAM带宽，影响LCD读取显示数据
+#define DMA2D_CR_WAIT_Pos			22		// data block (64 word) transfer interval in unit of HCLK period
 #define DMA2D_CR_WAIT_Msk			(0x3FFu<<DMA2D_CR_WAIT_Pos)
 
-#define DMA2D_PFCCR_CFMT_Pos		0		//Color Format, 0 ARGB8888   1 RGB8888   2 RGB565
+#define DMA2D_PFCCR_CFMT_Pos		0		// Color Format, 0 ARGB8888, 1 RGB8888, 2 RGB565
 #define DMA2D_PFCCR_CFMT_Msk		(0x07 << DMA2D_CFMT_FORMAT_Pos)
-#define DMA2D_PFCCR_AINV_Pos		3		//Alpha Invert
+#define DMA2D_PFCCR_AINV_Pos		3		// Alpha Invert
 #define DMA2D_PFCCR_AINV_Msk		(0x01 << DMA2D_PFCCR_AINV_Pos)
-#define DMA2D_PFCCR_RBSWAP_Pos		4		//RB Swap, 0 RGB   1 BGR
+#define DMA2D_PFCCR_RBSWAP_Pos		4		// RB Swap, 0 RGB, 1 BGR
 #define DMA2D_PFCCR_RBSWAP_Msk		(0x01 << DMA2D_PFCCR_RBSWAP_Pos)
-#define DMA2D_PFCCR_AMODE_Pos		8		//Alpha Mode, 0 使用像素点自带Alpha值   1 使用PFCCR.ALPHA值   2 使用像素点自带Alpha值与PFCCR.ALPHA值的乘积
+#define DMA2D_PFCCR_AMODE_Pos		8		// Alpha Mode, 0 use the pixel's own Alpha value, 1 use PFCCR.ALPHA, 2 use the product of the pixel's own Alpha value and PFCCR.ALPHA
 #define DMA2D_PFCCR_AMODE_Msk		(0x03 << DMA2D_PFCCR_AMODE_Pos)
 #define DMA2D_PFCCR_ALPHA_Pos		24
 #define DMA2D_PFCCR_ALPHA_Msk		(0xFFu<< DMA2D_PFCCR_ALPHA_Pos)
 
-#define DMA2D_NLR_NLINE_Pos			0		//Number of Line
+#define DMA2D_NLR_NLINE_Pos			0		// Number of Line
 #define DMA2D_NLR_NLINE_Msk			(0xFFFF<<DMA2D_NLR_NLINE_Pos)
-#define DMA2D_NLR_NPIXEL_Pos		16		//Number of Pixel per line
+#define DMA2D_NLR_NPIXEL_Pos		16		// Number of Pixel per line
 #define DMA2D_NLR_NPIXEL_Msk		(0x3FFF<<DMA2D_NLR_NPIXEL_Pos)
 
 
 
 
 typedef struct {
-    __IO uint32_t TIM;						//SDRAM时序配置
+    __IO uint32_t TIM;						// SDRAM timing
     
     __IO uint32_t CFG;
     
-    __IO uint32_t T64;						//64ms刷新周期配置
+    __IO uint32_t T64;						// 64ms refresh cycle configuration
     
     __IO uint32_t CR;
     
-    __IO uint32_t SR;						//0 Idle   1 Init   2 Self-refresh   4 Operating   5 Auto-refresh
+    __IO uint32_t SR;						// 0 Idle, 1 Init, 2 Self-refresh, 4 Operating, 5 Auto-refresh
 } SDRAMC_TypeDef;
 
 
-#define SDRAMC_TIM_TRCD_Pos		    0		//Row to column delay, Ie. Activate to Command delay
+#define SDRAMC_TIM_TRCD_Pos		    0		// Row to column delay, Ie. Activate to Command delay
 #define SDRAMC_TIM_TRCD_Msk		    (0x03 << SDRAMC_TIM_TRCD_Pos)
-#define SDRAMC_TIM_TRC_Pos		    2		//Activate to Activate on same bank
+#define SDRAMC_TIM_TRC_Pos		    2		// Activate to Activate on same bank
 #define SDRAMC_TIM_TRC_Msk		    (0x0F << SDRAMC_TIM_TRC_Pos)
-#define SDRAMC_TIM_TRP_Pos		    6		//Row precharge time,  Ie. Precharge to Activate delay
+#define SDRAMC_TIM_TRP_Pos		    6		// Row precharge time,  Ie. Precharge to Activate delay
 #define SDRAMC_TIM_TRP_Msk		    (0x03 << SDRAMC_TIM_TRP_Pos)
 #define SDRAMC_TIM_T100US_Pos		8
 #define SDRAMC_TIM_T100US_Msk		(0x7FFF<<SDRAMC_TIM_T100US_Pos)
 
-#define SDRAMC_CFG_CLKDIV_Pos		0		//0 SYSCLK/1   1 SYSCLK/2
+#define SDRAMC_CFG_CLKDIV_Pos		0		// 0 SYSCLK/1, 1 SYSCLK/2
 #define SDRAMC_CFG_CLKDIV_Msk		(0x01 << SDRAMC_CFG_CLKDIV_Pos)
-#define SDRAMC_CFG_CASDELAY_Pos		1		//CAS Latency， 0 2    1 3
+#define SDRAMC_CFG_CASDELAY_Pos		1		// CAS Latency, 0 2, 1 3
 #define SDRAMC_CFG_CASDELAY_Msk		(0x01 << SDRAMC_CFG_CASDELAY_Pos)
-#define SDRAMC_CFG_HIGHFREQ_Pos		2		//SDRAM工作时钟是否大于66MHz
+#define SDRAMC_CFG_HIGHFREQ_Pos		2		// should set when SDRAM CLK > 66MHz
 #define SDRAMC_CFG_HIGHFREQ_Msk		(0x01 << SDRAMC_CFG_HIGHFREQ_Pos)
-#define SDRAMC_CFG_SIZE_Pos			3		//0 8MB   1 16MB   2 32MB
+#define SDRAMC_CFG_SIZE_Pos			3		// 0 8MB, 1 16MB, 2 32MB
 #define SDRAMC_CFG_SIZE_Msk			(0x03 << SDRAMC_CFG_SIZE_Pos)
 
-#define SDRAMC_CR_ENTERSRF_Pos		0		//Enter Self-refresh
+#define SDRAMC_CR_ENTERSRF_Pos		0		// Enter Self-refresh
 #define SDRAMC_CR_ENTERSRF_Msk		(0x01 << SDRAMC_CR_ENTERSRF_Pos)
-#define SDRAMC_CR_PWRON_Pos			1		//置位开始初始化流程，完成初始化自动清零
+#define SDRAMC_CR_PWRON_Pos			1		// write 1 to start init process, and automatically clear when init done
 #define SDRAMC_CR_PWRON_Msk			(0x01 << SDRAMC_CR_PWRON_Pos)
 
 
@@ -2726,68 +2726,64 @@ typedef struct {
 typedef struct {
 	__IO uint32_t CMD;
 	
-	__IO uint32_t INPUT;					//CORDIC计算输入数据，计算SIN和COS时，表示待计算的弧度
-											//计算ARCTAN时，为防止溢出，需要将待计算数处理后再写入INPUT寄存器：
-											//待计算数 ∈ (0.05, 0.5]时，将待计算数乘以2后写入INPUT
-											//待计算数 ∈ (0.5, 2]时，   将待计算数直接写入INPUT
-											//待计算数 > 2时，           将待计算数除以2后写入INPUT
+	__IO uint32_t INPUT;
 	
-	__IO uint32_t COS;						//COS计算结果
+	__IO uint32_t COS;						// cos result
 	
-	__IO uint32_t SIN;						//SIN计算结果
+	__IO uint32_t SIN;						// sin result
 	
-	__IO uint32_t ARCTAN;					//ARCTAN计算结果
+	__IO uint32_t ARCTAN;					// arctan result
 	
 	__IO uint32_t IF;
 	
 	__IO uint32_t IE;
 	
-	__IO uint32_t TANH;						//写启动TANH计算，写完再读，返回计算结果
+	__IO uint32_t TANH;						// Write starts the TANH calculation, reads the data after writing, and returns the calculation result
 } CORDIC_TypeDef;
 
 
-#define CORDIC_CMD_START_Pos		0		//写1启动运算，运算完成后自动清零
+#define CORDIC_CMD_START_Pos		0		// write 1 to sart calculate, and automatically clear when done
 #define CORDIC_CMD_START_Msk		(0x01 << CORDIC_CMD_START_Pos)
-#define CORDIC_CMD_RANGE_Pos		1		//计算ARCTAN时输入数值的范围 0 (0.05, 0.5]   1 (0.5, 2]   2 >2
+#define CORDIC_CMD_RANGE_Pos		1		// for arctan calculate, input range, 0 (0.05, 0.5], 1 (0.5, 2], 2 >2
 #define CORDIC_CMD_RANGE_Msk		(0x03 << CORDIC_CMD_RANGE_Pos)
-#define CORDIC_CMD_SINCOS_Pos		3		//1 计算SIN和COS    0 计算ARCTAN
+#define CORDIC_CMD_SINCOS_Pos		3		// 1 sin/cos calculate, 0 arctan calculate
 #define CORDIC_CMD_SINCOS_Msk		(0x01 << CORDIC_CMD_SINCOS_Pos)
-#define CORDIC_CMD_MULDIV_Pos		4		//0 计算SIN\COS\ARCTAN，具体由SINCOS位决定   2 计算除法   3 计算乘法
+#define CORDIC_CMD_MULDIV_Pos		4		// 0 sin/cos/arctan calculate, 2 division, 3 multiply
 #define CORDIC_CMD_MULDIV_Msk		(0x03 << CORDIC_CMD_MULDIV_Pos)
 
-#define CORDIC_INPUT_F_Pos			0		//输入数据小数部分
+#define CORDIC_INPUT_F_Pos			0		// fractional part
 #define CORDIC_INPUT_F_Msk			(0x3FFF << CORDIC_INPUT_F_Pos)
-#define CORDIC_INPUT_I_Pos			14		//输入数据整数部分
+#define CORDIC_INPUT_I_Pos			14		// integer part
 #define CORDIC_INPUT_I_Msk			(0x03 << CORDIC_INPUT_I_Pos)
-#define CORDIC_INPUT_F2_Pos			16		//输入数据小数部分，乘法中的第二个参数、除法中的被除数，乘法结果存于SIN、除法结果存于ARCTAN
+#define CORDIC_INPUT_F2_Pos			16		// second operand for multiply, dividend for division
 #define CORDIC_INPUT_F2_Msk			(0x3FFF << CORDIC_INPUT_F2_Pos)
-#define CORDIC_INPUT_I2_Pos			30		//输入数据整数部分，乘法中的第二个参数、除法中的被除数，乘法结果存于SIN、除法结果存于ARCTAN
+#define CORDIC_INPUT_I2_Pos			30
 #define CORDIC_INPUT_I2_Msk			(0x03u<< CORDIC_INPUT_I2_Pos)
 
-#define CORDIC_COS_F_Pos			0		//COS计算结果的小数部分
+#define CORDIC_COS_F_Pos			0		// cos result, fractional part
 #define CORDIC_COS_F_Msk			(0x3FFF << CORDIC_COS_F_Pos)
-#define CORDIC_COS_I_Pos			14		//COS计算结果的整数部分
+#define CORDIC_COS_I_Pos			14
 #define CORDIC_COS_I_Msk			(0x03 << CORDIC_COS_I_Pos)
-#define CORDIC_COS_DONE_Pos			16		//1 COS计算已完成
+#define CORDIC_COS_DONE_Pos			16		// cos done?
 #define CORDIC_COS_DONE_Msk			(0x01 << CORDIC_COS_DONE_Pos)
 
-#define CORDIC_SIN_F_Pos			0		//SIN计算结果的小数部分
+#define CORDIC_SIN_F_Pos			0		// sin result
 #define CORDIC_SIN_F_Msk			(0x3FFF << CORDIC_SIN_F_Pos)
-#define CORDIC_SIN_I_Pos			14		//SIN计算结果的整数部分
+#define CORDIC_SIN_I_Pos			14
 #define CORDIC_SIN_I_Msk			(0x03 << CORDIC_SIN_I_Pos)
-#define CORDIC_SIN_DONE_Pos			16		//1 SIN计算已完成
+#define CORDIC_SIN_DONE_Pos			16
 #define CORDIC_SIN_DONE_Msk			(0x01 << CORDIC_SIN_DONE_Pos)
 
-#define CORDIC_ARCTAN_F_Pos			0		//ARCTAN计算结果的小数部分
+#define CORDIC_ARCTAN_F_Pos			0		// arctan result
 #define CORDIC_ARCTAN_F_Msk			(0x3FFF << CORDIC_ARCTAN_F_Pos)
-#define CORDIC_ARCTAN_I_Pos			14		//ARCTAN计算结果的整数部分
+#define CORDIC_ARCTAN_I_Pos			14
 #define CORDIC_ARCTAN_I_Msk			(0x03 << CORDIC_ARCTAN_I_Pos)
-#define CORDIC_ARCTAN_DONE_Pos		16		//1 ARCTAN计算已完成
+#define CORDIC_ARCTAN_DONE_Pos		16
 #define CORDIC_ARCTAN_DONE_Msk		(0x01 << CORDIC_ARCTAN_DONE_Pos)
 
-#define CORDIC_IF_DONE_Pos			0		//1 计算完成，写1清零
+#define CORDIC_IF_DONE_Pos			0		// calculate done, wirte 1 to clear
 #define CORDIC_IF_DONE_Msk			(0x01 << CORDIC_IF_DONE_Pos)
-#define CORDIC_IF_ERR_Pos			1		//1 计算出错，SIN或COS结果不在[0, 1]范围内，或ARCTAN计算结果不在[0, 2]范围内时置位，写1清零
+#define CORDIC_IF_ERR_Pos			1		// calculate error, write 1 to clear
 #define CORDIC_IF_ERR_Msk			(0x01 << CORDIC_IF_ERR_Pos)
 
 #define CORDIC_IE_DONE_Pos			0
@@ -2795,9 +2791,9 @@ typedef struct {
 #define CORDIC_IE_ERR_Pos			1
 #define CORDIC_IE_ERR_Msk			(0x01 << CORDIC_IE_ERR_Pos)
 
-#define CORDIC_TANH_F_Pos			0		//TANH输入和计算结果的小数部分
+#define CORDIC_TANH_F_Pos			0		// input and result register for tanh
 #define CORDIC_TANH_F_Msk			(0x3FFF << CORDIC_TANH_F_Pos)
-#define CORDIC_TANH_I_Pos			14		//TANH输入和计算结果的整数部分
+#define CORDIC_TANH_I_Pos			14
 #define CORDIC_TANH_I_Msk			(0x03 << CORDIC_TANH_I_Pos)
 
 
@@ -2810,38 +2806,38 @@ typedef struct {
 	
 	     uint32_t RESERVED[2];
 	
-	__IO uint32_t DIVIDEND;					//被除数
+	__IO uint32_t DIVIDEND;
 	
-	__IO uint32_t DIVISOR;					//除数
+	__IO uint32_t DIVISOR;
 	
-	__IO uint32_t QUO;						//商
+	__IO uint32_t QUO;						// quotient
 	
-	__IO uint32_t REMAIN;					//余数
+	__IO uint32_t REMAIN;					// remainder
 	
-	__IO uint32_t RADICAND;					//被开方数
+	__IO uint32_t RADICAND;
 	
-	__IO uint32_t ROOT;						//平方根，低16位为小数部分，高16位为整数部分
+	__IO uint32_t ROOT;						// lower 16 bits are the fractional part, and higher 16 bits are the integer part
 } DIV_TypeDef;
 
 
-#define DIV_CR_DIVGO_Pos			0		//写1启动除法运算，运算完成后自动清零
+#define DIV_CR_DIVGO_Pos			0		// write 1 to start division calculate, and automatically clear when done
 #define DIV_CR_DIVGO_Msk			(0x01 << DIV_CR_DIVGO_Pos)
-#define DIV_CR_DIVSIGN_Pos			1		//0 有符号除法    1 无符号除法
+#define DIV_CR_DIVSIGN_Pos			1		// 0 signed division, 1 unsigned division
 #define DIV_CR_DIVSIGN_Msk			(0x01 << DIV_CR_DIVSIGN_Pos)
-#define DIV_CR_ROOTGO_Pos			8		//写1启动开平方根运算，运算完成后自动清零
+#define DIV_CR_ROOTGO_Pos			8		// write 1 to start root calculate, automatically clear when done
 #define DIV_CR_ROOTGO_Msk			(0x01 << DIV_CR_ROOTGO_Pos)
-#define DIV_CR_ROOTMOD_Pos			9		//开平方根模式：0 结果为整数    1 结果既有整数部分又有小数部分
+#define DIV_CR_ROOTMOD_Pos			9		// root result mode: 0 only integer, 1 both integer and fractional part
 #define DIV_CR_ROOTMOD_Msk			(0x01 << DIV_CR_ROOTMOD_Pos)
 
-#define DIV_SR_DIVEND_Pos			0		//除法运算完成标志，写1清零
+#define DIV_SR_DIVEND_Pos			0		// division operation complete flag, write 1 to clear
 #define DIV_SR_DIVEND_Msk			(0x01 << DIV_SR_DIVEND_Pos)
-#define DIV_SR_DIVBUSY_Pos			1		//1 除法运算计算中
+#define DIV_SR_DIVBUSY_Pos			1		// division operation busy
 #define DIV_SR_DIVBUSY_Msk			(0x01 << DIV_SR_DIVBUSY_Pos)
-#define DIV_SR_ROOTENDI_Pos			8		//开方整数运算完成标志，写1清零
+#define DIV_SR_ROOTENDI_Pos			8		// root operation integer part complete flag, write 1 to clear
 #define DIV_SR_ROOTENDI_Msk			(0x01 << DIV_SR_ROOTENDI_Pos)
-#define DIV_SR_ROOTENDF_Pos			9		//开方小数运算完成标志，写1清零
+#define DIV_SR_ROOTENDF_Pos			9		// root operation fractional part complete flag, write 1 to clear
 #define DIV_SR_ROOTENDF_Msk			(0x01 << DIV_SR_ROOTENDF_Pos)
-#define DIV_SR_ROOTBUSY_Pos			10		//1 开方运算计算中
+#define DIV_SR_ROOTBUSY_Pos			10		// root operation busy
 #define DIV_SR_ROOTBUSY_Msk			(0x01 << DIV_SR_ROOTBUSY_Pos)
 
 
@@ -2870,18 +2866,18 @@ typedef struct {
 } FMC_TypeDef;
 
 
-#define FMC_ERASE_ADDR_Pos			0		//4K每页
+#define FMC_ERASE_ADDR_Pos			0		// 4K bytes per page
 #define FMC_ERASE_ADDR_Msk			(0x7FFFF << FMC_ERASE_ADDR_Pos)
 #define FMC_ERASE_REQ_Pos			27
 #define FMC_ERASE_REQ_Msk			(0x1Fu<< FMC_ERASE_REQ_Pos)
 
-#define FMC_CACHE_PROGEN_Pos		0		//Flash Program Enable
+#define FMC_CACHE_PROGEN_Pos		0		// Flash Program Enable
 #define FMC_CACHE_PROGEN_Msk		(0x01 << FMC_CACHE_PROGEN_Pos)
-#define FMC_CACHE_CEN_Pos			16		//Cache Enable
+#define FMC_CACHE_CEN_Pos			16		// Cache Enable
 #define FMC_CACHE_CEN_Msk			(0x01 << FMC_CACHE_CEN_Pos)
-#define FMC_CACHE_CPEN_Pos			17		//Cache Predict Enable
+#define FMC_CACHE_CPEN_Pos			17		// Cache Predict Enable
 #define FMC_CACHE_CPEN_Msk			(0x01 << FMC_CACHE_CPEN_Pos)
-#define FMC_CACHE_CCLR_Pos			18		//Cache Clear，自动清零
+#define FMC_CACHE_CCLR_Pos			18		// Cache Clear, automatically clear
 #define FMC_CACHE_CCLR_Msk			(0x01 << FMC_CACHE_CCLR_Pos)
 
 #define FMC_STAT_ERASEBUSY_Pos		0
@@ -2890,9 +2886,9 @@ typedef struct {
 #define FMC_STAT_PROGBUSY_Msk		(0x01 << FMC_STAT_PROGBUSY_Pos)
 #define FMC_STAT_READBUSY_Pos		2
 #define FMC_STAT_READBUSY_Msk		(0x01 << FMC_STAT_READBUSY_Pos)
-#define FMC_STAT_FIFOEMPTY_Pos		3		//Write FIFO Empty
+#define FMC_STAT_FIFOEMPTY_Pos		3		// Write FIFO Empty
 #define FMC_STAT_FIFOEMPTY_Msk		(0x01 << FMC_STAT_FIFOEMPTY_Pos)
-#define FMC_STAT_FIFOFULL_Pos		4		//Write FIFO Full
+#define FMC_STAT_FIFOFULL_Pos		4		// Write FIFO Full
 #define FMC_STAT_FIFOFULL_Msk		(0x01 << FMC_STAT_FIFOFULL_Pos)
 #define FMC_STAT_IDLE_Pos			31
 #define FMC_STAT_IDLE_Msk			(0x01u<< FMC_STAT_IDLE_Pos)
@@ -2906,65 +2902,65 @@ typedef struct {
 	__I  uint32_t SR;
 	__IO uint32_t IF;
 	__IO uint32_t IE;
-	__IO uint32_t GO;						//写1开始执行
+	__IO uint32_t GO;						// write 1 to start
 	__IO uint32_t ADDR;
 	__IO uint32_t DATA;
-	__IO uint32_t CMDAHB;					//通过AHB总线读写Flash时使用的命令码
-	__IO uint32_t CMD;						//通过寄存器 读写Flash时使用的命令码
-} SFC_TypeDef;								//Serial Flash Controller
+	__IO uint32_t CMDAHB;					// command code used to read or write the Flash through the AHB bus
+	__IO uint32_t CMD;						// command code used to read or write the Flash through the register
+} SFC_TypeDef;								// Serial Flash Controller
 
 
-#define SFC_CFG_CMDTYPE_Pos			0		//0 无地址、无数据、无WIP，用于写使能、写禁止
-											//1 无地址、有数据（读1字节）、无WIP，用于读状态寄存器高8位、读状态寄存器低8位
-											//2 无地址、有数据（读3字节）、无WIP，用于读Identification
-											//3 有地址、有数据（读2字节）、无WIP，用于读MID、读DID
-											//4 无地址、无数据、有WIP
-											//5 无地址、无数据、有WIP（自动写使能），用于片擦
-											//6 无地址、有数据（写2字节）、有WIP（自动写使能），用于写16位状态寄存器
-											//7 有地址、无数据、有WIP（自动写使能），用于扇区擦
+#define SFC_CFG_CMDTYPE_Pos			0		//0 no address, no data, no WIP, used for write enable, write disable
+											//1 no address, have data (1-byte read), no WIP, used for SPI Flash status register read
+											//2 no address, have data (3-byte read), no WIP, used for Identification read
+											//3 have address, have data (2-byte read), no WIP, used for MID/DID read
+											//4 no address, no data, have WIP
+											//5 no address, no data, have WIP (automatically send write enable), used for chip erase
+											//6 no address, have data (2-byte write), have WIP (automatically send write enable), used for SPI Flash status register write
+											//7 have address, no data, have WIP (automatically send write enable), used for sector erase
 #define SFC_CFG_CMDTYPE_Msk			(0x0F << SFC_CFG_CMDTYPE_Pos)
-#define SFC_CFG_CMDWREN_Pos			5		//SFC->CMD寄存器写使能，使能后可将命令码写入CMD寄存器
+#define SFC_CFG_CMDWREN_Pos			5		// SFC->CMD register write enable, then you can write command opcode to CMD register
 #define SFC_CFG_CMDWREN_Msk			(0x01 << SFC_CFG_CMDWREN_Pos)
-#define SFC_CFG_CLKDIV_Pos			6		//时钟分频：0 1分频   1 2分频   2 4分频   3 8分频
+#define SFC_CFG_CLKDIV_Pos			6		// clock divider, 0 div1, 1 div2, 2 div4, 3 div8
 #define SFC_CFG_CLKDIV_Msk			(0x03 << SFC_CFG_CLKDIV_Pos)
-#define SFC_CFG_ADDR4L_Pos			8		//编程操作的地址阶段使用4条数据线
+#define SFC_CFG_ADDR4L_Pos			8		// use 4 data line when address phase
 #define SFC_CFG_ADDR4L_Msk			(0x01 << SFC_CFG_ADDR4L_Pos)
-#define SFC_CFG_DATA4L_PP_Pos		9		//编程操作的数据阶段使用4条数据线
+#define SFC_CFG_DATA4L_PP_Pos		9		// use 4 data line when data phase for page program
 #define SFC_CFG_DATA4L_PP_Msk		(0x01 << SFC_CFG_DATA4L_PP_Pos)
-#define SFC_CFG_DATA4L_RD_Pos		10		//读取操作的地址阶段和数据阶段使用：0 1条数据线   1 2条数据线   2 4条数据线
+#define SFC_CFG_DATA4L_RD_Pos		10		// use 4 data line when data phase for data read, 0 1 data line, 1 2 data line, 2 4 data line
 #define SFC_CFG_DATA4L_RD_Msk		(0x03 << SFC_CFG_DATA4L_RD_Pos)
-#define SFC_CFG_WREN_Pos			12		//Flash写使能
+#define SFC_CFG_WREN_Pos			12		// Flash write enable
 #define SFC_CFG_WREN_Msk			(0x01 << SFC_CFG_WREN_Pos)
 
-#define SFC_TIM_WIP_CHK_ITV_Pos		0		//硬件自动查询WIP时间间隔
+#define SFC_TIM_WIP_CHK_ITV_Pos		0		// time interval for automatical WIP query
 #define SFC_TIM_WIP_CHK_ITV_Msk		(0xFF << SFC_TIM_WIP_CHK_ITV_Pos)
-#define SFC_TIM_WIP_CHK_LMT_Pos		8		//硬件自动查询WIP次数限值
+#define SFC_TIM_WIP_CHK_LMT_Pos		8		// count limit for automatical WIP query
 #define SFC_TIM_WIP_CHK_LMT_Msk		(0xFF << SFC_TIM_WIP_CHK_LMT_Pos)
-#define SFC_TIM_IDLETO_Pos			16		//空闲超时，超时后释放CS
+#define SFC_TIM_IDLETO_Pos			16		// Idle timeout, release CS after timeout
 #define SFC_TIM_IDLETO_Msk			(0x3F << SFC_TIM_IDLETO_Pos)
-#define SFC_TIM_CSHIGH_Pos			22		//CS拉高时间：0 1个SCLK时钟周期   1 2个   2 3个   3 4个
+#define SFC_TIM_CSHIGH_Pos			22		// time duration for CS high, 0 1 SCLK cycle, 1 2 SCLK cycle, 2 3 SCLK cycle, 3 4 SCLK cycle
 #define SFC_TIM_CSHIGH_Msk			(0x03 << SFC_TIM_CSHIGH_Pos)
 
 #define SFC_SR_BUSY_Pos				0
 #define SFC_SR_BUSY_Msk				(0x01 << SFC_SR_BUSY_Pos)
-#define SFC_SR_FIFOLVL_Pos			24		//FIFO Level
+#define SFC_SR_FIFOLVL_Pos			24		// FIFO Level
 #define SFC_SR_FIFOLVL_Msk			(0x07 << SFC_SR_FIFOLVL_Pos)
-#define SFC_SR_FIFOEMPTY_Pos		27		//FIFO Empty
+#define SFC_SR_FIFOEMPTY_Pos		27		// FIFO Empty
 #define SFC_SR_FIFOEMPTY_Msk		(0x01 << SFC_SR_FIFOEMPTY_Pos)
-#define SFC_SR_FIFOHFULL_Pos		28		//FIFO Half Full
+#define SFC_SR_FIFOHFULL_Pos		28		// FIFO Half Full
 #define SFC_SR_FIFOHFULL_Msk		(0x01 << SFC_SR_FIFOHFULL_Pos)
-#define SFC_SR_FIFOFULL_Pos			29		//FIFO Full
+#define SFC_SR_FIFOFULL_Pos			29		// FIFO Full
 #define SFC_SR_FIFOFULL_Msk			(0x01 << SFC_SR_FIFOFULL_Pos)
-#define SFC_SR_FIFOOVF_Pos			30		//FIFO Overflow
+#define SFC_SR_FIFOOVF_Pos			30		// FIFO Overflow
 #define SFC_SR_FIFOOVF_Msk			(0x01 << SFC_SR_FIFOOVF_Pos)
-#define SFC_SR_FIFOUVF_Pos			31		//FIFO Underflow
+#define SFC_SR_FIFOUVF_Pos			31		// FIFO Underflow
 #define SFC_SR_FIFOUVF_Msk			(0x01u<< SFC_SR_FIFOUVF_Pos)
 
-#define SFC_IF_OVER_Pos				0		//操作结束，写1清零
+#define SFC_IF_OVER_Pos				0		// operation done, wirte 1 to clear
 #define SFC_IF_OVER_Msk				(0x01 << SFC_IF_OVER_Pos)
-#define SFC_IF_ERR_Pos				1		//Error
+#define SFC_IF_ERR_Pos				1		// Error
 #define SFC_IF_ERR_Msk				(0x01 << SFC_IF_ERR_Pos)
-#define SFC_IF_TO_Pos				2		//Timeout
+#define SFC_IF_TO_Pos				2		// Timeout
 #define SFC_IF_TO_Msk				(0x01 << SFC_IF_TO_Pos)
 #define SFC_IF_FIFOEMPTY_Pos		27
 #define SFC_IF_FIFOEMPTY_Msk		(0x01 << SFC_IF_FIFOEMPTY_Pos)
@@ -2977,11 +2973,11 @@ typedef struct {
 #define SFC_IF_FIFOUVF_Pos			31
 #define SFC_IF_FIFOUVF_Msk			(0x01u<< SFC_IF_FIFOUVF_Pos)
 
-#define SFC_IE_OVER_Pos				0		//操作结束
+#define SFC_IE_OVER_Pos				0		// operation done interrupt enable
 #define SFC_IE_OVER_Msk				(0x01 << SFC_IE_OVER_Pos)
 #define SFC_IE_ERR_Pos				1
 #define SFC_IE_ERR_Msk				(0x01 << SFC_IE_ERR_Pos)
-#define SFC_IE_TO_Pos				2		//Timeout
+#define SFC_IE_TO_Pos				2		// Timeout
 #define SFC_IE_TO_Msk 				(0x01 << SFC_IE_TO_Pos)
 #define SFC_IE_FIFOEMPTY_Pos		27
 #define SFC_IE_FIFOEMPTY_Msk		(0x01 << SFC_IE_FIFOEMPTY_Pos)
@@ -2994,13 +2990,13 @@ typedef struct {
 #define SFC_IE_FIFOUVF_Pos			31
 #define SFC_IE_FIFOUVF_Msk			(0x01u<< SFC_IE_FIFOUVF_Pos)
 
-#define SFC_CMDAHB_WREN_Pos			0		//Flash命令码：写使能
+#define SFC_CMDAHB_WREN_Pos			0		// Flash command opcode for write enable
 #define SFC_CMDAHB_WREN_Msk			(0xFF << SFC_CMDAHB_WREN_Pos)
-#define SFC_CMDAHB_PP_Pos			8		//Flash命令码：页编程
+#define SFC_CMDAHB_PP_Pos			8		// Flash command opcode for page program
 #define SFC_CMDAHB_PP_Msk			(0xFF << SFC_CMDAHB_PP_Pos)
-#define SFC_CMDAHB_RDSRL_Pos		16		//Flash命令码：读STATUS REG低8位
+#define SFC_CMDAHB_RDSRL_Pos		16		// Flash command opcode for read status register
 #define SFC_CMDAHB_RDSRL_Msk		(0xFF << SFC_CMDAHB_RDSRL_Pos)
-#define SFC_CMDAHB_READ_Pos			24		//Flash命令码：读数据
+#define SFC_CMDAHB_READ_Pos			24		// Flash command opcode for data read
 #define SFC_CMDAHB_READ_Msk			(0xFFu<< SFC_CMDAHB_READ_Pos)
 
 
@@ -3011,7 +3007,7 @@ typedef struct {
 	
 	__I  uint32_t SR;
 	
-	__O  uint32_t SWTRG;					//Software trigger
+	__O  uint32_t SWTRG;					// Software trigger
 	
 	__IO uint32_t DHR;
 } DAC_TypeDef;
@@ -3021,10 +3017,10 @@ typedef struct {
 #define DAC_CR_EN_Msk				(0x01 << DAC_CR_EN_Pos)
 #define DAC_CR_DMAEN_Pos			3
 #define DAC_CR_DMAEN_Msk			(0x01 << DAC_CR_DMAEN_Pos)
-#define DAC_CR_DHRFMT_Pos			9		//DHR Format, 0 12位数据，DHR[11:0] => DOR[11:0]   1 12位数据，DHR[15:4] => DOR[11:0]   3 8位数据，DHR[7 :0] => DOR[11:4]
+#define DAC_CR_DHRFMT_Pos			9		// DHR Format, 0 12-bit data, DHR[11:0] => DOR[11:0]; 1 12-bit data, DHR[15:4] => DOR[11:0]; 3 8-bit data, DHR[7 :0] => DOR[11:4]
 #define DAC_CR_DHRFMT_Msk			(0x03 << DAC_CR_DHRFMT_Pos)
 
-#define DAC_SR_DHRFULL_Pos			0		//0 DHR not Full, can write now
+#define DAC_SR_DHRFULL_Pos			0		// 0 DHR not Full, can write now
 #define DAC_SR_DHRFULL_Msk			(0x01 << DAC_SR_DHRFULL_Pos)
 
 
@@ -3035,7 +3031,7 @@ typedef struct {
     
 	__O  uint32_t DATAIN;
 	
-    __IO uint32_t INIVAL;					//CR.EN写1时，INIVAL中的值写入RESULT
+    __IO uint32_t INIVAL;					// inital value, be written to RESULT when write 1 to CR.EN
     
     __I  uint32_t RESULT;
 } CRC_TypeDef;
@@ -3043,48 +3039,48 @@ typedef struct {
 
 #define CRC_CR_EN_Pos			    0
 #define CRC_CR_EN_Msk			    (0x01 << CRC_CR_EN_Pos)
-#define CRC_CR_IREV_Pos				1       //输入数据是否翻转，0 bit顺序不变    1 bit顺序完全翻转   2 bit顺序字节内翻转   3 仅字节顺序翻转
+#define CRC_CR_IREV_Pos				1       // input data reverse enable, 0 bit order not change, 1 bit order completely reverse, 2 bit order intra-byte reverse, 3 byte order reverse
 #define CRC_CR_IREV_Msk				(0x03 << CRC_CR_IREV_Pos)
-#define CRC_CR_INOT_Pos				3       //输入数据是否取反
+#define CRC_CR_INOT_Pos				3       // input data inverse enable
 #define CRC_CR_INOT_Msk				(0x01 << CRC_CR_INOT_Pos)
-#define CRC_CR_OREV_Pos				4       //输出结果是否翻转，0 bit顺序不变    1 bit顺序完全翻转   2 bit顺序字节内翻转   3 仅字节顺序翻转
+#define CRC_CR_OREV_Pos				4       // output data reverse enable
 #define CRC_CR_OREV_Msk				(0x03 << CRC_CR_OREV_Pos)
-#define CRC_CR_ONOT_Pos				6       //输出结果是否取反
+#define CRC_CR_ONOT_Pos				6       // output data inverse enable
 #define CRC_CR_ONOT_Msk				(0x01 << CRC_CR_ONOT_Pos)
-#define CRC_CR_POLY_Pos				7       //多项式选择，0 x^16+x^12+x^5+1   1 x^8+x^2+x+1   2 x^16+x^15+x^2+1   3 x^32+x^26+x^23+x^22+x^16+x^12+x^11+x^10+x^8+x^7+x^5+x^4+x^2+x+1
+#define CRC_CR_POLY_Pos				7       // CRC polynomial, 0 x^16+x^12+x^5+1, 1 x^8+x^2+x+1, 2 x^16+x^15+x^2+1, 3 x^32+x^26+x^23+x^22+x^16+x^12+x^11+x^10+x^8+x^7+x^5+x^4+x^2+x+1
 #define CRC_CR_POLY_Msk				(0x03 << CRC_CR_POLY_Pos)
-#define CRC_CR_IBIT_Pos				9       //输入数据有效位数 0 32位    1 16位    2 8位
+#define CRC_CR_IBIT_Pos				9       // input data width, 0 32-bit, 1 16-bit, 2 8-bit
 #define CRC_CR_IBIT_Msk				(0x03 << CRC_CR_IBIT_Pos)
 
 
 
 
 typedef struct {
-    __IO uint32_t MINSEC;                   //分秒计数
+    __IO uint32_t MINSEC;                   // minute, second
     
-    __IO uint32_t DATHUR;                   //日时计数
+    __IO uint32_t DATHUR;                   // date, hour
     
-    __IO uint32_t MONDAY;                   //月周计数
+    __IO uint32_t MONDAY;                   // month, day
     
-    __IO uint32_t YEAR;                     //[11:0] 年计数，支持1901-2199
+    __IO uint32_t YEAR;                     // year, support 1901-2199
     
-    __IO uint32_t MINSECAL;                 //分秒闹铃设置
+    __IO uint32_t MINSECAL;                 // minute and second alarm
     
-    __IO uint32_t DAYHURAL;                 //周时闹铃设置
+    __IO uint32_t DAYHURAL;                 // day and hour alarm
     
-    __IO uint32_t LOAD;                     //将设置寄存器中的值同步到RTC中，同步完成自动清零
+    __IO uint32_t LOAD;                     // load configure register value to RTC internal working register, automatically clear
     
     __IO uint32_t IE;
     
-    __IO uint32_t IF;                       //写1清零
+    __IO uint32_t IF;                       // write 1 to clear
     
-    __IO uint32_t EN;                       //[0] 1 RTC使能
+    __IO uint32_t EN;                       // [0] RTC enalbe
     
-    __IO uint32_t CFGABLE;                  //[0] 1 RTC可配置
+    __IO uint32_t CFGABLE;                  // [0] RTC configurable
     
-    __IO uint32_t TRIM;                     //时钟调整
+    __IO uint32_t TRIM;
     
-    __IO uint32_t TRIMM;                    //时钟微调整
+    __IO uint32_t TRIMM;
 } RTC_TypeDef;
 
 
@@ -3093,44 +3089,44 @@ typedef struct {
 #define RTC_LOAD_ALARM_Pos			1
 #define RTC_LOAD_ALARM_Msk			(0x01 << RTC_LOAD_ALARM_Pos)
 
-#define RTC_MINSEC_SEC_Pos			0       //秒计数，取值0--59
+#define RTC_MINSEC_SEC_Pos			0       // second, can be 0--59
 #define RTC_MINSEC_SEC_Msk		    (0x3F << RTC_MINSEC_SEC_Pos)
-#define RTC_MINSEC_MIN_Pos			6       //分钟计数，取值0--59
+#define RTC_MINSEC_MIN_Pos			6       // minute, can be 0--59
 #define RTC_MINSEC_MIN_Msk		    (0x3F << RTC_MINSEC_MIN_Pos)
 
-#define RTC_DATHUR_HOUR_Pos			0       //小时计数，取值0--23
+#define RTC_DATHUR_HOUR_Pos			0       // hour, can be 0--23
 #define RTC_DATHUR_HOUR_Msk		    (0x1F << RTC_DATHUR_HOUR_Pos)
-#define RTC_DATHUR_DATE_Pos			5       //date of month，取值1--31
+#define RTC_DATHUR_DATE_Pos			5       // date of month, can be 1--31
 #define RTC_DATHUR_DATE_Msk		    (0x1F << RTC_DATHUR_DATE_Pos)
 
-#define RTC_MONDAY_DAY_Pos			0       //day of week，取值0--6
+#define RTC_MONDAY_DAY_Pos			0       // day of week, can be 0--6
 #define RTC_MONDAY_DAY_Msk		    (0x07 << RTC_MONDAY_DAY_Pos)
-#define RTC_MONDAY_MON_Pos			3       //月份计数，取值1--12
+#define RTC_MONDAY_MON_Pos			3       // month, can be 1--12
 #define RTC_MONDAY_MON_Msk		    (0x0F << RTC_MONDAY_MON_Pos)
 
-#define RTC_MINSECAL_SEC_Pos		0       //闹钟秒设置
+#define RTC_MINSECAL_SEC_Pos		0
 #define RTC_MINSECAL_SEC_Msk		(0x3F << RTC_MINSECAL_SEC_Pos)
-#define RTC_MINSECAL_MIN_Pos	    6       //闹钟分钟设置
+#define RTC_MINSECAL_MIN_Pos	    6
 #define RTC_MINSECAL_MIN_Msk		(0x3F << RTC_MINSECAL_MIN_Pos)
 
-#define RTC_DAYHURAL_HOUR_Pos		0       //闹钟小时设置
+#define RTC_DAYHURAL_HOUR_Pos		0
 #define RTC_DAYHURAL_HOUR_Msk		(0x1F << RTC_DAYHURAL_HOUR_Pos)
-#define RTC_DAYHURAL_SUN_Pos		5       //周日闹钟有效
+#define RTC_DAYHURAL_SUN_Pos		5
 #define RTC_DAYHURAL_SUN_Msk		(0x01 << RTC_DAYHURAL_SUN_Pos)
-#define RTC_DAYHURAL_MON_Pos		6       //周一闹钟有效
+#define RTC_DAYHURAL_MON_Pos		6
 #define RTC_DAYHURAL_MON_Msk		(0x01 << RTC_DAYHURAL_MON_Pos)
-#define RTC_DAYHURAL_TUE_Pos		7       //周二闹钟有效
+#define RTC_DAYHURAL_TUE_Pos		7
 #define RTC_DAYHURAL_TUE_Msk		(0x01 << RTC_DAYHURAL_TUE_Pos)
-#define RTC_DAYHURAL_WED_Pos		8       //周三闹钟有效
+#define RTC_DAYHURAL_WED_Pos		8
 #define RTC_DAYHURAL_WED_Msk		(0x01 << RTC_DAYHURAL_WED_Pos)
-#define RTC_DAYHURAL_THU_Pos		9       //周四闹钟有效
+#define RTC_DAYHURAL_THU_Pos		9
 #define RTC_DAYHURAL_THU_Msk		(0x01 << RTC_DAYHURAL_THU_Pos)
-#define RTC_DAYHURAL_FRI_Pos		10      //周五闹钟有效
+#define RTC_DAYHURAL_FRI_Pos		10
 #define RTC_DAYHURAL_FRI_Msk		(0x01 << RTC_DAYHURAL_FRI_Pos)
-#define RTC_DAYHURAL_SAT_Pos		11      //周六闹钟有效
+#define RTC_DAYHURAL_SAT_Pos		11
 #define RTC_DAYHURAL_SAT_Msk		(0x01 << RTC_DAYHURAL_SAT_Pos)
 
-#define RTC_IE_SEC_Pos		        0       //秒中断使能
+#define RTC_IE_SEC_Pos		        0       // second interrupt enable
 #define RTC_IE_SEC_Msk		        (0x01 << RTC_IE_SEC_Pos)
 #define RTC_IE_MIN_Pos		        1
 #define RTC_IE_MIN_Msk		        (0x01 << RTC_IE_MIN_Pos)
@@ -3140,14 +3136,14 @@ typedef struct {
 #define RTC_IE_DATE_Msk		        (0x01 << RTC_IE_DATE_Pos)
 #define RTC_IE_ALARM_Pos		    4
 #define RTC_IE_ALARM_Msk		    (0x01 << RTC_IE_ALARM_Pos)
-#define RTC_IE_TRIM_Pos				5		//校准完成中断使能
+#define RTC_IE_TRIM_Pos				5
 #define RTC_IE_TRIM_Msk				(0x01 << RTC_IE_TRIM_Pos)
-#define RTC_IE_HSEC_Pos				6		//半秒中断使能
+#define RTC_IE_HSEC_Pos				6		// half-second interrupt enable
 #define RTC_IE_HSEC_Msk				(0x01 << RTC_IE_HSEC_Pos)
-#define RTC_IE_QSEC_Pos				7		//四分之一秒中断使能
+#define RTC_IE_QSEC_Pos				7		// quad-second interrupt enable
 #define RTC_IE_QSEC_Msk				(0x01 << RTC_IE_QSEC_Pos)
 
-#define RTC_IF_SEC_Pos		        0       //写1清零
+#define RTC_IF_SEC_Pos		        0       // write 1 to clear
 #define RTC_IF_SEC_Msk		        (0x01 << RTC_IF_SEC_Pos)
 #define RTC_IF_MIN_Pos		        1
 #define RTC_IF_MIN_Msk		        (0x01 << RTC_IF_MIN_Pos)
@@ -3164,13 +3160,12 @@ typedef struct {
 #define RTC_IF_QSEC_Pos				7
 #define RTC_IF_QSEC_Msk				(0x01 << RTC_IF_QSEC_Pos)
 
-#define RTC_TRIM_ADJ_Pos		    0       //用于调整BASECNT的计数周期，默认为32768，如果DEC为1，则计数周期调整为32768-ADJ，否则调整为32768+ADJ
+#define RTC_TRIM_ADJ_Pos		    0       //Used to adjust the count period of BASECNT, the default is 32768, if DEC is 1, the count period is adjusted to 32768-ADJ, otherwise 32768+ADJ
 #define RTC_TRIM_ADJ_Msk		    (0xFF << RTC_TRIM_ADJ_Pos)
 #define RTC_TRIM_DEC_Pos		    8
 #define RTC_TRIM_DEC_Msk		    (0x01 << RTC_TRIM_DEC_Pos)
 
-#define RTC_TRIMM_CYCLE_Pos		    0       //用于计数周期微调，如果INC为1，则第n个计数周期调整为(32768±ADJ)+1,否则调整为(32768±ADJ)-1
-                                            //cycles=0时，不进行微调整；cycles=1，则n为2；cycles=7，则n为8；以此类推
+#define RTC_TRIMM_CYCLE_Pos		    0       //For counting period fine-tuning, if INC is 1, the Nth counting period is adjusted to (32768+/-ADJ)+1, otherwise it is adjusted to (32768+/-ADJ)-1
 #define RTC_TRIMM_CYCLE_Msk		    (0x07 << RTC_TRIMM_CYCLE_Pos)
 #define RTC_TRIMM_INC_Pos		    3
 #define RTC_TRIMM_INC_Msk		    (0x01 << RTC_TRIMM_INC_Pos)
@@ -3179,15 +3174,15 @@ typedef struct {
 
 
 typedef struct {
-	__IO uint32_t RSTVAL;					//计数器计数到此值时产生复位
+	__IO uint32_t RSTVAL;					// a reset occurs when the counter counts to this value
 	
-	__IO uint32_t INTVAL;					//计数器计数到此值时产生中断
+	__IO uint32_t INTVAL;					// an interrupt occurs when the counter counts to this value
 	
 	__IO uint32_t CR;
 	
-	__IO uint32_t IF;						//[0] 中断标志，写1清零
+	__IO uint32_t IF;						// [0] interrupt flag, write 1 to clear
 	
-	__IO uint32_t FEED;						//写0x55喂狗
+	__IO uint32_t FEED;						// write 0x55 to feed dog
 } WDT_TypeDef;
 
 
@@ -3197,56 +3192,56 @@ typedef struct {
 #define WDT_CR_RSTEN_Msk			(0x01 << WDT_CR_RSTEN_Pos)
 #define WDT_CR_INTEN_Pos			2
 #define WDT_CR_INTEN_Msk			(0x01 << WDT_CR_INTEN_Pos)
-#define WDT_CR_WINEN_Pos			3		// 窗口功能使能
+#define WDT_CR_WINEN_Pos			3		// window function enable
 #define WDT_CR_WINEN_Msk			(0x01 << WDT_CR_WINEN_Pos)
-#define WDT_CR_CKDIV_Pos			8		// 时钟预分频，0 2分频   1 4分频   2 8分频 ...
+#define WDT_CR_CKDIV_Pos			8		// clock divider, 0 div2, 1 div4, 2 div8, ...
 #define WDT_CR_CKDIV_Msk			(0x0F << WDT_CR_CKDIV_Pos)
 
 
 
 
 typedef struct {
-	__IO uint32_t TXBUF[16][0x100];			//0x4000, 16KB
+	__IO uint32_t TXBUF[16][0x100];			// 0x4000, 16KB
 	
-	__IO uint32_t RXBUF[0x100];				//0x4400，17KB
+	__IO uint32_t RXBUF[0x100];				// 0x4400, 17KB
 	
 	struct {
-		__IO uint32_t TXCR;					//Tx Control
+		__IO uint32_t TXCR;					// Tx Control
 		
-		__IO uint32_t TXSR;					//Tx Status
+		__IO uint32_t TXSR;					// Tx Status
 		
 			 uint32_t RESERVED;
 		
-		__IO uint32_t TXTRSZ;				//Tx Transfer Size，以字节为单位
+		__IO uint32_t TXTRSZ;				// Tx Transfer Size
 	} INEP[16];
 	
 	struct {
-		__IO uint32_t RXCR;					//Rx Control
+		__IO uint32_t RXCR;					// Rx Control
 		
 			 uint32_t RESERVED[3];
-	} OUTEP[16];							//0x4600
+	} OUTEP[16];							// 0x4600
 	
-	__IO uint32_t DEVCR;					//Device Control
+	__IO uint32_t DEVCR;					// Device Control
 	
-	__I  uint32_t DEVSR;					//Device Status
+	__I  uint32_t DEVSR;					// Device Status
 	
-	__IO uint32_t DEVIF;					//Device Interrupt Flag
+	__IO uint32_t DEVIF;					// Device Interrupt Flag
 	
-	__IO uint32_t DEVIE;					//Device Interrupt Enable
+	__IO uint32_t DEVIE;					// Device Interrupt Enable
 	
 		 uint32_t RESERVED;
 	
-	__IO uint32_t EPIE;						//Endpoint Interrupt Enable
+	__IO uint32_t EPIE;						// Endpoint Interrupt Enable
 	
-	__IO uint32_t FFTHR;					//FIFO Threshold
+	__IO uint32_t FFTHR;					// FIFO Threshold
 	
-	__IO uint32_t RXSR;						//Rx Status
+	__IO uint32_t RXSR;						// Rx Status
 	
-	__IO uint32_t SETUPSR;					//Setup Status
+	__IO uint32_t SETUPSR;					// Setup Status
 	
-	__IO uint32_t EPIF;						//Endpoint Interrupt Flag
+	__IO uint32_t EPIF;						// Endpoint Interrupt Flag
 	
-	__IO uint32_t FRAMENR;					//Frame Number
+	__IO uint32_t FRAMENR;					// Frame Number
 	
 		 uint32_t RESERVED1[(0x4700-0x4628)/4-1];
 		 
@@ -3260,66 +3255,66 @@ typedef struct {
 } USBD_TypeDef;
 
 
-#define USBD_TXCR_SNDSTALL_Pos		0		//Send Stall
+#define USBD_TXCR_SNDSTALL_Pos		0		// Send Stall
 #define USBD_TXCR_SNDSTALL_Msk		(0x01 << USBD_TXCR_SNDSTALL_Pos)
-#define USBD_TXCR_FLUSHFF_Pos		2		//Flush FIFO
+#define USBD_TXCR_FLUSHFF_Pos		2		// Flush FIFO
 #define USBD_TXCR_FLUSHFF_Msk		(0x01 << USBD_TXCR_FLUSHFF_Pos)
-#define USBD_TXCR_FFRDY_Pos			3		//FIFO Ready
+#define USBD_TXCR_FFRDY_Pos			3		// FIFO Ready
 #define USBD_TXCR_FFRDY_Msk			(0x01 << USBD_TXCR_FFRDY_Pos)
 
-#define USBD_TXSR_SUCC_Pos			0		//Success
+#define USBD_TXSR_SUCC_Pos			0		// Success
 #define USBD_TXSR_SUCC_Msk			(0x01 << USBD_TXSR_SUCC_Pos)
-#define USBD_TXSR_DATSNT_Pos		1		//Data Sent
+#define USBD_TXSR_DATSNT_Pos		1		// Data Sent
 #define USBD_TXSR_DATSNT_Msk		(0x01 << USBD_TXSR_DATSNT_Pos)
-#define USBD_TXSR_NAKSNT_Pos		3		//NAK Sent
+#define USBD_TXSR_NAKSNT_Pos		3		// NAK Sent
 #define USBD_TXSR_NAKSNT_Msk		(0x01 << USBD_TXSR_NAKSNT_Pos)
 
-#define USBD_RXCR_SNDSTALL_Pos		0		//Send Stall
+#define USBD_RXCR_SNDSTALL_Pos		0		// Send Stall
 #define USBD_RXCR_SNDSTALL_Msk		(0x01 << USBD_RXCR_SNDSTALL_Pos)
-#define USBD_RXCR_FLUSHFF_Pos		2		//Flush FIFO
+#define USBD_RXCR_FLUSHFF_Pos		2		// Flush FIFO
 #define USBD_RXCR_FLUSHFF_Msk		(0x01 << USBD_RXCR_FLUSHFF_Pos)
-#define USBD_RXCR_FFRDY_Pos			3		//FIFO Ready
+#define USBD_RXCR_FFRDY_Pos			3		// FIFO Ready
 #define USBD_RXCR_FFRDY_Msk			(0x01 << USBD_RXCR_FFRDY_Pos)
 
-#define USBD_DEVCR_SPEED_Pos		0		//2 LS   3 FS
+#define USBD_DEVCR_SPEED_Pos		0		// 2 LS, 3 FS
 #define USBD_DEVCR_SPEED_Msk		(0x03 << USBD_DEVCR_SPEED_Pos)
 #define USBD_DEVCR_REMOTEWKUP_Pos	2
 #define USBD_DEVCR_REMOTEWKUP_Msk	(0x01 << USBD_DEVCR_REMOTEWKUP_Pos)
-#define USBD_DEVCR_SELFPWRD_Pos		3		//Self Powered
+#define USBD_DEVCR_SELFPWRD_Pos		3		// Self Powered
 #define USBD_DEVCR_SELFPWRD_Msk		(0x01 << USBD_DEVCR_SELFPWRD_Pos)
-#define USBD_DEVCR_SYNCFRAME_Pos	4		//Sync Frame Command Support
+#define USBD_DEVCR_SYNCFRAME_Pos	4		// Sync Frame Command Support
 #define USBD_DEVCR_SYNCFRAME_Msk	(0x01 << USBD_DEVCR_SYNCFRAME_Pos)
-#define USBD_DEVCR_CSRDONE_Pos		6		//CSR Configured Done
+#define USBD_DEVCR_CSRDONE_Pos		6		// CSR Configured Done
 #define USBD_DEVCR_CSRDONE_Msk		(0x01 << USBD_DEVCR_CSRDONE_Pos)
-#define USBD_DEVCR_SETDESC_Pos		7		//Set Descriptor Command Support
+#define USBD_DEVCR_SETDESC_Pos		7		// Set Descriptor Command Support
 #define USBD_DEVCR_SETDESC_Msk		(0x01 << USBD_DEVCR_SETDESC_Pos)
-#define USBD_DEVCR_DEVICE_Pos		8		//1 Device   0 Host
+#define USBD_DEVCR_DEVICE_Pos		8		// 1 Device, 0 Host
 #define USBD_DEVCR_DEVICE_Msk		(0x01 << USBD_DEVCR_DEVICE_Pos)
 
-#define USBD_DEVSR_CFG_Pos			0		//value set by Set Configuration command
+#define USBD_DEVSR_CFG_Pos			0		// value set by Set Configuration command
 #define USBD_DEVSR_CFG_Msk			(0x0F << USBD_DEVSR_CFG_Pos)
-#define USBD_DEVSR_INTF_Pos			4		//value set by Set Interface command
+#define USBD_DEVSR_INTF_Pos			4		// value set by Set Interface command
 #define USBD_DEVSR_INTF_Msk			(0x0F << USBD_DEVSR_INTF_Pos)
-#define USBD_DEVSR_ALT_Pos			8		//value set by Set Alternate command
+#define USBD_DEVSR_ALT_Pos			8		// value set by Set Alternate command
 #define USBD_DEVSR_ALT_Msk			(0x0F << USBD_DEVSR_ALT_Pos)
-#define USBD_DEVSR_SUSP_Pos			12		//set when Suspend condition detected on the USB
+#define USBD_DEVSR_SUSP_Pos			12		// set when Suspend condition detected on the USB
 #define USBD_DEVSR_SUSP_Msk			(0x01 << USBD_DEVSR_SUSP_Pos)
-#define USBD_DEVSR_FRNR_Pos			21		//Frame Number of received SOF
+#define USBD_DEVSR_FRNR_Pos			21		// Frame Number of received SOF
 #define USBD_DEVSR_FRNR_Msk			(0x7FF<< USBD_DEVSR_FRNR_Pos)
 
-#define USBD_DEVIF_SETCFG_Pos		0		//Set when receive Set Configuration command，写1清零
+#define USBD_DEVIF_SETCFG_Pos		0		// Set when receive Set Configuration command
 #define USBD_DEVIF_SETCFG_Msk		(0x01 << USBD_DEVIF_SETCFG_Pos)
-#define USBD_DEVIF_SETINTF_Pos		1		//Set when receive Set Interface command
+#define USBD_DEVIF_SETINTF_Pos		1		// Set when receive Set Interface command
 #define USBD_DEVIF_SETINTF_Msk		(0x01 << USBD_DEVIF_SETINTF_Pos)
-#define USBD_DEVIF_RST_Pos			3		//Set when Reset detected on the USB
+#define USBD_DEVIF_RST_Pos			3		// Set when Reset detected on the USB
 #define USBD_DEVIF_RST_Msk			(0x01 << USBD_DEVIF_RST_Pos)
-#define USBD_DEVIF_SUSP_Pos			4		//Set when Suspend detected on the USB
+#define USBD_DEVIF_SUSP_Pos			4		// Set when Suspend detected on the USB
 #define USBD_DEVIF_SUSP_Msk			(0x01 << USBD_DEVIF_SUSP_Pos)
-#define USBD_DEVIF_SOF_Pos			5		//Set when SOF received
+#define USBD_DEVIF_SOF_Pos			5		// Set when SOF received
 #define USBD_DEVIF_SOF_Msk			(0x01 << USBD_DEVIF_SOF_Pos)
-#define USBD_DEVIF_SETUP_Pos		6		//Set when Setup received
+#define USBD_DEVIF_SETUP_Pos		6		// Set when Setup received
 #define USBD_DEVIF_SETUP_Msk		(0x01 << USBD_DEVIF_SETUP_Pos)
-#define USBD_DEVIF_OUT_Pos			7		//Set when OUT received
+#define USBD_DEVIF_OUT_Pos			7		// Set when OUT received
 #define USBD_DEVIF_OUT_Msk			(0x01 << USBD_DEVIF_OUT_Pos)
 
 #define USBD_DEVIE_SETCFG_Pos		0
@@ -3370,23 +3365,23 @@ typedef struct {
 #define USBD_EPIE_OUTEP7_Pos		23
 #define USBD_EPIE_OUTEP7_Msk		(0x01 << USBD_EPIE_OUTEP7_Pos)
 
-#define USBD_RXSR_SUCC_Pos			0		//Success
+#define USBD_RXSR_SUCC_Pos			0		// Success
 #define USBD_RXSR_SUCC_Msk			(0x01 << USBD_RXSR_SUCC_Pos)
-#define USBD_RXSR_DONE_Pos			1		//1 Transfer completed
+#define USBD_RXSR_DONE_Pos			1		// 1 Transfer completed
 #define USBD_RXSR_DONE_Msk			(0x01 << USBD_RXSR_DONE_Pos)
-#define USBD_RXSR_EPNR_Pos			16		//Endpoint Number
+#define USBD_RXSR_EPNR_Pos			16		// Endpoint Number
 #define USBD_RXSR_EPNR_Msk			(0x0F << USBD_RXSR_EPNR_Pos)
-#define USBD_RXSR_TRSZ_Pos			22		//Transfer Size in byte
+#define USBD_RXSR_TRSZ_Pos			22		// Transfer Size in byte
 #define USBD_RXSR_TRSZ_Msk			(0x3FFu<<USBD_RXSR_TRSZ_Pos)
 
-#define USBD_SETUPSR_SUCC_Pos		0		//Success
+#define USBD_SETUPSR_SUCC_Pos		0		// Success
 #define USBD_SETUPSR_SUCC_Msk		(0x01 << USBD_SETUPSR_SUCC_Pos)
-#define USBD_SETUPSR_DONE_Pos		1		//1 Transfer completed
+#define USBD_SETUPSR_DONE_Pos		1		// 1 Transfer completed
 #define USBD_SETUPSR_DONE_Msk		(0x01 << USBD_SETUPSR_DONE_Pos)
 #define USBD_SETUPSR_EPNR_Pos		16
 #define USBD_SETUPSR_EPNR_Msk		(0x0F << USBD_SETUPSR_EPNR_Pos)
 
-#define USBD_EPIF_INEP0_Pos			0		//data sent or NAK sent
+#define USBD_EPIF_INEP0_Pos			0		// data sent or NAK sent
 #define USBD_EPIF_INEP0_Msk			(0x01 << USBD_EPIF_INEP0_Pos)
 #define USBD_EPIF_INEP1_Pos			1
 #define USBD_EPIF_INEP1_Msk			(0x01 << USBD_EPIF_INEP1_Pos)
@@ -3419,19 +3414,19 @@ typedef struct {
 #define USBD_EPIF_OUTEP7_Pos		23
 #define USBD_EPIF_OUTEP7_Msk		(0x01 << USBD_EPIF_OUTEP7_Pos)
 
-#define USBD_EPCFG_EPNR_Pos			0		//Endpoint Number
+#define USBD_EPCFG_EPNR_Pos			0		// Endpoint Number
 #define USBD_EPCFG_EPNR_Msk			(0x0F << USBD_EPCFG_EPNR_Pos)
-#define USBD_EPCFG_DIR_Pos			4		//Endpoint Direction，0 OUT   1 IN
+#define USBD_EPCFG_DIR_Pos			4		// Endpoint Direction, 0 OUT, 1 IN
 #define USBD_EPCFG_DIR_Msk			(0x01 << USBD_EPCFG_DIR_Pos)
-#define USBD_EPCFG_TYPE_Pos			5		//Endpoint Type，0 Control   1  Isochronous   2 Bulk   3 Interrupt
+#define USBD_EPCFG_TYPE_Pos			5		// Endpoint Type, 0 Control, 1 Isochronous, 2 Bulk, 3 Interrupt
 #define USBD_EPCFG_TYPE_Msk			(0x03 << USBD_EPCFG_TYPE_Pos)
-#define USBD_EPCFG_CFG_Pos			7		//Configuration number to which this endpoint belongs
+#define USBD_EPCFG_CFG_Pos			7		// Configuration number to which this endpoint belongs
 #define USBD_EPCFG_CFG_Msk			(0x0F << USBD_EPCFG_CFG_Pos)
-#define USBD_EPCFG_INTF_Pos			11		//Interface number to which this endpoint belongs
+#define USBD_EPCFG_INTF_Pos			11		// Interface number to which this endpoint belongs
 #define USBD_EPCFG_INTF_Msk			(0x0F << USBD_EPCFG_INTF_Pos)
-#define USBD_EPCFG_ALT_Pos			15		//Alternate setting to which this endpoint belongs
+#define USBD_EPCFG_ALT_Pos			15		// Alternate setting to which this endpoint belongs
 #define USBD_EPCFG_ALT_Msk			(0x0F << USBD_EPCFG_ALT_Pos)
-#define USBD_EPCFG_PKSZ_Pos			19		//Maximum packet size
+#define USBD_EPCFG_PKSZ_Pos			19		// Maximum packet size
 #define USBD_EPCFG_PKSZ_Msk			(0xFF << USBD_EPCFG_PKSZ_Pos)
 
 
@@ -3440,57 +3435,57 @@ typedef struct {
 typedef struct {
 	__IO uint32_t TXBUF[0x100];
 	
-		 uint32_t RESERVED1[15][0x100];		//0x4000, 16KB
+		 uint32_t RESERVED1[15][0x100];		// 0x4000, 16KB
 	
 	__IO uint32_t RXBUF[0x100];
 	
-		 uint32_t RESERVED2[0x200];			//0x4C00
+		 uint32_t RESERVED2[0x200];			// 0x4C00
 	
-	__IO uint32_t IF;						//Interrupt Flag
+	__IO uint32_t IF;						// Interrupt Flag
 	
-	__IO uint32_t IE;						//Interrupt Enable
+	__IO uint32_t IE;						// Interrupt Enable
 	
-	__IO uint32_t SR;						//Status Register
+	__IO uint32_t SR;						// Status Register
 	
-	__IO uint32_t CR;						//Control Register
+	__IO uint32_t CR;						// Control Register
 	
-	__IO uint32_t FFSZ;						//FIFO Size
+	__IO uint32_t FFSZ;						// FIFO Size
 	
-	__IO uint32_t FFTHR;					//FIFO Threshold
+	__IO uint32_t FFTHR;					// FIFO Threshold
 	
-	__IO uint32_t TXTRSZ;					//Tx Transfer Size in byte
+	__IO uint32_t TXTRSZ;					// Tx Transfer Size in byte
 	
 		 uint32_t RESERVED3[(0x5034-0x4C18)/4-1];
 		
-	__IO uint32_t FRAMEIV;					//Frame Interval, 11999 for 1ms
+	__IO uint32_t FRAMEIV;					// Frame Interval, 11999 for 1ms
 	
-	__IO uint32_t FRAMERM;					//Frame Remaining
+	__IO uint32_t FRAMERM;					// Frame Remaining
 	
-	__IO uint32_t FRAMENR;					//Frame Number
+	__IO uint32_t FRAMENR;					// Frame Number
 	
 		 uint32_t RESERVED4[(0x5054-0x503C)/4-1];
 		 
-	__IO uint32_t PORTSR;					//Port Status
+	__IO uint32_t PORTSR;					// Port Status
 	
 		 uint32_t RESERVED5[(0x5090-0x5054)/4-1];
 		 
 	__IO uint32_t TOKEN;
 	
-	__IO uint32_t OTGCSR;					//OTG Control and Status
+	__IO uint32_t OTGCSR;					// OTG Control and Status
 } USBH_TypeDef;
 
 
-#define USBH_IF_RXSTAT_Pos			0		//receive a status write form device
+#define USBH_IF_RXSTAT_Pos			0		// receive a status write form device
 #define USBH_IF_RXSTAT_Msk			(0x01 << USBH_IF_RXSTAT_Pos)
-#define USBH_IF_ABVTHR_Pos			1		//RX FIFO Above Threshold
+#define USBH_IF_ABVTHR_Pos			1		// RX FIFO Above Threshold
 #define USBH_IF_ABVTHR_Msk			(0x01 << USBH_IF_ABVTHR_Pos)
-#define USBH_IF_BLWTHR_Pos			2		//TX FIFO Below Threshold
+#define USBH_IF_BLWTHR_Pos			2		// TX FIFO Below Threshold
 #define USBH_IF_BLWTHR_Msk			(0x01 << USBH_IF_BLWTHR_Pos)
-#define USBH_IF_SOF_Pos				3		//SOF sent
+#define USBH_IF_SOF_Pos				3		// SOF sent
 #define USBH_IF_SOF_Msk				(0x01 << USBH_IF_SOF_Pos)
-#define USBH_IF_PORT_Pos			8		//Port status changed
+#define USBH_IF_PORT_Pos			8		// Port status changed
 #define USBH_IF_PORT_Msk			(0x01 << USBH_IF_PORT_Pos)
-#define USBH_IF_OTG_Pos				9		//SRP or HNP
+#define USBH_IF_OTG_Pos				9		// SRP or HNP
 #define USBH_IF_OTG_Msk				(0x01 << USBH_IF_OTG_Pos)
 
 #define USBH_IE_RXSTAT_Pos			0
@@ -3506,138 +3501,138 @@ typedef struct {
 #define USBH_IE_OTG_Pos				9
 #define USBH_IE_OTG_Msk				(0x01 << USBH_IE_OTG_Pos)
 
-#define USBH_SR_RESP_Pos			0		//Response Code
+#define USBH_SR_RESP_Pos			0		// Response Code
 #define USBH_SR_RESP_Msk			(0x0F << USBH_SR_RESP_Pos)
-#define USBH_SR_TRSZ_Pos			4		//Transfer Size in previous transaction
+#define USBH_SR_TRSZ_Pos			4		// Transfer Size in previous transaction
 #define USBH_SR_TRSZ_Msk			(0x3FF<< USBH_SR_TRSZ_Pos)
 
-#define USBH_CR_FLUSHFF_Pos			0		//Flush FIFO
+#define USBH_CR_FLUSHFF_Pos			0		// Flush FIFO
 #define USBH_CR_FLUSHFF_Msk			(0x01 << USBH_CR_FLUSHFF_Pos)
 
-#define USBH_FFSZ_RX_Pos			0		//RX FIFO Size in word
+#define USBH_FFSZ_RX_Pos			0		// RX FIFO Size in word
 #define USBH_FFSZ_RX_Msk			(0x3FF<< USBH_FFSZ_RX_Pos)
-#define USBH_FFSZ_TX_Pos			16		//TX FIFO Size in word
+#define USBH_FFSZ_TX_Pos			16		// TX FIFO Size in word
 #define USBH_FFSZ_TX_Msk			(0x3FF<< USBH_FFSZ_TX_Pos)
 
-#define USBH_FFTHR_TX_Pos			0		//TX FIFO Threshold in word
+#define USBH_FFTHR_TX_Pos			0		// TX FIFO Threshold in word
 #define USBH_FFTHR_TX_Msk			(0x3FF<< USBH_FFTHR_TX_Pos)
-#define USBH_FFTHR_RX_Pos			16		//RX FIFO Threshold in word
+#define USBH_FFTHR_RX_Pos			16		// RX FIFO Threshold in word
 #define USBH_FFTHR_RX_Msk			(0x3FF<< USBH_FFTHR_RX_Pos)
 
-#define USBH_PORTSR_CONN_Pos		0		//Read:  1 Device connected    0 Device not connected
+#define USBH_PORTSR_CONN_Pos		0		// Read: 1 Device connected, 0 Device not connected
 #define USBH_PORTSR_CONN_Msk		(0x01 << USBH_PORTSR_CONN_Pos)
-#define USBH_PORTSR_CLRENA_Pos		0		//Write: Clear Port Enable, 写1清除PORTSR.ENA
+#define USBH_PORTSR_CLRENA_Pos		0		// Write: Clear Port Enable
 #define USBH_PORTSR_CLRENA_Msk		(0x01 << USBH_PORTSR_CLRENA_Pos)
-#define USBH_PORTSR_ENA_Pos			1		//1 Port enabled    0 Port disabled
+#define USBH_PORTSR_ENA_Pos			1		// 1 Port enabled, 0 Port disabled
 #define USBH_PORTSR_ENA_Msk			(0x01 << USBH_PORTSR_ENA_Pos)
-#define USBH_PORTSR_SUSP_Pos		2		//1 Port is suspended   0 Port is not suspended
+#define USBH_PORTSR_SUSP_Pos		2		// 1 Port is suspended, 0 Port is not suspended
 #define USBH_PORTSR_SUSP_Msk		(0x01 << USBH_PORTSR_SUSP_Pos)
-#define USBH_PORTSR_CLRSUSP_Pos		3		//Write: Clear Suspend Status, 写1清除PORTSR.SUSP，Initiate Resume
+#define USBH_PORTSR_CLRSUSP_Pos		3		// Write: Clear Suspend Status, Initiate Resume
 #define USBH_PORTSR_CLRSUSP_Msk		(0x01 << USBH_PORTSR_CLRSUSP_Pos)
-#define USBH_PORTSR_RESET_Pos		4		//1 Port Reset signalling active   0 Port Reset signalling not active
+#define USBH_PORTSR_RESET_Pos		4		// 1 Port Reset signalling active, 0 Port Reset signalling not active
 #define USBH_PORTSR_RESET_Msk		(0x01 << USBH_PORTSR_RESET_Pos)
-#define USBH_PORTSR_POWER_Pos		8		//1 Port power on   0 Port power off
+#define USBH_PORTSR_POWER_Pos		8		// 1 Port power on, 0 Port power off
 #define USBH_PORTSR_POWER_Msk		(0x01 << USBH_PORTSR_POWER_Pos)
-#define USBH_PORTSR_SPEED_Pos		9		//Read:  1 Low-Speed device attached   0 Full-Speed device attached
+#define USBH_PORTSR_SPEED_Pos		9		// Read: 1 Low-Speed device attached, 0 Full-Speed device attached
 #define USBH_PORTSR_SPEED_Msk		(0x01 << USBH_PORTSR_SPEED_Pos)
-#define USBH_PORTSR_CLRPOWER_Pos	9		//Write: Clear Port Power status, 写1清除PORTSR.POWER
+#define USBH_PORTSR_CLRPOWER_Pos	9		// Write: Clear Port Power status, write 1 to clear PORTSR.POWER
 #define USBH_PORTSR_CLRPOWER_Msk	(0x01 << USBH_PORTSR_CLRPOWER_Pos)
-#define USBH_PORTSR_CONNCHG_Pos		16		//1 PORTSR.CONN changed，写1清零
+#define USBH_PORTSR_CONNCHG_Pos		16		// 1 PORTSR.CONN changed
 #define USBH_PORTSR_CONNCHG_Msk		(0x01 << USBH_PORTSR_CONNCHG_Pos)
-#define USBH_PORTSR_ENACHG_Pos		17		//1 PORTSR.ENA changed，写1清零
+#define USBH_PORTSR_ENACHG_Pos		17		// 1 PORTSR.ENA changed
 #define USBH_PORTSR_ENACHG_Msk		(0x01 << USBH_PORTSR_ENACHG_Pos)
-#define USBH_PORTSR_SUSPCHG_Pos		18		//set when a full Resume sequence is finished，写1清零
+#define USBH_PORTSR_SUSPCHG_Pos		18		// set when a full Resume sequence is finished, write 1 to clear
 #define USBH_PORTSR_SUSPCHG_Msk		(0x01 << USBH_PORTSR_SUSPCHG_Pos)
-#define USBH_PORTSR_RSTCHG_Pos		20		//set at the end of the Port Reset signal，写1清零
+#define USBH_PORTSR_RSTCHG_Pos		20		// set at the end of the Port Reset signal, write 1 to clear
 #define USBH_PORTSR_RSTCHG_Msk		(0x01 << USBH_PORTSR_RSTCHG_Pos)
 
 #define USBH_TOKEN_ADDR_Pos			0
 #define USBH_TOKEN_ADDR_Msk			(0x7F << USBH_TOKEN_ADDR_Pos)
-#define USBH_TOKEN_EPNR_Pos			7		//Endport Number
+#define USBH_TOKEN_EPNR_Pos			7		// Endport Number
 #define USBH_TOKEN_EPNR_Msk			(0x0F << USBH_TOKEN_EPNR_Pos)
-#define USBH_TOKEN_DATAX_Pos		11		//0 DATA0   1 DATA1
+#define USBH_TOKEN_DATAX_Pos		11		// 0 DATA0, 1 DATA1
 #define USBH_TOKEN_DATAX_Msk		(0x01 << USBH_TOKEN_DATAX_Pos)
-#define USBH_TOKEN_TYPE_Pos			13		//13 SETUP   1 OUT   9 IN
+#define USBH_TOKEN_TYPE_Pos			13		// 13 SETUP, 1 OUT, 9 IN
 #define USBH_TOKEN_TYPE_Msk			(0x0F << USBH_TOKEN_TYPE_Pos)
-#define USBH_TOKEN_ISO_Pos			17		//1 ISO transfer   0 Non-ISO transfer
+#define USBH_TOKEN_ISO_Pos			17		// 1 ISO transfer, 0 Non-ISO transfer
 #define USBH_TOKEN_ISO_Msk			(0x01 << USBH_TOKEN_ISO_Pos)
-#define USBH_TOKEN_SPEED_Pos		18		//2 LS   3 FS
+#define USBH_TOKEN_SPEED_Pos		18		// 2 LS, 3 FS
 #define USBH_TOKEN_SPEED_Msk		(0x03 << USBH_TOKEN_SPEED_Pos)
 #define USBH_TOKEN_TRSZ_Pos			20		//Transfer Size in byte
 #define USBH_TOKEN_TRSZ_Msk			(0x3FF<< USBH_TOKEN_TRSZ_Pos)
 
-#define USBH_OTGCSR_SRSUCC_Pos		0		//Session Request Success
+#define USBH_OTGCSR_SRSUCC_Pos		0		// Session Request Success
 #define USBH_OTGCSR_SRSUCC_Msk		(0x01 << USBH_OTGCSR_SRSUCC_Pos)
-#define USBH_OTGCSR_SRSCHG_Pos		1		//Session Request Status Change,  set to 1 on Session Request Success, 写1清零
+#define USBH_OTGCSR_SRSCHG_Pos		1		// Session Request Status Change,  set to 1 on Session Request Success, write 1 to clear
 #define USBH_OTGCSR_SRSCHG_Msk		(0x01 << USBH_OTGCSR_SRSCHG_Pos)
-#define USBH_OTGCSR_HNSUCC_Pos		2		//Host Negotiation Success
+#define USBH_OTGCSR_HNSUCC_Pos		2		// Host Negotiation Success
 #define USBH_OTGCSR_HNSUCC_Msk		(0x01 << USBH_OTGCSR_HNSUCC_Pos)
-#define USBH_OTGCSR_HNSCHG_Pos		3		//Host Negotiation Status Change, set to 1 on Host Negotiation Success，写1清零
+#define USBH_OTGCSR_HNSCHG_Pos		3		// Host Negotiation Status Change, set to 1 on Host Negotiation Success, write 1 to clear
 #define USBH_OTGCSR_HNSCHG_Msk		(0x01 << USBH_OTGCSR_HNSCHG_Pos)
-#define USBH_OTGCSR_SRDET_Pos		4		//Session Request Detected
+#define USBH_OTGCSR_SRDET_Pos		4		// Session Request Detected
 #define USBH_OTGCSR_SRDET_Msk		(0x01 << USBH_OTGCSR_SRDET_Pos)
-#define USBH_OTGCSR_SRDCHG_Pos		5		//Session Request Detected Change, set to 1 when a Session Request is detected，写1清零
+#define USBH_OTGCSR_SRDCHG_Pos		5		// Session Request Detected Change, set to 1 when a Session Request is detected, write 1 to clear
 #define USBH_OTGCSR_SRDCHG_Msk		(0x01 << USBH_OTGCSR_SRDCHG_Pos)
-#define USBH_OTGCSR_HNDET_Pos		6		//Host Negotiation Detected
+#define USBH_OTGCSR_HNDET_Pos		6		// Host Negotiation Detected
 #define USBH_OTGCSR_HNDET_Msk		(0x01 << USBH_OTGCSR_HNDET_Pos)
-#define USBH_OTGCSR_HNDCHG_Pos		7		//Host Negotiation Detect Change, set to 1 when a Host Negotiation is detected, 写1清零
+#define USBH_OTGCSR_HNDCHG_Pos		7		// Host Negotiation Detect Change, set to 1 when a Host Negotiation is detected, write 1 to clear
 #define USBH_OTGCSR_HNDCHG_Msk		(0x01 << USBH_OTGCSR_HNDCHG_Pos)
-#define USBH_OTGCSR_ID_Pos			8		//Connector ID Status, 0 in A-device mode,   1 in B-device mode
+#define USBH_OTGCSR_ID_Pos			8		// Connector ID Status, 0 in A-device mode, 1 in B-device mode
 #define USBH_OTGCSR_ID_Msk			(0x01 << USBH_OTGCSR_ID_Pos)
-#define USBH_OTGCSR_IDCHG_Pos		9		//set when OTGCSR.ID changed, 写1清零
+#define USBH_OTGCSR_IDCHG_Pos		9		// set when OTGCSR.ID changed, write 1 to clear
 #define USBH_OTGCSR_IDCHG_Msk		(0x01 << USBH_OTGCSR_IDCHG_Pos)
-#define USBH_OTGCSR_MODE_Pos		10		//0 Host mode   1 Device mode
+#define USBH_OTGCSR_MODE_Pos		10		// 0 Host mode, 1 Device mode
 #define USBH_OTGCSR_MODE_Msk		(0x01 << USBH_OTGCSR_MODE_Pos)
-#define USBH_OTGCSR_SRPREQ_Pos		16		//SRP Request
+#define USBH_OTGCSR_SRPREQ_Pos		16		// SRP Request
 #define USBH_OTGCSR_SRPREQ_Msk		(0x01 << USBH_OTGCSR_SRPREQ_Pos)
-#define USBH_OTGCSR_HNPREQ_Pos		17		//HNP Request
+#define USBH_OTGCSR_HNPREQ_Pos		17		// HNP Request
 #define USBH_OTGCSR_HNPREQ_Msk		(0x01 << USBH_OTGCSR_HNPREQ_Pos)
-#define USBH_OTGCSR_HHNPENA_Pos		18		//Host HNP Enable, set by app when Set Feature Set HNP Enable is successful on connected device
+#define USBH_OTGCSR_HHNPENA_Pos		18		// Host HNP Enable, set by app when Set Feature Set HNP Enable is successful on connected device
 #define USBH_OTGCSR_HHNPENA_Msk		(0x01 << USBH_OTGCSR_HHNPENA_Pos)
-#define USBH_OTGCSR_HNPENA_Pos		19		//set by app when receives Set Feature Set HNP Enable command
+#define USBH_OTGCSR_HNPENA_Pos		19		// set by app when receives Set Feature Set HNP Enable command
 #define USBH_OTGCSR_HNPENA_Msk		(0x01 << USBH_OTGCSR_HNPENA_Pos)
-#define USBH_OTGCSR_SRPCAP_Pos		20		//SRP Capable
+#define USBH_OTGCSR_SRPCAP_Pos		20		// SRP Capable
 #define USBH_OTGCSR_SRPCAP_Msk		(0x01 << USBH_OTGCSR_SRPCAP_Pos)
-#define USBH_OTGCSR_HNPCAP_Pos		21		//HNP Capable
+#define USBH_OTGCSR_HNPCAP_Pos		21		// HNP Capable
 #define USBH_OTGCSR_HNPCAP_Msk		(0x01 << USBH_OTGCSR_HNPCAP_Pos)
 
 
 
 
 typedef struct {
-	__IO uint32_t CFG;						//JPEG DEC configure register
+	__IO uint32_t CFG;						// JPEG DEC configure register
 	
-	__IO uint32_t CR;						//JPEG DEC control register
+	__IO uint32_t CR;						// JPEG DEC control register
 	
-	__IO uint32_t IR;						//JPEG DEC interrupt register
+	__IO uint32_t IR;						// JPEG DEC interrupt register
 	
-	__IO uint32_t SR;						//JPEG DEC status register
+	__IO uint32_t SR;						// JPEG DEC status register
 	
-	__IO uint32_t IMGSIZ;					//JPEG image size
+	__IO uint32_t IMGSIZ;					// JPEG image size
 	
-	__IO uint32_t IMGSTR;					//JPEG image size virtual stride
+	__IO uint32_t IMGSTR;					// JPEG image size virtual stride
 	
-	__IO uint32_t CSBASE;					//JPEG code-stream base address
+	__IO uint32_t CSBASE;					// JPEG code-stream base address
 	
 	union {
-		__IO uint32_t YBASE;				//YUV image Y base address
+		__IO uint32_t YBASE;				// YUV image Y base address
 		
-		__IO uint32_t RGBASE;				//RGB image base address
+		__IO uint32_t RGBASE;				// RGB image base address
 	};
 	
-	__IO uint32_t UBASE;					//YUV image U base address
+	__IO uint32_t UBASE;					// YUV image U base address
 	
-	__IO uint32_t VBASE;					//YUV image V base address
+	__IO uint32_t VBASE;					// YUV image V base address
 	
-	__IO uint32_t QTBASE;					//JPEG quantization table base address
+	__IO uint32_t QTBASE;					// JPEG quantization table base address
 	
-	__IO uint32_t HTBASE;					//JPEG huffman table base address
+	__IO uint32_t HTBASE;					// JPEG huffman table base address
 	
-	__IO uint32_t CODLEN;					//JPEG code stream total length in byte
+	__IO uint32_t CODLEN;					// JPEG code stream total length in byte
 	
 		 uint32_t RESERVED[51];
 	
-	__O  uint32_t QTABLE[3][16];			//Quantization table
+	__O  uint32_t QTABLE[3][16];			// Quantization table
 	
 		 uint32_t RESERVED2[16];
 	
@@ -3651,75 +3646,75 @@ typedef struct {
 		__O  uint32_t AC_CODEVAL[41];
 		
 			 uint32_t RESERVED;
-	} HTABLE[2];							//Huffman table
+	} HTABLE[2];							// Huffman table
 } JPEG_TypeDef;
 
 
-#define JPEG_CFG_SRCFMT_Pos			0		//JPEG Source Format, 0 YUV420(H2V2)   1 YUV422(H2V1)   2 YUV444(H1V1)
+#define JPEG_CFG_SRCFMT_Pos			0		// JPEG Source Format, 0 YUV420(H2V2), 1 YUV422(H2V1), 2 YUV444(H1V1)
 #define JPEG_CFG_SRCFMT_Msk			(0x03 << JPEG_CFG_SRCFMT_Pos)
-#define JPEG_CFG_SCANMOD_Pos		2		//JPEG scan mode, 0 interleaved (three components)   1 non-interleaved (single component)
+#define JPEG_CFG_SCANMOD_Pos		2		// JPEG scan mode, 0 interleaved (three components), 1 non-interleaved (single component)
 #define JPEG_CFG_SCANMOD_Msk		(0x01 << JPEG_CFG_SCANMOD_Pos)
-#define JPEG_CFG_NISCOMP_Pos		3		//Non-Interleaved Scanning Component, 0 component 1   1 component 2   2 component 3
+#define JPEG_CFG_NISCOMP_Pos		3		// Non-Interleaved Scanning Component, 0 component 1, 1 component 2, 2 component 3
 #define JPEG_CFG_NISCOMP_Msk		(0x03 << JPEG_CFG_NISCOMP_Pos)
-#define JPEG_CFG_HT1COMP_Pos		5		//Huffman Table for Component 1, 0 table 0   1 table 1
+#define JPEG_CFG_HT1COMP_Pos		5		// Huffman Table for Component 1, 0 table 0, 1 table 1
 #define JPEG_CFG_HT1COMP_Msk		(0x01 << JPEG_CFG_HT1COMP_Pos)
 #define JPEG_CFG_HT2COMP_Pos		6
 #define JPEG_CFG_HT2COMP_Msk		(0x01 << JPEG_CFG_HT2COMP_Pos)
 #define JPEG_CFG_HT3COMP_Pos		7
 #define JPEG_CFG_HT3COMP_Msk		(0x01 << JPEG_CFG_HT3COMP_Pos)
-#define JPEG_CFG_QT1COMP_Pos		8		//Quantization Table for Component 1, 0 table 0   1 table 1   2 table 2
+#define JPEG_CFG_QT1COMP_Pos		8		// Quantization Table for Component 1, 0 table 0, 1 table 1, 2 table 2
 #define JPEG_CFG_QT1COMP_Msk		(0x03 << JPEG_CFG_QT1COMP_Pos)
 #define JPEG_CFG_QT2COMP_Pos		10
 #define JPEG_CFG_QT2COMP_Msk		(0x03 << JPEG_CFG_QT2COMP_Pos)
 #define JPEG_CFG_QT3COMP_Pos		12
 #define JPEG_CFG_QT3COMP_Msk		(0x03 << JPEG_CFG_QT3COMP_Pos)
-#define JPEG_CFG_OUTFMT_Pos			14		//Image data output format, 0 YUV planar   1 YUV semi-planar   2 XRGB888   3 RGB888   4 RGB565
+#define JPEG_CFG_OUTFMT_Pos			14		// Image data output format, 0 YUV planar, 1 YUV semi-planar, 2 XRGB888, 3 RGB888, 4 RGB565
 #define JPEG_CFG_OUTFMT_Msk			(0x07 << JPEG_CFG_OUTFMT_Pos)
-#define JPEG_CFG_YUV2RGB_Pos		17		//YUV2RGB translation, 0 Disable   1 Enable
+#define JPEG_CFG_YUV2RGB_Pos		17		// YUV2RGB translation, 0 Disable, 1 Enable
 #define JPEG_CFG_YUV2RGB_Msk		(0x01 << JPEG_CFG_YUV2RGB_Pos)
-#define JPEG_CFG_UVSWAP_Pos			18		//UV output swap, 0 YUV   1 YVU
+#define JPEG_CFG_UVSWAP_Pos			18		// UV output swap, 0 YUV, 1 YVU
 #define JPEG_CFG_UVSWAP_Msk			(0x01 << JPEG_CFG_UVSWAP_Pos)
-#define JPEG_CFG_RBSWAP_Pos			19		//RB output swap, 0 RGB   1 BGR
+#define JPEG_CFG_RBSWAP_Pos			19		// RB output swap, 0 RGB, 1 BGR
 #define JPEG_CFG_RBSWAP_Msk			(0x01 << JPEG_CFG_RBSWAP_Pos)
-#define JPEG_CFG_EDSWAP_Pos			20		//endian swap, 0 XRGB   1 BGRX
+#define JPEG_CFG_EDSWAP_Pos			20		// endian swap, 0 XRGB, 1 BGRX
 #define JPEG_CFG_EDSWAP_Msk			(0x01 << JPEG_CFG_EDSWAP_Pos)
-#define JPEG_CFG_565DITH_Pos		21		//RGB565 dithering, 0 Disable   1 Enable
+#define JPEG_CFG_565DITH_Pos		21		// RGB565 dithering, 0 Disable, 1 Enable
 #define JPEG_CFG_565DITH_Msk		(0x01 << JPEG_CFG_565DITH_Pos)
 
-#define JPEG_CR_START_Pos			0		//JPEG DEC frame start，解码完成自动清零
+#define JPEG_CR_START_Pos			0		// JPEG DEC frame start, automatically clear when done
 #define JPEG_CR_START_Msk			(0x01 << JPEG_CR_START_Pos)
-#define JPEG_CR_RESTART_Pos			1		//Decoder stream buffering restart
+#define JPEG_CR_RESTART_Pos			1		// Decoder stream buffering restart
 #define JPEG_CR_RESTART_Msk			(0x01 << JPEG_CR_RESTART_Pos)
-#define JPEG_CR_RESET_Pos			3		//JPEG DEC core reset，自动清零
+#define JPEG_CR_RESET_Pos			3		// JPEG DEC core reset, automatically clear
 #define JPEG_CR_RESET_Msk			(0x01 << JPEG_CR_RESET_Pos)
-#define JPEG_CR_REINTRV_Pos			4		//Restart interval marker enable
+#define JPEG_CR_REINTRV_Pos			4		// Restart interval marker enable
 #define JPEG_CR_REINTRV_Msk			(0x01 << JPEG_CR_REINTRV_Pos)
-#define JPEG_CR_LASTBUF_Pos			5		//Decoder last stream buffering
+#define JPEG_CR_LASTBUF_Pos			5		// Decoder last stream buffering
 #define JPEG_CR_LASTBUF_Msk			(0x01 << JPEG_CR_LASTBUF_Pos)
-#define JPEG_CR_QTAUTO_Pos			7		//JPEG quantization tables auto refresh enable
+#define JPEG_CR_QTAUTO_Pos			7		// JPEG quantization tables auto refresh enable
 #define JPEG_CR_QTAUTO_Msk			(0x01 << JPEG_CR_QTAUTO_Pos)
-#define JPEG_CR_HTAUTO_Pos			8		//JPEG huffman tables auto refresh enable
+#define JPEG_CR_HTAUTO_Pos			8		// JPEG huffman tables auto refresh enable
 #define JPEG_CR_HTAUTO_Msk			(0x01 << JPEG_CR_HTAUTO_Pos)
-#define JPEG_CR_QTCNT_Pos			9		//Number of quantization tables
+#define JPEG_CR_QTCNT_Pos			9		// Number of quantization tables
 #define JPEG_CR_QTCNT_Msk			(0x03 << JPEG_CR_QTCNT_Pos)
-#define JPEG_CR_HTCNT_Pos			11		//Number of huffman tables
+#define JPEG_CR_HTCNT_Pos			11		// Number of huffman tables
 #define JPEG_CR_HTCNT_Msk			(0x01 << JPEG_CR_HTCNT_Pos)
-#define JPEG_CR_CUCNT_Pos			12		//The number of CU in the restart interval
+#define JPEG_CR_CUCNT_Pos			12		// The number of CU in the restart interval
 #define JPEG_CR_CUCNT_Msk			(0xFFFF<<JPEG_CR_CUCNT_Pos)
 
-#define JPEG_IR_IEDONE_Pos			0		//Frame processing finish interrupt enable
+#define JPEG_IR_IEDONE_Pos			0		// Frame processing finish interrupt enable
 #define JPEG_IR_IEDONE_Msk			(0x01 << JPEG_IR_IEDONE_Pos)
-#define JPEG_IR_IEEMPTY_Pos			2		//JPEG decoder stream buffering empty interrupt enable
+#define JPEG_IR_IEEMPTY_Pos			2		// JPEG decoder stream buffering empty interrupt enable
 #define JPEG_IR_IEEMPTY_Msk			(0x01 << JPEG_IR_IEEMPTY_Pos)
-#define JPEG_IR_IEERROR_Pos			3		//JPEG error interrupt enable
+#define JPEG_IR_IEERROR_Pos			3		// JPEG error interrupt enable
 #define JPEG_IR_IEERROR_Msk			(0x01 << JPEG_IR_IEERROR_Pos)
-#define JPEG_IR_ICDONE_Pos			5		//Interrupt Clear, write-ongly
+#define JPEG_IR_ICDONE_Pos			5		// Interrupt Clear, write-ongly
 #define JPEG_IR_ICDONE_Msk			(0x01 << JPEG_IR_ICDONE_Pos)
 #define JPEG_IR_ICEMPTY_Pos			7
 #define JPEG_IR_ICEMPTY_Msk			(0x01 << JPEG_IR_ICEMPTY_Pos)
 #define JPEG_IR_ICERROR_Pos			8
 #define JPEG_IR_ICERROR_Msk			(0x01 << JPEG_IR_ICERROR_Pos)
-#define JPEG_IR_IFDONE_Pos			10		//Interrupt Flag, read-only
+#define JPEG_IR_IFDONE_Pos			10		// Interrupt Flag, read-only
 #define JPEG_IR_IFDONE_Msk			(0x01 << JPEG_IR_IFDONE_Pos)
 #define JPEG_IR_IFEMPTY_Pos			12
 #define JPEG_IR_IFEMPTY_Msk			(0x01 << JPEG_IR_IFEMPTY_Pos)
@@ -3728,28 +3723,28 @@ typedef struct {
 
 #define JPEG_SR_BUSY_Pos			0
 #define JPEG_SR_BUSY_Msk			(0x01 << JPEG_SR_BUSY_Pos)
-#define JPEG_SR_CUOVR_Pos			1		//JPEG CU run length overflow error
+#define JPEG_SR_CUOVR_Pos			1		// JPEG CU run length overflow error
 #define JPEG_SR_CUOVR_Msk			(0x01 << JPEG_SR_CUOVR_Pos)
-#define JPEG_SR_REIMERR_Pos			2		//JPEG Restart interval marker error
+#define JPEG_SR_REIMERR_Pos			2		// JPEG Restart interval marker error
 #define JPEG_SR_REIMERR_Msk			(0x01 << JPEG_SR_REIMERR_Pos)
-#define JPEG_SR_BUFBUSY_Pos			4		//JPEG decoder stream buffering status
+#define JPEG_SR_BUFBUSY_Pos			4		// JPEG decoder stream buffering status
 #define JPEG_SR_BUFBUSY_Msk			(0x01 << JPEG_SR_BUFBUSY_Pos)
 #define JPEG_SR_DMARDBUSY_Pos		5
 #define JPEG_SR_DMARDBUSY_Msk		(0x01 << JPEG_SR_DMARDBUSY_Pos)
 #define JPEG_SR_DMAWRBUSY_Pos		6
 #define JPEG_SR_DMAWRBUSY_Msk		(0x01 << JPEG_SR_DMAWRBUSY_Pos)
 
-#define JPEG_IMGSIZ_HPIX_Pos		0		//JPEG image width (minus 1)
+#define JPEG_IMGSIZ_HPIX_Pos		0		// JPEG image width (minus 1)
 #define JPEG_IMGSIZ_HPIX_Msk		(0x3FF<< JPEG_IMGSIZ_HPIX_Pos)
-#define JPEG_IMGSIZ_VPIX_Pos		16		//JPEG image height (minus 1)
+#define JPEG_IMGSIZ_VPIX_Pos		16		// JPEG image height (minus 1)
 #define JPEG_IMGSIZ_VPIX_Msk		(0x3FF<< JPEG_IMGSIZ_VPIX_Pos)
 
-#define JPEG_IMGSTR_RGBLINE_Pos		0		//number of words of RGB line width, XRGB888: img_width   RGB888: ceil(img_width*3/4)   RGB565 : ceil(img_width/2)
+#define JPEG_IMGSTR_RGBLINE_Pos		0		// number of words of RGB line width, XRGB888: img_width, RGB888: ceil(img_width*3/4), RGB565: ceil(img_width/2)
 #define JPEG_IMGSTR_RGBLINE_Msk		(0x7FF<< JPEG_IMGSTR_RGBLINE_Pos)
-#define JPEG_IMGSTR_YLINE_Pos		0		//number of words of Y line width, ceil(img_width/4)
+#define JPEG_IMGSTR_YLINE_Pos		0		// number of words of Y line width, ceil(img_width/4)
 #define JPEG_IMGSTR_YLINE_Msk		(0x7FF<< JPEG_IMGSTR_YLINE_Pos)
-#define JPEG_IMGSTR_UVLINE_Pos		16		//number of words of UV line width, UV-planer 444: ceil(img_width/4)   UV-planar 420/422: ceil(img_width/8)
-											//									UV-semi planer 444: ceil(img_width/2)   UV-semi planer 420/422: ceil(img_width/4)
+#define JPEG_IMGSTR_UVLINE_Pos		16		// number of words of UV line width, UV-planer 444: ceil(img_width/4)   UV-planar 420/422: ceil(img_width/8)
+											//									 UV-semi planer 444: ceil(img_width/2)   UV-semi planer 420/422: ceil(img_width/4)
 #define JPEG_IMGSTR_UVLINE_Msk		(0x7FF<< JPEG_IMGSTR_UVLINE_Pos)
 
 
@@ -3763,7 +3758,7 @@ typedef struct {
 #define APB1_BASE		 	0x40040000
 #define APB2_BASE			0x400A0000
 
-#define SFLASH_BASE			0x70000000	//Serial Flash
+#define SFLASH_BASE			0x70000000	// Serial Flash
 
 #define SDRAMM_BASE			0x80000000
 #define SDRAMC_BASE			0x88000000
@@ -3839,9 +3834,9 @@ typedef struct {
 #define ADC0_BASE			(APB1_BASE + 0x09000)
 #define ADC1_BASE			(APB1_BASE + 0x09800)
 
-#define FMC_BASE			(APB1_BASE + 0x0A000)	//Flash Memory Controller
+#define FMC_BASE			(APB1_BASE + 0x0A000)	// Flash Memory Controller
 
-#define SFC_BASE			(APB1_BASE + 0x0A800)	//Serial Flash Controller
+#define SFC_BASE			(APB1_BASE + 0x0A800)	// Serial Flash Controller
 
 #define RTC_BASE			(APB1_BASE + 0x0B800)
 

@@ -7,7 +7,7 @@ typedef struct {
 	uint16_t maxcnt;				// maximum count value
 	uint8_t  swapAB;				// =1 swap pin A and B
 	uint8_t  intINDEXEn;			// index pulse detected interrupt enable
-	uint8_t  intMATCHEn;			// POSCNT increments to equal MAXCNT, or POSCNT decrement from MAXCNT to 0 interrupts enable
+	uint8_t  intMATCHEn;			// POSCNT increments to equal MAXCNT, or POSCNT decrement from MAXCNT to 0 interrupt enable
 	uint8_t  intCNTOVEn;			// Counter Overrun interrupt enable
 	uint8_t  intERROREn;			// Counter Error interrupt enable
 } QEI_InitStructure;
