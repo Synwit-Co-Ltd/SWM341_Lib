@@ -64,11 +64,11 @@ typedef enum {
 
 
 typedef struct {
-	uint8_t            pksz;	// 控制传输包大小
-	uint8_t           *buff;	// 控制传输的数据阶段缓冲区
-	uint16_t           size;	// 控制传输的数据阶段缓冲区大小
+	uint8_t            pksz;	// package size
+	uint8_t           *buff;	// data buffer for data phase
+	uint16_t           size;	// data buffer size for data phase
 	CTRL_State         state;
-	USB_Setup_Packet_t setup;	// Setup 包
+	USB_Setup_Packet_t setup;	// Setup package
 	
 	uint8_t        toggle_in;
 	uint8_t        toggle_out;
@@ -77,7 +77,7 @@ typedef struct {
 
 typedef struct {
     uint8_t        Address;
-    uint8_t        Speed;		// 2 低速   3 全速
+    uint8_t        Speed;		// 2 low-speed, 3 full-speed
     USB_DevDesc_t  Dev_Desc;
     USB_CfgDesc_t  Cfg_Desc;
     USB_IntfDesc_t Intf_Desc[USBH_MAX_NUM_INTERFACES];
@@ -147,4 +147,3 @@ USBH_Status USBH_CtrlTransfer(USBH_Info_t *phost, uint8_t *buff, uint16_t size);
 void USBH_ErrorHandle(USBH_Info_t *phost, USBH_Status errType);
 
 #endif
-

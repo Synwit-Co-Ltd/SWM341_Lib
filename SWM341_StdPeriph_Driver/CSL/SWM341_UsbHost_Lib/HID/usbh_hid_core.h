@@ -69,4 +69,4 @@ USBH_Status USBH_Set_Report(USBH_Info_t *phost, uint8_t interface, uint8_t repor
 USBH_Status USBH_Set_Protocol(USBH_Info_t *phost, uint8_t interface, uint8_t protocol);
 
 
-#endif // __USBH_HID_CORE_H__
+#endif

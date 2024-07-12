@@ -1,13 +1,8 @@
-/****************************************************************************************************************************************** 
-* 文件名称: usbh_hid_core.c
-* 功能说明:	
-* 技术支持:	http://www.synwit.com.cn/e/tool/gbook/?bid=1
-* 注意事项: 
-* 版本日期:	V1.1.0		2020年11月3日
-* 升级记录:  
+/*******************************************************************************************************************************
+* @brief	USB host HID driver
 *
 *
-*******************************************************************************************************************************************
+********************************************************************************************************************************
 * @attention
 *
 * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS WITH CODING INFORMATION 
@@ -16,8 +11,8 @@
 * OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING INFORMATION CONTAINED HEREIN IN CONN-
 * -ECTION WITH THEIR PRODUCTS.
 *
-* COPYRIGHT 2012 Synwit Technology
-*******************************************************************************************************************************************/
+* COPYRIGHT 2012 Synwit Technology 
+*******************************************************************************************************************************/
 #include "SWM341.h"
 #include "usbh_hid_core.h"
 #include "usbh_hid_keybd.h"
@@ -39,13 +34,11 @@ volatile USBH_HID_Info_t USBH_HID_Info;
 static uint8_t DataInBuffer[64];
 
 
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_HID_Init()
-* 功能说明:	
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host HID init
+* @param	phost
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_HID_Init(USBH_Info_t *phost)
 {
     USB_EpDesc_t *pEpIn, *pEpOut;
@@ -90,14 +83,11 @@ USBH_Status USBH_HID_Init(USBH_Info_t *phost)
     return USBH_OK;
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_HID_DeInit()
-* 功能说明:	
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host HID deinit
+* @param	phost
+* @return
+*******************************************************************************************************************************/
 void USBH_HID_DeInit(USBH_Info_t *phost)
 {
 	USBH_HID_Info.InEpDATAX     = 0;
@@ -109,14 +99,11 @@ void USBH_HID_DeInit(USBH_Info_t *phost)
 	USBH_HID_Info.reqState = USBH_HID_REQ_GET_REPORT_DESC;
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_HID_Request()
-* 功能说明:	
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host HID request
+* @param	phost
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_HID_Request(USBH_Info_t *phost)
 {
     USBH_Status status    = USBH_BUSY;
@@ -147,14 +134,11 @@ USBH_Status USBH_HID_Request(USBH_Info_t *phost)
     return status; 
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_HID_Process()
-* 功能说明:	
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host HID process
+* @param	phost
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_HID_Process(USBH_Info_t *phost)
 {
     USBH_Status status = USBH_OK;
@@ -230,16 +214,14 @@ USBH_Status USBH_HID_Process(USBH_Info_t *phost)
     return status;
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_Set_Idle()
-* 功能说明:	
-* 输    入: uint8_t interface
-*			uint8_t reportID	Targeted report ID for Set Idle request
-*			uint8_t duration	Duration for HID Idle request, 单位 4ms
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host HID set idle
+* @param	phost
+* @param	interface is the interface to set
+* @param	reportID is targeted report ID for Set Idle request
+* @param	duration is duration for HID Idle request, in unit of 4ms
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_Set_Idle(USBH_Info_t *phost, uint8_t interface, uint8_t reportId, uint8_t duration)
 {
 	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_CLASS | USB_REQ_TO_INTERFACE;
@@ -251,16 +233,14 @@ USBH_Status USBH_Set_Idle(USBH_Info_t *phost, uint8_t interface, uint8_t reportI
 	return USBH_CtrlTransfer(phost, 0, 0);
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_Set_Report()
-* 功能说明:	
-* 输    入: uint8_t interface
-*			uint8_t reportId	Targeted report ID for Set Report request
-*			uint8_t reportType	1 Input，2 Output，3 Feature
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host HID set report
+* @param	phost
+* @param	interface is the interface to set
+* @param	reportId is targeted report ID for Set Report request
+* @param	reportType: 1 Input, 2 Output, 3 Feature
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_Set_Report(USBH_Info_t *phost, uint8_t interface, uint8_t reportId, uint8_t reportType, uint8_t * reportData, uint16_t reportLen)
 {
 	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_CLASS | USB_REQ_TO_INTERFACE;
@@ -272,15 +252,13 @@ USBH_Status USBH_Set_Report(USBH_Info_t *phost, uint8_t interface, uint8_t repor
 	return USBH_CtrlTransfer(phost, reportData, reportLen);
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_Set_Protocol()
-* 功能说明:	
-* 输    入: uint8_t interface
-*			uint8_t protocol 	0 = Boot Protocol, 1 = Report Protocol
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host HID set protocol
+* @param	phost
+* @param	interface is the interface to set
+* @param	protocol: 0 = Boot Protocol, 1 = Report Protocol
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_Set_Protocol(USBH_Info_t *phost, uint8_t interface, uint8_t protocol)
 {
 	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_CLASS | USB_REQ_TO_INTERFACE;

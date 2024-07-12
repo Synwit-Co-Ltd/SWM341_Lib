@@ -755,4 +755,4 @@ uint32_t PTP_DecodeObjectPropList(USBH_Info_t *phost, MTP_Properties_t *props, u
 #define PTP_LE64(addr)  *((uint64_t *)(addr))
 						
 
-#endif  // __USBH_MTP_PTP_H__
+#endif

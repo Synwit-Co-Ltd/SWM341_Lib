@@ -1,13 +1,8 @@
-/****************************************************************************************************************************************** 
-* 文件名称: usbh_stdreq.c
-* 功能说明:	
-* 技术支持:	http://www.synwit.com.cn/e/tool/gbook/?bid=1
-* 注意事项: 
-* 版本日期:	V1.1.0		2020年11月3日
-* 升级记录:  
+/*******************************************************************************************************************************
+* @brief	USB host driver
 *
 *
-*******************************************************************************************************************************************
+********************************************************************************************************************************
 * @attention
 *
 * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS WITH CODING INFORMATION 
@@ -16,21 +11,19 @@
 * OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING INFORMATION CONTAINED HEREIN IN CONN-
 * -ECTION WITH THEIR PRODUCTS.
 *
-* COPYRIGHT 2012 Synwit Technology
-*******************************************************************************************************************************************/
+* COPYRIGHT 2012 Synwit Technology 
+*******************************************************************************************************************************/
 #include <string.h>
 #include "SWM341.h"
 #include "usbh_core.h"
 #include "usbh_stdreq.h"
 
 
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_GetDescriptor()
-* 功能说明:	获取描述符
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host get descriptor
+* @param
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_GetDescriptor(USBH_Info_t *phost, uint8_t type, uint8_t index, uint8_t *buff, int size)
 {	
 	phost->Ctrl.setup.bRequestType = USB_REQ_D2H | USB_REQ_STANDARD | USB_REQ_TO_DEVICE;
@@ -42,18 +35,12 @@ USBH_Status USBH_GetDescriptor(USBH_Info_t *phost, uint8_t type, uint8_t index, 
 	return USBH_CtrlTransfer(phost, buff, size);
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_GetDescriptorEx()
-* 功能说明:	获取描述符
-* 输    入: uint8_t reqType			USB_REQ_STANDARD、USB_REQ_CLASS、USB_REQ_VENDOR
-*			uint8_t reqTarget		USB_REQ_TO_DEVICE、USB_REQ_TO_INTERFACE、USB_REQ_TO_ENDPOINT
-*			uint8_t type
-*			uint8_t index
-*			uint16_t wIndex
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host get descriptor
+* @param	reqType can be USB_REQ_STANDARD, USB_REQ_CLASS, USB_REQ_VENDOR
+* @param	reqTarget can be USB_REQ_TO_DEVICE, USB_REQ_TO_INTERFACE, USB_REQ_TO_ENDPOINT
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_GetDescriptorEx(USBH_Info_t *phost, uint8_t reqType, uint8_t reqTarget, uint8_t type, uint8_t index, uint16_t wIndex, uint8_t *buff, int size)
 {	
 	phost->Ctrl.setup.bRequestType = USB_REQ_D2H | reqType | reqTarget;
@@ -65,14 +52,11 @@ USBH_Status USBH_GetDescriptorEx(USBH_Info_t *phost, uint8_t reqType, uint8_t re
 	return USBH_CtrlTransfer(phost, buff, size);
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_SetAddress()
-* 功能说明:	设置设备地址
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host set device address
+* @param
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_SetAddress(USBH_Info_t *phost, uint8_t addr)
 {	
 	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_STANDARD | USB_REQ_TO_DEVICE;
@@ -84,14 +68,11 @@ USBH_Status USBH_SetAddress(USBH_Info_t *phost, uint8_t addr)
 	return USBH_CtrlTransfer(phost, 0, 0);
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_SetConfiguration()
-* 功能说明:	设置 configuration
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host set device configuration
+* @param
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_SetConfiguration(USBH_Info_t *phost, uint8_t cfg)
 {	
 	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_STANDARD | USB_REQ_TO_DEVICE;
@@ -103,14 +84,11 @@ USBH_Status USBH_SetConfiguration(USBH_Info_t *phost, uint8_t cfg)
 	return USBH_CtrlTransfer(phost, 0, 0);
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_SetInterface()
-* 功能说明:	设置 interface altSetting
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host set device interface altSetting
+* @param
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_SetInterface(USBH_Info_t *phost, uint8_t intf, uint8_t altSetting)
 {	
 	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_STANDARD | USB_REQ_TO_INTERFACE;
@@ -122,14 +100,11 @@ USBH_Status USBH_SetInterface(USBH_Info_t *phost, uint8_t intf, uint8_t altSetti
 	return USBH_CtrlTransfer(phost, 0, 0);
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_ClrFeature()
-* 功能说明:	清除端点 STALL
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host clear device endpoint stall
+* @param
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_ClrFeature(USBH_Info_t *phost, uint8_t ep)
 {
 	phost->Ctrl.setup.bRequestType = USB_REQ_H2D | USB_REQ_STANDARD | USB_REQ_TO_ENDPOINT;
@@ -141,13 +116,11 @@ USBH_Status USBH_ClrFeature(USBH_Info_t *phost, uint8_t ep)
 	return USBH_CtrlTransfer(phost, 0, 0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称:	USBH_ParseCfgDesc()
-* 功能说明:	解析配置描述符
-* 输    入: 无
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
+/*******************************************************************************************************************************
+* @brief	USB host pasre configuration descriptor
+* @param
+* @return
+*******************************************************************************************************************************/
 USBH_Status USBH_ParseCfgDesc(USBH_Info_t *phost, uint8_t *buff, uint16_t size)
 {
     USB_DescHeader_t *pdesc = (USB_DescHeader_t *)buff;

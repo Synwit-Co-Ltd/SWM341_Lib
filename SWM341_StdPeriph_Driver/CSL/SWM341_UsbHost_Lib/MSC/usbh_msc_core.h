@@ -62,5 +62,5 @@ USBH_Status USBH_MSC_getMaxLUN(USBH_Info_t *phost);
 void USBH_MSC_ErrorHandle(uint8_t status);
 
 
-#endif // __USBH_MSC_CORE_H__
+#endif
 

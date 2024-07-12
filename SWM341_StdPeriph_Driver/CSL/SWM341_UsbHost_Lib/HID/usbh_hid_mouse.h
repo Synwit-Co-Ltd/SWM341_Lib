@@ -5,7 +5,7 @@
 
 
 typedef struct {
-	uint8_t button;	// bit0 ×ó¼ü  bit1 ÓÒ¼ü   bit2 ÖÐ¼ü
+	uint8_t button;	// bit0 left button, bit1 right button, bit2 midlle button
     uint8_t x;
     uint8_t y;
     uint8_t z;  	// Not Supported
@@ -21,4 +21,4 @@ void USBH_HID_Mouse_Init(void);
 void USBH_HID_Mouse_Decode(uint8_t *data);
 
 
-#endif // __USBH_HID_MOUSE_H__
+#endif

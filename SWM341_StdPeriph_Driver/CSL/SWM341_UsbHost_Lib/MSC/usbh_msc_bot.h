@@ -47,5 +47,4 @@ void USBH_MSC_BOT_Process(USBH_Info_t *phost);
 uint8_t USBH_MSC_BOT_DecodeCSW(USBH_Info_t *phost);
 
 
-#endif // __USBH_MSC_BOT_H__
-
+#endif

@@ -71,4 +71,4 @@ uint32_t USBH_CDC_Send(uint8_t *data, uint16_t size);
 uint32_t USBH_CDC_Read(uint8_t *buff, uint16_t size);
 
 
-#endif // __USBH_CDC_CORE_H__
+#endif

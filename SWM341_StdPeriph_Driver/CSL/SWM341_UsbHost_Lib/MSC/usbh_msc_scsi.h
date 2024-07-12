@@ -9,7 +9,7 @@ typedef enum {
 	USBH_MSC_FAIL,
 	USBH_MSC_PHASE_ERROR,
 	USBH_MSC_BUSY = 0xFF,
-} USBH_MSC_Status;	// ¼û CSW.bCSWStatus È¡Öµ
+} USBH_MSC_Status;	// see CSW.bCSWStatus
 
 
 USBH_MSC_Status USBH_MSC_TestUnitReady(void);
@@ -20,5 +20,4 @@ USBH_MSC_Status USBH_MSC_Read10(uint8_t *buffer, uint32_t address, uint32_t nbOf
 USBH_MSC_Status USBH_MSC_Write10(uint8_t *buffer, uint32_t address, uint32_t nbOfbytes);
 
 
-#endif //__USBH_MSC_SCSI_H__
-
+#endif

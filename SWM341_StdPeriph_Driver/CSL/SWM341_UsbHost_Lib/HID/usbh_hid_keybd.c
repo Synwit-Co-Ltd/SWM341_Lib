@@ -1,13 +1,8 @@
-/****************************************************************************************************************************************** 
-* 文件名称: usbh_hid_keybd.c
-* 功能说明:	
-* 技术支持:	http://www.synwit.com.cn/e/tool/gbook/?bid=1
-* 注意事项: 
-* 版本日期:	V1.1.0		2020年11月3日
-* 升级记录:  
+/*******************************************************************************************************************************
+* @brief	USB host HID driver
 *
 *
-*******************************************************************************************************************************************
+********************************************************************************************************************************
 * @attention
 *
 * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS WITH CODING INFORMATION 
@@ -16,8 +11,8 @@
 * OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING INFORMATION CONTAINED HEREIN IN CONN-
 * -ECTION WITH THEIR PRODUCTS.
 *
-* COPYRIGHT 2012 Synwit Technology
-*******************************************************************************************************************************************/
+* COPYRIGHT 2012 Synwit Technology 
+*******************************************************************************************************************************/
 #include <string.h>
 #include "SWM341.h"
 #include "usbh_hid_core.h"
@@ -122,7 +117,7 @@ void USBH_HID_KeyBD_Decode(uint8_t *pbuf)
 					break;
 			}
 
-			if(j == nbr_keys_last)	// 遍历到了最后，说明 pbuf[i] 不在 keys_last 中，是新按下的
+			if(j == nbr_keys_last)	// At the end of the loop, pbuf[i] is not in keys_last and is newly pressed
 				keys_new[nbr_keys_new++] = pbuf[i];
 		}
 	}

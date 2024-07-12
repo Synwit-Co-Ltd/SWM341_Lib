@@ -20,4 +20,4 @@ void USBH_CDC_IssueSetLineCoding(USBH_Info_t *phost);
 void USBH_CDC_IssueGetLineCoding(USBH_Info_t *phost);
 
 
-#endif // __USBH_CDC_FUNCT_H__
+#endif

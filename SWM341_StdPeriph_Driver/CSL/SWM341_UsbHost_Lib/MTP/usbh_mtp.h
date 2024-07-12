@@ -80,7 +80,7 @@ typedef struct {
 
     uint8_t  *data_ptr;
     uint32_t  data_len;
-    uint8_t   first_packet;		// 1 数据第一帧   3 数据第一帧，且需丢弃 header 不存储
+    uint8_t   first_packet;		// 1 Data first frame, 3 Data first frame, and discard header
 	
 	PTP_DeviceInfo_t  	devinfo;
 	PTP_StorageIDs_t  	storids;
@@ -150,4 +150,4 @@ void USBH_MTP_EventsCallback(USBH_Info_t *phost, uint32_t event, uint32_t param)
 	}
 
 
-#endif // __USBH_MTP_H__
+#endif
