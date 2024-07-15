@@ -1,11 +1,15 @@
 #include "SWM341.h"
 #include "CircleBuffer.h"
 
+
+/* ADC0 demo program, using DMA Scatter-Gather mode */
+
+
 CircleBuffer_t CirBuf;
 
-#define ADC_LEN	  250	// ADC 最多连续转换 256 次
-uint16_t ADC_Buffer[2][ADC_LEN] = {0};	// ADC_Buffer[0]：DMA 前半段搬运使用的 Buffer
-										// ADC_Buffer[1]：DMA 后半段搬运使用的 Buffer
+#define ADC_LEN	  250	// ADC can convert a maximum of 256 times consecutively
+uint16_t ADC_Buffer[2][ADC_LEN] = {0};	// ADC_Buffer[0]: the destination buffer for the first half of the DMA transfer
+										// ADC_Buffer[1]: the destination buffer for the second half of the DMA transfer
 
 void SerialInit(void);
 
@@ -36,7 +40,7 @@ int main(void)
 	ADC_initStruct.samplAvg = ADC_AVG_SAMPLE1;
 	ADC_initStruct.EOC_IEn = 0;	
 	ADC_initStruct.HalfIEn = 0;
-	ADC_Init(ADC0, &ADC_initStruct);					//配置ADC
+	ADC_Init(ADC0, &ADC_initStruct);
 	
 	ADC_SEQ_initStruct.channels = ADC_CH7;
 	ADC_SEQ_initStruct.trig_src = ADC_TRIGGER_SW;
@@ -44,19 +48,19 @@ int main(void)
 	ADC_SEQ_initStruct.samp_tim = ADC_SAMPLE_1CLOCK;
 	ADC_SEQ_Init(ADC0, ADC_SEQ0, &ADC_SEQ_initStruct);
 	
-	ADC_Open(ADC0);										//使能ADC
-	ADC_Calibrate(ADC0);								//校准ADC
+	ADC_Open(ADC0);
+	ADC_Calibrate(ADC0);
 	
 	ADC0->CR |= (ADC_SEQ0 << ADC_CR_DMAEN_Pos);
 	
 	
 	DMA_initStruct.Mode = DMA_MODE_CIRCLE;
 	DMA_initStruct.Unit = DMA_UNIT_HALFWORD;
-	DMA_initStruct.Count = ADC_LEN * 2;		// DMA 搬运分两段，前半段和后半段各长 ADC_LEN
+	DMA_initStruct.Count = ADC_LEN * 2;		// DMA transfer is divided into two sections, each length ADC_LEN
 	DMA_initStruct.SrcAddr = (uint32_t)&ADC0->SEQ[0].DR;
 	DMA_initStruct.SrcAddrInc = 0;
 	DMA_initStruct.DstAddr = (uint32_t)ADC_Buffer;
-	DMA_initStruct.DstAddrInc = 2;			// Scatter-Gather 模式
+	DMA_initStruct.DstAddrInc = 2;			// Scatter-Gather mode
 	DMA_initStruct.Handshake = DMA_CH0_ADC0;
 	DMA_initStruct.Priority = DMA_PRI_LOW;
 	DMA_initStruct.INTEn = DMA_IT_DSTSG_HALF | DMA_IT_DSTSG_DONE;
@@ -78,14 +82,14 @@ int main(void)
 			printf("%4d,", data & ADC_DR_VALUE_Msk);
 		}
 		
-		CirBuf_Clear(&CirBuf);	// 打印过程中存入 CirBuf 中的数据来自不连续的点
+		CirBuf_Clear(&CirBuf);
 	}
 }
 
 
 void DMA_Handler(void)
 {
-	ADC_Start(ADC0, ADC_SEQ0);	// 转换 250 次后停止，需重新启动
+	ADC_Start(ADC0, ADC_SEQ0);	// The conversion stops after 250 times and needs to be restarted
 	
 	if(DMA_CH_INTStat(DMA_CH0, DMA_IT_DSTSG_HALF))
 	{
@@ -106,8 +110,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -120,14 +124,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

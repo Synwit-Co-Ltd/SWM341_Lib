@@ -4,21 +4,20 @@
 void SerialInit(void);
 
 int main(void)
-{	
-	uint32_t i;
-	
+{
 	SystemInit();
 	
 	SerialInit();
 	
 	PORT_Init(PORTA, PIN2,  PORTA_PIN2_ACMP0_INP,  0);
-// 	PORT_Init(PORTB, PIN12, PORTB_PIN12_ACMP0_INN, 0);	//SWDCK引脚
+// 	PORT_Init(PORTB, PIN12, PORTB_PIN12_ACMP0_INN, 0);	// SWDCK pin
 	PORT_Init(PORTA, PIN1,  PORTA_PIN1_ACMP1_INP,  0);
 	PORT_Init(PORTB, PIN5,  PORTB_PIN5_ACMP1_INN,  0);
 	PORT_Init(PORTA, PIN0,  PORTA_PIN0_ACMP2_INP,  0);
 	PORT_Init(PORTB, PIN4,  PORTB_PIN4_ACMP2_INN,  0);
 	
-	SYS->ACMPCR |= (1 << SYS_ACMPCR_CMP0ON_Pos) | (1 << SYS_ACMPCR_CMP0HYS_Pos) | (1 << SYS_ACMPCR_0NVREF_Pos) | (1 << SYS_ACMPCR_CMP0IE_Pos);	//开启迟滞、N输入端接内部VREF、使能中断
+	/* hysteresis enable, negative input connects to internal VREF, interrupt enable or disable */
+	SYS->ACMPCR |= (1 << SYS_ACMPCR_CMP0ON_Pos) | (1 << SYS_ACMPCR_CMP0HYS_Pos) | (1 << SYS_ACMPCR_0NVREF_Pos) | (1 << SYS_ACMPCR_CMP0IE_Pos);
 	SYS->ACMPCR |= (1 << SYS_ACMPCR_CMP1ON_Pos) | (1 << SYS_ACMPCR_CMP1HYS_Pos) | (1 << SYS_ACMPCR_1NVREF_Pos) | (0 << SYS_ACMPCR_CMP1IE_Pos);
 	SYS->ACMPCR |= (1 << SYS_ACMPCR_CMP2ON_Pos) | (1 << SYS_ACMPCR_CMP2HYS_Pos) | (1 << SYS_ACMPCR_2NVREF_Pos) | (0 << SYS_ACMPCR_CMP2IE_Pos);
 	
@@ -33,7 +32,7 @@ int main(void)
 //		printf("ACMP1 OUT = %d\r\n", (SYS->ACMPSR & SYS_ACMPSR_CMP1OUT_Msk) ? 1 : 0);
 //		printf("ACMP2 OUT = %d\r\n", (SYS->ACMPSR & SYS_ACMPSR_CMP2OUT_Msk) ? 1 : 0);
 		
-		for(i = 0; i < SystemCoreClock/100; i++) __NOP();
+		for(int i = 0; i < SystemCoreClock/100; i++) __NOP();
 	}
 }
 
@@ -64,8 +63,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -78,14 +77,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

@@ -12,18 +12,18 @@ int main(void)
 	
 	SerialInit();
 	
-	/* 使能温度传感器，温度传感器连接 ADC1 的 CH7
-	 * 温度传感器输出电压随温度变化的趋势为7mV/度
-	 * 具体的 ADC 读数与温度换算关系，可根据公式：y = kx + b
-	 * 带入两个已知温度和其对应 ADC 读数，，计算出 k 和 b
-	 ******************************************************/
+	/* Enable temperature sensor, the temperature sensor is connected to CH7 of ADC 1.
+	 * The output voltage of the temperature sensor varies with the temperature change at a ratio of 7mV/degree.
+	 * The specific ADC reading and temperature conversion relationship can be based on the formula: y = kx + b.
+	 * Take two known temperatures and their corresponding ADC readings, and calculate k and b
+	 */
 	SYS->TEMPCR |= SYS_TEMPCR_EN_Msk;
 	
 	ADC_initStruct.clk_src = ADC_CLKSRC_HRC_DIV8;
 	ADC_initStruct.samplAvg = ADC_AVG_SAMPLE1;
 	ADC_initStruct.EOC_IEn = 0;
 	ADC_initStruct.HalfIEn = 0;
-	ADC_Init(ADC1, &ADC_initStruct);					//配置ADC
+	ADC_Init(ADC1, &ADC_initStruct);
 	
 	ADC_SEQ_initStruct.channels = ADC_CH7;
 	ADC_SEQ_initStruct.trig_src = ADC_TRIGGER_SW;
@@ -31,7 +31,7 @@ int main(void)
 	ADC_SEQ_initStruct.samp_tim = ADC_SAMPLE_1CLOCK;
 	ADC_SEQ_Init(ADC1, ADC_SEQ0, &ADC_SEQ_initStruct);
 	
-	ADC_Open(ADC1);										//使能ADC
+	ADC_Open(ADC1);
 	ADC_Calibrate(ADC1);
 	
 	while(1==1)
@@ -47,8 +47,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -61,14 +61,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

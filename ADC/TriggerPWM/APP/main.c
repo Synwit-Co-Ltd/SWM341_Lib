@@ -1,5 +1,6 @@
 #include "SWM341.h"
 
+
 void SerialInit(void);
 void PWM0AInit(void);
 
@@ -13,7 +14,7 @@ int main(void)
 	SerialInit();
 	
 	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);
-
+	
 	PORT_Init(PORTC, PIN6,  PORTC_PIN6_ADC0_CH0,   0);	//PC.6  => ADC0.CH0
 	PORT_Init(PORTC, PIN5,  PORTC_PIN5_ADC0_CH1,   0);	//PC.5  => ADC0.CH1
 	PORT_Init(PORTC, PIN4,  PORTC_PIN4_ADC0_CH2,   0);	//PC.4  => ADC0.CH2
@@ -31,7 +32,7 @@ int main(void)
 	ADC_initStruct.samplAvg = ADC_AVG_SAMPLE1;
 	ADC_initStruct.EOC_IEn = ADC_SEQ0;	
 	ADC_initStruct.HalfIEn = 0;
-	ADC_Init(ADC0, &ADC_initStruct);					//配置ADC
+	ADC_Init(ADC0, &ADC_initStruct);
 	
 	ADC_SEQ_initStruct.channels = ADC_CH5;
 	ADC_SEQ_initStruct.trig_src = ADC_TRIGGER_PWM0;
@@ -39,8 +40,8 @@ int main(void)
 	ADC_SEQ_initStruct.samp_tim = ADC_SAMPLE_1CLOCK;
 	ADC_SEQ_Init(ADC0, ADC_SEQ0, &ADC_SEQ_initStruct);
 	
-	ADC_Open(ADC0);										//使能ADC
-//	ADC_Calibrate(ADC0);								//校准ADC
+	ADC_Open(ADC0);
+	ADC_Calibrate(ADC0);
 	
 	PWM0AInit();
 	
@@ -65,22 +66,22 @@ void PWM0AInit(void)
 {
 	PWM_InitStructure PWM_initStruct;
 	
-//	PORT_Init(PORTM, PIN1, PORTM_PIN1_PWM0A,  0);	//UART0.TX引脚
+//	PORT_Init(PORTM, PIN1, PORTM_PIN1_PWM0A,  0);	// UART0 TXD pin
 	PORT_Init(PORTM, PIN4, PORTM_PIN4_PWM0AN, 0);
 	PORT_Init(PORTM, PIN2, PORTM_PIN2_PWM0B,  0);
 	PORT_Init(PORTM, PIN5, PORTM_PIN5_PWM0BN, 0);
 	
 	PWM_initStruct.Mode = PWM_CENTER_ALIGNED;
-	PWM_initStruct.Clkdiv = 6;					//F_PWM = 30M/6 = 5M	
-	PWM_initStruct.Period = 10000;				//5M/10000 = 500Hz，中心对称模式下频率降低到250Hz
-	PWM_initStruct.HdutyA =  2500;				//2500/10000 = 25%
-	PWM_initStruct.DeadzoneA = 50;				//50/5M = 10us
+	PWM_initStruct.Clkdiv = 6;					// F_PWM = 30M/6 = 5M
+	PWM_initStruct.Period = 10000;				// 5M/10000 = 500Hz, 250Hz for center alignment mode
+	PWM_initStruct.HdutyA =  2500;				// 2500/10000 = 25%
+	PWM_initStruct.DeadzoneA = 50;				// 50/5M = 10us
 	PWM_initStruct.IdleLevelA = 0;
 	PWM_initStruct.IdleLevelAN= 0;
 	PWM_initStruct.OutputInvA = 0;
 	PWM_initStruct.OutputInvAN= 0;
-	PWM_initStruct.HdutyB =  7500;				//5000/10000 = 50%
-	PWM_initStruct.DeadzoneB = 50;				//50/5M = 10us
+	PWM_initStruct.HdutyB =  7500;				// 5000/10000 = 50%
+	PWM_initStruct.DeadzoneB = 50;				// 50/5M = 10us
 	PWM_initStruct.IdleLevelB = 0;
 	PWM_initStruct.IdleLevelBN= 0;
 	PWM_initStruct.OutputInvB = 0;
@@ -97,10 +98,10 @@ void PWM0AInit(void)
 	
 	
 	/* Mask */
-	PWM_CmpTrigger(PWM0, 1500, PWM_DIR_UP, 40, PWM_TRG_1, 7);	//PWM0向上计数计数值等于1500时发出一个触发信号，触发信号发送到 trigger1
+	PWM_CmpTrigger(PWM0, 1500, PWM_DIR_UP, 40, PWM_TRG_1, 7);	// when counting up and counter == 1500, PWM will generate PWM_TRG_1 signal
 	
-	PWM_OutMask(PWM0, PWM_CH_A, PWM_EVT_1, 0, PWM_EVT_1, 1);	//PWM0A和PWM0AN在event1为高时分别输出0和1
-	PWM_OutMask(PWM0, PWM_CH_B, PWM_EVT_1, 0, PWM_EVT_1, 1);	//PWM0B和PWM0BN在event1为高时分别输出0和1
+	PWM_OutMask(PWM0, PWM_CH_A, PWM_EVT_1, 0, PWM_EVT_1, 1);	// PWM0A and PWM0AN output 0 and 1 respectively when detect PWM_EVT_1 event
+	PWM_OutMask(PWM0, PWM_CH_B, PWM_EVT_1, 0, PWM_EVT_1, 1);	// PWM0B and PWM0BN output 0 and 1 respectively when detect PWM_EVT_1 event
 }
 
 
@@ -108,8 +109,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -122,14 +123,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

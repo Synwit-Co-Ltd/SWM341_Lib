@@ -1,6 +1,6 @@
 #include "SWM341.h"
 
-#define ADC_SIZE  250	// ADC 最多连续转换 256 次
+#define ADC_SIZE  250	// ADC can convert a maximum of 256 times consecutively
 uint16_t ADC_Result[ADC_SIZE] = {0};
 volatile int ADC_ConvDone = 0;
 
@@ -34,7 +34,7 @@ int main(void)
 	ADC_initStruct.samplAvg = ADC_AVG_SAMPLE1;
 	ADC_initStruct.EOC_IEn = 0;	
 	ADC_initStruct.HalfIEn = 0;
-	ADC_Init(ADC0, &ADC_initStruct);					//配置ADC
+	ADC_Init(ADC0, &ADC_initStruct);
 	
 	ADC_SEQ_initStruct.channels = ADC_CH7;
 	ADC_SEQ_initStruct.trig_src = ADC_TRIGGER_SW;
@@ -42,8 +42,8 @@ int main(void)
 	ADC_SEQ_initStruct.samp_tim = ADC_SAMPLE_1CLOCK;
 	ADC_SEQ_Init(ADC0, ADC_SEQ0, &ADC_SEQ_initStruct);
 	
-	ADC_Open(ADC0);										//使能ADC
-	ADC_Calibrate(ADC0);								//校准ADC
+	ADC_Open(ADC0);
+	ADC_Calibrate(ADC0);
 	
 	ADC0->CR |= (ADC_SEQ0 << ADC_CR_DMAEN_Pos);
 	
@@ -94,8 +94,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -108,14 +108,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

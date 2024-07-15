@@ -2,16 +2,16 @@
 #include <string.h>
 
 
-#define cb_item_t	CAN_RXMessage	// item type
+#define cb_item_t	uint16_t	// item type
 
-#define CB_ITEM_N	128				// item number，实际可存入数据少一个，留一个空位表示满，以区别于空
+#define CB_ITEM_N	2048		// item number, the actual data can be stored is less by one, leaving a space to indicate full, to distinguish from empty
 
 
 typedef struct
 {
     cb_item_t buf[CB_ITEM_N];
-    int       wrptr;            // 写指针
-    int       rdptr;            // 读指针
+    int       wrptr;            // write pointer
+    int       rdptr;            // read  pointer
 } CircleBuffer_t;
 
 
