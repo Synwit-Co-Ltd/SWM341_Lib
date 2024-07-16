@@ -7,7 +7,7 @@
 char mst_txbuff[4] = {0x37, 0x55, 0xAA, 0x78};
 char mst_rxbuff[4] = {0};
 char slv_txbuff[4] = {0};
-char slv_rxbuff[5] = {0};	// 第一个数据是地址
+char slv_rxbuff[5] = {0};	// first item is address
 
 volatile uint32_t mst_txindx = 0;
 volatile uint32_t mst_rxindx = 0;
@@ -38,7 +38,7 @@ int main(void)
 	I2CSlvInit();
 	
 	NVIC_SetPriority(I2C0_IRQn, 3);
-	NVIC_SetPriority(I2C1_IRQn, 1);	// 设置从机优先级比主机高，因为若从机不能及时处理数据会响应NAK
+	NVIC_SetPriority(I2C1_IRQn, 1);	// Set the priority of the slave to be higher than that of the host
 	
 	while(1==1)
 	{
@@ -92,8 +92,8 @@ void I2CMstInit(void)
 	I2C_InitStructure I2C_initStruct;
 	
 	PORT_Init(PORTN, PIN5, PORTN_PIN5_I2C0_SCL, 1);
-	PORTN->OPEND |= (1 << PIN5);	// 开漏
-	PORTN->PULLU |= (1 << PIN5);	// 上拉
+	PORTN->OPEND |= (1 << PIN5);	// open-drain
+	PORTN->PULLU |= (1 << PIN5);	// pull-up
 	PORT_Init(PORTN, PIN4, PORTN_PIN4_I2C0_SDA, 1);
 	PORTN->OPEND |= (1 << PIN4);
 	PORTN->PULLU |= (1 << PIN4);
@@ -106,10 +106,11 @@ void I2CMstInit(void)
 	I2C_Init(I2C0, &I2C_initStruct);
 	
 	I2C_INTEn(I2C0, I2C_IT_TX_DONE);
-	/* 注意：此例程中不能使用 RX_NOT_EMPTY 中断替代 RX_DONE 中断，
-	         因为当 RX_NOT_EMPTY 发生时，接收还未完成，I2C0->MCR.RD 还没清零，
-	         这时候进入中断执行 I2C_Read() 设置 I2C0->MCR.RD 位没有作用，导致无法接收下一个数据
-	*/
+	/* note: The RX_NOT_EMPTY interrupt cannot be used to replace the RX_DONE interrupt in this routine, 
+	 *		because when RX_NOT_EMPTY occurs, the receive is not complete, I2C0->MCR.RD is not cleared.
+	 *		In this case, enter interrupt and run I2C_Read() to set the I2C0->MCR.RD bit to be invalid. 
+	 *		As a result, the next data cannot be received.
+	 */
 	I2C_INTEn(I2C0, I2C_IT_RX_DONE);
 	NVIC_EnableIRQ(I2C0_IRQn);
 	
@@ -118,7 +119,7 @@ void I2CMstInit(void)
 
 void I2C0_Handler(void)
 {
-	if(I2C0->IF & I2C_IF_TXDONE_Msk)			//发送完成
+	if(I2C0->IF & I2C_IF_TXDONE_Msk)			// transmit complete
 	{
 		I2C0->IF = I2C_IF_TXDONE_Msk;
 		
@@ -163,7 +164,7 @@ void I2C0_Handler(void)
 			}
 		}
 	}
-	else if(I2C0->IF & I2C_IF_RXDONE_Msk)		//接收完成
+	else if(I2C0->IF & I2C_IF_RXDONE_Msk)		// receive complete
 	{
 		I2C0->IF = I2C_IF_RXDONE_Msk;
 		
@@ -197,8 +198,8 @@ void I2CSlvInit(void)
 	I2C_InitStructure I2C_initStruct;
 	
 	PORT_Init(PORTC, PIN5, PORTC_PIN5_I2C1_SCL, 1);
-	PORTC->OPEND |= (1 << PIN5);	// 开漏
-	PORTC->PULLU |= (1 << PIN5);	// 上拉
+	PORTC->OPEND |= (1 << PIN5);	// open-drain
+	PORTC->PULLU |= (1 << PIN5);	// pull-up
 	PORT_Init(PORTC, PIN4, PORTC_PIN4_I2C1_SDA, 1);
 	PORTC->OPEND |= (1 << PIN4);
 	PORTC->PULLU |= (1 << PIN4);
@@ -220,27 +221,27 @@ void I2C1_Handler(void)
 {
 	uint32_t i;
 	
-	if(I2C1->IF & I2C_IF_RXSTA_Msk)					//收到起始位
+	if(I2C1->IF & I2C_IF_RXSTA_Msk)					// start bit received
 	{
 		I2C1->IF = (1 << I2C_IF_RXSTA_Pos);
 		
 		slv_rxindx = 0;
 		
-		I2C1->TR = (1 << I2C_TR_TXCLR_Pos);			//有数据时无法写入
+		I2C1->TR = (1 << I2C_TR_TXCLR_Pos);			// Cannot write when there is data
 		I2C1->TXDATA = slv_txbuff[0];
 		slv_txindx = 1;
 	}
-	else if(I2C1->IF & I2C_IF_RXNE_Msk)				//接收寄存器非空
+	else if(I2C1->IF & I2C_IF_RXNE_Msk)				// RX register is not empty
 	{
 		slv_rxbuff[slv_rxindx] = I2C1->RXDATA;
 		if(slv_rxindx < 4) slv_rxindx++;
 	}
-	else if(I2C1->IF & I2C_IF_TXE_Msk)				//发送寄存器空
+	else if(I2C1->IF & I2C_IF_TXE_Msk)				// TX register is empty
 	{
 		I2C1->TXDATA = slv_txbuff[slv_txindx];
 		if(slv_txindx < 3) slv_txindx++;
 	}
-	else if(I2C1->IF & I2C_IF_RXSTO_Msk)			//收到停止位
+	else if(I2C1->IF & I2C_IF_RXSTO_Msk)			// stop bit received
 	{
 		I2C1->IF = (1 << I2C_IF_RXSTO_Pos);
 		
@@ -253,8 +254,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -267,14 +268,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

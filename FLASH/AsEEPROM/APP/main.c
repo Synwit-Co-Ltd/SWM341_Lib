@@ -1,6 +1,9 @@
 #include "SWM341.h"
 
 
+/* The on-chip Flash is used as an EEPROM to store data that needs to be retained after power-off */
+
+
 #define EEPROM_ADDR	  0x10000
 
 uint32_t WrBuff[20] = {0x14141414, 0x15151515, 0x16161616, 0x17171717, 0x18181818,
@@ -18,7 +21,7 @@ int main(void)
 	
 	SerialInit();
 	
-	for(i = 0; i < SystemCoreClock/10; i++) __NOP();	// 等待电源稳定
+	for(i = 0; i < SystemCoreClock/10; i++) __NOP();	// Wait for power to stabilize
 	
 	FLASH_Erase(EEPROM_ADDR);
 	
@@ -40,8 +43,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -54,14 +57,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

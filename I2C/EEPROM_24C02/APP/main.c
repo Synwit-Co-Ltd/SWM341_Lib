@@ -54,7 +54,7 @@ int main(void)
 		printf("Master Write %X %X %X %X @ %X\r\n", txbuff[0], txbuff[1], txbuff[2], txbuff[3], MEM_ADDR);
 
 
-		for(i = 0; i < 1000000; i++) __NOP();	// 延时等待内部写入操作完成
+		for(i = 0; i < 1000000; i++) __NOP();	// Wait for the internal write operation to complete
 		
 		
 		/*************** EEPROM Read ***************/
@@ -72,7 +72,7 @@ int main(void)
 			goto nextloop;
 		}
 		
-		for(i = 0; i < CyclesPerUs; i++) __NOP();	// 不加此延时，系统主频高于 100MHz 时，re-start 发不出来
+		for(i = 0; i < CyclesPerUs; i++) __NOP();	// Without this delay, re-start cannot be sent when the system frequency is higher than 100MHz
 		
 		ack = I2C_Start(I2C0, (SLV_ADDR << 1) | 1, 1);
 		if(ack == 0)
@@ -106,8 +106,8 @@ void I2CMstInit(void)
 	I2C_InitStructure I2C_initStruct;
 	
 	PORT_Init(PORTN, PIN5, PORTN_PIN5_I2C0_SCL, 1);
-	PORTN->OPEND |= (1 << PIN5);	// 开漏
-	PORTN->PULLU |= (1 << PIN5);	// 上拉
+	PORTN->OPEND |= (1 << PIN5);	// open-drain
+	PORTN->PULLU |= (1 << PIN5);	// pull-up
 	PORT_Init(PORTN, PIN4, PORTN_PIN4_I2C0_SDA, 1);
 	PORTN->OPEND |= (1 << PIN4);
 	PORTN->PULLU |= (1 << PIN4);
@@ -127,8 +127,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -141,14 +141,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

@@ -42,15 +42,15 @@ int main(void)
 #if 1
 	DMA_initStruct.Handshake = DMA_EXHS_TIMR0;
 	
-	TIMR_Init(TIMR0, TIMR_MODE_TIMER, CyclesPerUs, 1000, 0);	//每1ms钟触发DMA向DAC->DHR搬运一个数据
+	TIMR_Init(TIMR0, TIMR_MODE_TIMER, CyclesPerUs, 1000, 0);	// each time TIMR's counter overflows, DMA transfers a data to DAC->DHR register
 	TIMR_Start(TIMR0);
 #else
 	DMA_initStruct.Handshake = DMA_EXHS_TRIG0;
 	
-	PORT_Init(PORTN, PIN5, PORTN_PIN5_DMA_TRIG0, 1);	//PN5引脚上升沿触发DMA向DAC->DHR搬运一个数据
+	PORT_Init(PORTN, PIN5, PORTN_PIN5_DMA_TRIG0, 1);	// each time a rising edge appears on PN5 pin, DMA transfers a data to DAC->DHR register
 	PORTN->PULLU |= (1 << PIN5);
 	
-//	PORT_Init(PORTB, PIN0, PORTB_PIN0_DMA_TRIG1, 1);	//PB0引脚上升沿触发DMA向DAC->DHR搬运一个数据
+//	PORT_Init(PORTB, PIN0, PORTB_PIN0_DMA_TRIG1, 1);	// each time a rising edge appears on PB0 pin, DMA transfers a data to DAC->DHR register
 //	PORTB->PULLU |= (1 << PIN0);
 #endif
 
@@ -67,8 +67,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -81,14 +81,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

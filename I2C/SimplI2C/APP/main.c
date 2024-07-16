@@ -3,11 +3,10 @@
 #include <string.h>
 
 
-/* 注意：
- *	1、内置上拉电阻阻值较大，上拉驱动能力有限，当 MstClk > 100000 时，
- *	   需外接上拉电阻（500KHz 时 3KΩ，1MHz 时 1KΩ），否则 I2C 输出频率会低于设定值
- *	2、从机模式支持的最高总线频率略低于主机模式，因此当主机时钟频率配置为最高时，
- *	   从机无法及时响应 ACK，本例程无法正常执行
+/* note 1. Built-in pull-up resistor resistance value is large, pull-up drive ability is limited, when MstClk > 100000, 
+ *			need to connect a external pull-up resistor (500KHz at 3K ohm, 1MHz at 1K ohm), otherwise I2C output frequency will be lower than the set value
+ * note 2. The maximum bus frequency supported by the slave mode is slightly lower than that supported by the host mode.
+ *			Therefore, when the host clock frequency is set to the highest, the slave cannot respond to ACK in time, and this routine cannot be executed properly
  */
 
 
@@ -16,7 +15,7 @@
 char mst_txbuff[4] = {0x37, 0x55, 0xAA, 0x78};
 char mst_rxbuff[4] = {0};
 char slv_txbuff[4] = {0};
-char slv_rxbuff[5] = {0};	// 第一个数据是地址
+char slv_rxbuff[5] = {0};	// the first item is address
 
 volatile uint32_t slv_rxindx = 0;
 volatile uint32_t slv_txindx = 0;
@@ -100,8 +99,8 @@ void I2CMstInit(void)
 	I2C_InitStructure I2C_initStruct;
 	
 	PORT_Init(PORTN, PIN5, PORTN_PIN5_I2C0_SCL, 1);
-	PORTN->OPEND |= (1 << PIN5);	// 开漏
-	PORTN->PULLU |= (1 << PIN5);	// 上拉
+	PORTN->OPEND |= (1 << PIN5);	// open-drain
+	PORTN->PULLU |= (1 << PIN5);	// pull-up
 	PORT_Init(PORTN, PIN4, PORTN_PIN4_I2C0_SDA, 1);
 	PORTN->OPEND |= (1 << PIN4);
 	PORTN->PULLU |= (1 << PIN4);
@@ -122,8 +121,8 @@ void I2CSlvInit(void)
 	I2C_InitStructure I2C_initStruct;
 	
 	PORT_Init(PORTC, PIN5, PORTC_PIN5_I2C1_SCL, 1);
-	PORTC->OPEND |= (1 << PIN5);	// 开漏
-	PORTC->PULLU |= (1 << PIN5);	// 上拉
+	PORTC->OPEND |= (1 << PIN5);	// open-drain
+	PORTC->PULLU |= (1 << PIN5);	// pull-up
 	PORT_Init(PORTC, PIN4, PORTC_PIN4_I2C1_SDA, 1);
 	PORTC->OPEND |= (1 << PIN4);
 	PORTC->PULLU |= (1 << PIN4);
@@ -145,27 +144,27 @@ void I2C1_Handler(void)
 {
 	uint32_t i;
 	
-	if(I2C1->IF & I2C_IF_RXSTA_Msk)					//收到起始位
+	if(I2C1->IF & I2C_IF_RXSTA_Msk)					// start bit received
 	{
 		I2C1->IF = (1 << I2C_IF_RXSTA_Pos);
 		
 		slv_rxindx = 0;
 		
-		I2C1->TR = (1 << I2C_TR_TXCLR_Pos);			//有数据时无法写入
+		I2C1->TR = (1 << I2C_TR_TXCLR_Pos);			// Cannot write when there is data
 		I2C1->TXDATA = slv_txbuff[0];
 		slv_txindx = 1;
 	}
-	else if(I2C1->IF & I2C_IF_RXNE_Msk)				//接收寄存器非空
+	else if(I2C1->IF & I2C_IF_RXNE_Msk)				// RX register is not empty
 	{
 		slv_rxbuff[slv_rxindx] = I2C1->RXDATA;
 		if(slv_rxindx < 4) slv_rxindx++;
 	}
-	else if(I2C1->IF & I2C_IF_TXE_Msk)				//发送寄存器空
+	else if(I2C1->IF & I2C_IF_TXE_Msk)				// TX register is empty
 	{
 		I2C1->TXDATA = slv_txbuff[slv_txindx];
 		if(slv_txindx < 3) slv_txindx++;
 	}
-	else if(I2C1->IF & I2C_IF_RXSTO_Msk)			//收到停止位
+	else if(I2C1->IF & I2C_IF_RXSTO_Msk)			// stop bit received
 	{
 		I2C1->IF = (1 << I2C_IF_RXSTO_Pos);
 		
@@ -178,8 +177,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -192,14 +191,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

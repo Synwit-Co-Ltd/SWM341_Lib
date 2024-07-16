@@ -1,9 +1,9 @@
 #include "SWM341.h"
 
 
-#define LCD_HDOT	480		// 水平点数
-#define LCD_VDOT	272		// 垂直点数
-#define LCD_DIRH	1		// 水平显示？
+#define LCD_HDOT	480		// horizontal dot number
+#define LCD_VDOT	272		// vertical dot number
+#define LCD_DIRH	1		// horizontal display?
 
 
 uint16_t *LCD_Buffer = (uint16_t *)SDRAMM_BASE;
@@ -61,7 +61,7 @@ void test_PixelFill(void)
 {
 	uint32_t i;
 	
-	/* 全屏填充蓝色 */
+	/* full screen fill blue */
 	outLayer.Address = (uint32_t)LCD_Buffer;
 	outLayer.LineCount = LCD_VDOT;
 	outLayer.LinePixel = LCD_HDOT;
@@ -73,7 +73,7 @@ void test_PixelFill(void)
 	
 	for(i = 0; i < SystemCoreClock/8; i++) __NOP();
 	
-	/* 左上角绘制150*150绿色方块 */
+	/* Draw a 150*150 green square in the upper left corner */
 	outLayer.Address = (uint32_t)LCD_Buffer;
 	outLayer.LineCount = 150;
 	outLayer.LinePixel = 150;
@@ -85,7 +85,7 @@ void test_PixelFill(void)
 	
 	for(i = 0; i < SystemCoreClock/8; i++) __NOP();
 	
-	/* 右下角绘制150*150红色方块 */
+	/* Draw a 150*150 red square in the lower right corner */
 	outLayer.Address = (uint32_t)LCD_Buffer + (LCD_HDOT * (LCD_VDOT - 150) + (LCD_HDOT - 150)) * 2;
 	outLayer.LineCount = 150;
 	outLayer.LinePixel = 150;
@@ -107,7 +107,7 @@ void test_PixelMove(void)
 	fgLayer.LineOffset = 0;
 	fgLayer.ColorMode = DMA2D_FMT_RGB565;
 	
-	/* 左上角绘制128*128图片 */
+	/* Draw a 128*128 picture in the upper left corner */
 	outLayer.Address = (uint32_t)LCD_Buffer;
 	outLayer.LineCount = 128;
 	outLayer.LinePixel = 128;
@@ -118,7 +118,7 @@ void test_PixelMove(void)
 	
 	for(i = 0; i < SystemCoreClock/8; i++) __NOP();
 	
-	/* 右下角绘制128*128图片 */
+	/* Draw a 128*128 picture in the lower right corner */
 	outLayer.Address = (uint32_t)LCD_Buffer + (LCD_HDOT * (LCD_VDOT - 128) + (LCD_HDOT - 128)) * 2;
 	outLayer.LineCount = 128;
 	outLayer.LinePixel = 128;
@@ -133,7 +133,7 @@ void test_PixelMove(void)
 
 void test_PixelBlend(void)
 {
-	/* 将图片由 RGB565 转换成 ARGB888 格式 */
+	/* Convert images from RGB565 to ARGB888 format */
 	fgLayer.Address = (uint32_t)gImage_Synwit128;
 	fgLayer.LineOffset = 0;
 	fgLayer.ColorMode = DMA2D_FMT_RGB565;
@@ -147,15 +147,15 @@ void test_PixelBlend(void)
 	
 	while(DMA2D_IsBusy()) __NOP();
 	
-	/* 将图片中的白色像素点的 Alpha 值设置为 0，这样后面混合时就不显示图片的白色，而是显示背景色了
-	   注意：这步可在电脑上通过图像处理软件完成，然后将处理后的图片按照 ARGB888 格式转换成数组存入程序中使用
+	/*	Set the Alpha value of the white pixels to 0, so that the background color is displayed instead of the white color of the image when blending later.
+		Note: This step can be completed on the computer through the image processing software.
 	*/
 	for(int i = 0; i < 128; i++)
 		for(int j = 0; j < 128; j++)
 			if(Img_Buffer[i*128+j] == 0xFFFFFFFF)
 				Img_Buffer[i*128+j] = 0x00FFFFFF;
 	
-	/* 执行图片混合 */
+	/* do image blending */
 	fgLayer.Address = (uint32_t)Img_Buffer;
 	fgLayer.LineOffset = 0;
 	fgLayer.ColorMode = DMA2D_FMT_ARGB888;
@@ -182,9 +182,9 @@ void RGBLCDInit(void)
 	uint32_t i;
 	LCD_InitStructure LCD_initStruct;
 	
-	GPIO_Init(GPIOA, PIN6, 1, 0, 0, 0);		//屏幕背光
+	GPIO_Init(GPIOA, PIN6, 1, 0, 0, 0);		// LCD backlight switch
 	GPIO_SetBit(GPIOA, PIN6);
-	GPIO_Init(GPIOC, PIN6, 1, 0, 0, 0);		//屏幕复位
+	GPIO_Init(GPIOC, PIN6, 1, 0, 0, 0);		// LCD hardware reset
 	GPIO_ClrBit(GPIOC, PIN6);
 	for(i = 0; i < CyclesPerUs*1000; i++) __NOP();
 	GPIO_SetBit(GPIOC, PIN6);
@@ -230,7 +230,7 @@ void RGBLCDInit(void)
 	LCD_initStruct.VsyncWidth = 5;
 	LCD_initStruct.DataSource = (uint32_t)LCD_Buffer;
 	LCD_initStruct.Background = 0xFFFF;
-	LCD_initStruct.SampleEdge = LCD_SAMPLE_FALL;	// ATK-4342 RGBLCD 下降沿采样
+	LCD_initStruct.SampleEdge = LCD_SAMPLE_FALL;	// ATK-4342 samples data on falling edge
 	LCD_initStruct.IntEOTEn = 1;
 	LCD_Init(LCD, &LCD_initStruct);
 }
@@ -302,8 +302,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);		//GPIOM.0配置为UART0输入引脚
- 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);		//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+ 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -316,14 +316,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

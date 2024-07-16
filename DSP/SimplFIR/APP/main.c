@@ -10,16 +10,16 @@
 #define NUM_TAPS              29
 
 
-float32_t testInput_f32_1kHz_15kHz[320];	//Test input signal contains 1000Hz + 15000 Hz
-float32_t refOutput[320];					//reference output (computed with MATLAB)
+float32_t testInput_f32_1kHz_15kHz[320];	// Test input signal contains 1000Hz + 15000 Hz
+float32_t refOutput[320];					// reference output (computed with MATLAB)
 
 float32_t testOutput[TEST_LENGTH_SAMPLES];
 
 
-static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1];	//Declare State buffer of size (numTaps + blockSize - 1)
+static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1];	// Declare State buffer of size (numTaps + blockSize - 1)
 
 
-const float32_t firCoeffs32[NUM_TAPS] = {		//FIR Coefficients buffer generated using fir1() MATLAB function: fir1(28, 6/24)
+const float32_t firCoeffs32[NUM_TAPS] = {		// FIR Coefficients buffer generated using fir1() MATLAB function: fir1(28, 6/24)
   -0.0018225230f, -0.0015879294f, +0.0000000000f, +0.0036977508f, +0.0080754303f, +0.0085302217f, -0.0000000000f, -0.0173976984f,
   -0.0341458607f, -0.0333591565f, +0.0000000000f, +0.0676308395f, +0.1522061835f, +0.2229246956f, +0.2504960933f, +0.2229246956f,
   +0.1522061835f, +0.0676308395f, +0.0000000000f, -0.0333591565f, -0.0341458607f, -0.0173976984f, -0.0000000000f, +0.0085302217f,
@@ -41,12 +41,12 @@ int main(void)
    	
 	arm_fir_init_f32(&fir, NUM_TAPS, (float32_t *)firCoeffs32, firStateF32, BLOCK_SIZE);
 	
-	for(i=0; i < TEST_LENGTH_SAMPLES/BLOCK_SIZE; i++)	//Call the FIR process function for every blockSize samples
+	for(i=0; i < TEST_LENGTH_SAMPLES/BLOCK_SIZE; i++)	// Call the FIR process function for every blockSize samples
 	{
 		arm_fir_f32(&fir, testInput_f32_1kHz_15kHz + BLOCK_SIZE*i, testOutput + BLOCK_SIZE*i, BLOCK_SIZE);
 	}
 	
-	snr = arm_snr_f32(refOutput, testOutput, TEST_LENGTH_SAMPLES);	//将计算结果与标准结果比较计算
+	snr = arm_snr_f32(refOutput, testOutput, TEST_LENGTH_SAMPLES);	// compare calculated result with the standard result
 	
 	if(snr < SNR_THRESHOLD_F32)
 	{
@@ -155,8 +155,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
- 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+ 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -169,14 +169,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

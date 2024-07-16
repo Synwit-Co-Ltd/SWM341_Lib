@@ -6,11 +6,11 @@ int main(void)
 {	
 	SystemInit();
 	
-	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);			//输出，接LED
+	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);				// output, connect LED
 	
-	GPIO_Init(GPIOA, PIN10, 0, 1, 0, 0);			//输入，上拉使能，接KEY
+	GPIO_Init(GPIOA, PIN10, 0, 1, 0, 0);			// input, pull-up enable, connect key
 	
-	EXTI_Init(GPIOA, PIN10, EXTI_FALL_EDGE);		//下降沿触发中断
+	EXTI_Init(GPIOA, PIN10, EXTI_FALL_EDGE);		// falling edge on PA10 pin trigger a EXTI interrupt
 
 #if FAST_IRQ
 	NVIC_EnableIRQ(GPIOA10_IRQn);
