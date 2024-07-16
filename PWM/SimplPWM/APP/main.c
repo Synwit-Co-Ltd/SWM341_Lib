@@ -7,7 +7,7 @@ int main(void)
 	
 	SystemInit();
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);			//调试指示引脚
+	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);			// debug indication pin
 	
 	PORT_Init(PORTM, PIN1,  PORTM_PIN1_PWM0A,   0);
 	PORT_Init(PORTM, PIN4,  PORTM_PIN4_PWM0AN,  0);
@@ -30,21 +30,21 @@ int main(void)
 	PORT_Init(PORTB, PIN0,  PORTB_PIN0_PWM3BN,  0);
 	
  	PORT_Init(PORTB, PIN15, PORTB_PIN15_PWM4A,  0);
-// 	PORT_Init(PORTB, PIN14, PORTB_PIN14_PWM4AN, 0);		//SWDIO
+// 	PORT_Init(PORTB, PIN14, PORTB_PIN14_PWM4AN, 0);		// SWDIO
  	PORT_Init(PORTB, PIN13, PORTB_PIN13_PWM4B,  0);
-// 	PORT_Init(PORTB, PIN12, PORTB_PIN12_PWM4BN, 0);		//SWDCK
+// 	PORT_Init(PORTB, PIN12, PORTB_PIN12_PWM4BN, 0);		// SWDCK
 	
 	PWM_initStruct.Mode = PWM_CENTER_ALIGNED;
-	PWM_initStruct.Clkdiv = 4;					//F_PWM = 20M/4 = 5M
-	PWM_initStruct.Period = 10000;				//5M/10000 = 500Hz，中心对称模式下频率降低到250Hz
-	PWM_initStruct.HdutyA =  2500;				//2500/10000 = 25%
-	PWM_initStruct.DeadzoneA = 50;				//50/5M = 10us
+	PWM_initStruct.Clkdiv = 4;					// F_PWM = 20M/4 = 5M
+	PWM_initStruct.Period = 10000;				// 5M/10000 = 500Hz, 250Hz for center alignment mode
+	PWM_initStruct.HdutyA =  2500;				// 2500/10000 = 25%
+	PWM_initStruct.DeadzoneA = 50;				// 50/5M = 10us
 	PWM_initStruct.IdleLevelA = 0;
 	PWM_initStruct.IdleLevelAN= 0;
 	PWM_initStruct.OutputInvA = 0;
 	PWM_initStruct.OutputInvAN= 0;
-	PWM_initStruct.HdutyB =  7500;				//7500/10000 = 75%
-	PWM_initStruct.DeadzoneB = 50;				//50/5M = 10us
+	PWM_initStruct.HdutyB =  7500;				// 7500/10000 = 75%
+	PWM_initStruct.DeadzoneB = 50;				// 50/5M = 10us
 	PWM_initStruct.IdleLevelB = 0;
 	PWM_initStruct.IdleLevelBN= 0;
 	PWM_initStruct.OutputInvB = 0;
@@ -64,39 +64,39 @@ int main(void)
 	PWM_Start(PWM0_MSK|PWM1_MSK|PWM2_MSK|PWM3_MSK|PWM4_MSK);
 	
 	
-	/* 刹车（Brake）功能演示 */
+	/* Brake function using demo */
 #if 0
-	PORT_Init(PORTA, PIN2, PORTA_PIN2_PWM_BRK0, 1);		//PA2切换为PWM_BRK0功能
+	PORT_Init(PORTA, PIN2, PORTA_PIN2_PWM_BRK0, 1);
 	PORTA->PULLU |= (1 << PIN2);
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_PWM_BRK1, 1);		//PM0切换为PWM_BRK1功能
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_PWM_BRK1, 1);
 	PORTM->PULLU |= (1 << PIN0);
 	
-	PWM_BrkInPolarity(PWM_BRK0 | PWM_BRK1 | PWM_BRK2, 0);			//PWM_BRK0、PWM_BRK1、PWM_BRK2 低电平刹车
+	PWM_BrkInPolarity(PWM_BRK0 | PWM_BRK1 | PWM_BRK2, 0);			// brake when PWM_BRK0, PWM_BRK1 and PWM_BRK2 is low level
 	
-	PWM_BrkConfig(PWM0, PWM_CH_A, PWM_BRK0 | PWM_BRK1, 0, 1, 1, 0);	//PWM0通道A 受刹车输入 PWM_BRK0和PWM_BRK1 控制
-	PWM_BrkConfig(PWM0, PWM_CH_B, PWM_BRK0 | PWM_BRK1, 0, 1, 1, 0);	//PWM0通道B 受刹车输入 PWM_BRK0和PWM_BRK1 控制
+	PWM_BrkConfig(PWM0, PWM_CH_A, PWM_BRK0 | PWM_BRK1, 0, 1, 1, 0);	// PWM0 channel A is braked by brake inputs PWM_BRK0 and PWM_BRK1
+	PWM_BrkConfig(PWM0, PWM_CH_B, PWM_BRK0 | PWM_BRK1, 0, 1, 1, 0);	// PWM0 channel B is braked by brake inputs PWM_BRK0 and PWM_BRK1
 	
-	/* 刹车（Brake）中断功能演示 */
+	/* Brake interrupt using demo */
 #if 1
 	PWM_BrkIntEn(PWM_BRKIT_BRK0);
 	NVIC_EnableIRQ(PWMBRK_IRQn);
 #endif
 #endif
 
-	/* 软件刹车（Software Brake）功能演示 */
+	/* Software Brake using demo */
 #if 0
-	PWM_BrkConfig(PWM0, PWM_CH_A, 0, 0, 1, 1, 0);	//PWM0通道A 不受刹车输入影响，只能软件刹车
-	PWM_BrkConfig(PWM0, PWM_CH_B, 0, 0, 1, 1, 0);	//PWM0通道B 不受刹车输入影响，只能软件刹车
+	PWM_BrkConfig(PWM0, PWM_CH_A, 0, 0, 1, 1, 0);	// PWM0 channel A cannot be braked by brake input signal, only can brake by software
+	PWM_BrkConfig(PWM0, PWM_CH_B, 0, 0, 1, 1, 0);	// PWM0 channel B cannot be braked by brake input signal, only can brake by software
 	
 	while(1)
 	{
 		GPIO_SetBit(GPIOA, PIN5);
-		PWMG->SWBRK |= (PWMG_SWBRK_PWM0A_Msk |		//软件触发PWM0A和PWM0B的刹车动作
+		PWMG->SWBRK |= (PWMG_SWBRK_PWM0A_Msk |		// software brake
 						PWMG_SWBRK_PWM0B_Msk);
 		for(int i = 0; i < 300000; i++) __NOP();
 		
 		GPIO_ClrBit(GPIOA, PIN5);
-		PWMG->SWBRK &=~(PWMG_SWBRK_PWM0A_Msk |		//撤销PWM0A和PWM0B的软件刹车，恢复正常输出
+		PWMG->SWBRK &=~(PWMG_SWBRK_PWM0A_Msk |		// software brake exit, restore normal output
 						PWMG_SWBRK_PWM0B_Msk);
 		for(int i = 0; i < 900000; i++) __NOP();
 	}
@@ -112,7 +112,7 @@ void PWMBRK_Handler(void)
 {
 	if(PWM_BrkIntStat(PWM_BRKIT_BRK0))
 	{
-		PWM_BrkIntDis(PWM_BRKIT_BRK0);	//必须关掉刹车中断，否则刹车期间不停触发中断
+		PWM_BrkIntDis(PWM_BRKIT_BRK0);	// The brake interrupt must be turned off, otherwise it will trigger the interrupt continuously during braking
 		
 		GPIO_InvBit(GPIOA, PIN5);
 	}

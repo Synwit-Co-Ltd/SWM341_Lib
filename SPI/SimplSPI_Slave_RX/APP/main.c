@@ -1,6 +1,7 @@
 #include "SWM341.h"
 #include <string.h>
 
+
 #define SPI0_CS_Low()	GPIO_ClrBit(GPIOM, PIN3)
 #define SPI0_CS_High()	GPIO_SetBit(GPIOM, PIN3)
 
@@ -28,14 +29,14 @@ int main(void)
 	while(1==1)
 	{
 		SPI0_CS_Low();
-		for(i = 0; i < 1200; i++);				// CS拉低后需要延时一下再发送
+		for(i = 0; i < 1200; i++);
 		for(i = 0; i < 16; i++)
 		{
 			SPI0->DATA = i;
 			while((SPI0->STAT & SPI_STAT_TFNF_Msk) == 0) __NOP();
 		}
 		while(SPI_IsTXEmpty(SPI0) == 0) __NOP();
-		for(i = 0; i < 12000; i++) __NOP();		// 发送FIFO虽已空，但最后一个数据还在发送移位寄存器里，需要延时等待它发送出去
+		for(i = 0; i < 12000; i++) __NOP();		// Although TX FIFO is empty, the last data is still in the TX shift register and needs to wait for it to be sent out
 		SPI0_CS_High();
 		
 		for(i = 0; i < SystemCoreClock/4; i++) __NOP();
@@ -92,9 +93,9 @@ void SPISlvInit(void)
 	SPI_initStruct.TXCompleteIEn = 0;
 	SPI_Init(SPI1, &SPI_initStruct);
 	
-	SPI_INTEn(SPI1, SPI_IT_RX_OVF);	// 溢出后SPI不再接收数据，因此需要在溢出中断中清空RXFIFO
+	SPI_INTEn(SPI1, SPI_IT_RX_OVF);			// The SPI no longer receives data after overflow, so the RX FIFO needs to be cleared in the overflow ISR
 	
-	SPI1->IE |= (1 << SPI_IE_SSRISE_Pos);	//开启SPI_SSEL上升沿中断
+	SPI1->IE |= (1 << SPI_IE_SSRISE_Pos);	// enable SPI_SSEL rising edge interrupt
 	
 	SPI_Open(SPI1);
 }
@@ -129,7 +130,7 @@ void SPI1_Handler(void)
 		
 		SPI1->IF = (1 << SPI_IF_SSRISE_Pos);
 		
-		/* 检测到SPI_SSEL引脚上升沿，一帧接收完成 */
+		/* detect rising edge on SPI_SSEL pin, so one frame is received */
 		for(uint32_t i = 0; i < SPI1RXIndex; i++)
 			printf("%d, ", SPI1RXBuffer[i]);
 		printf("\r\n\r\n");
@@ -144,8 +145,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -158,14 +159,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

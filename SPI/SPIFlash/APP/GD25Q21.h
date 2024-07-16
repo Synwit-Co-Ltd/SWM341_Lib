@@ -43,5 +43,4 @@ void GD25Q21_WritePage(uint32_t addr, uint8_t data[], uint16_t cnt);
 #define GD25Q21_CMD_WRITE_DISABLE	0x04
 
 
-
-#endif //__GD25Q21_H__
+#endif

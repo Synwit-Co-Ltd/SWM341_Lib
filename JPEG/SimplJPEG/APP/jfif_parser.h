@@ -36,4 +36,4 @@
 int jfif_parse(const uint8_t buf[], uint32_t len, jfif_info_t * jfif_info);
 
 
-#endif //__JFIF_PARSER_H__
+#endif

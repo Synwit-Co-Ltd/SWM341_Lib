@@ -5,9 +5,9 @@ int main(void)
 {	
 	SystemInit();
 	
-	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);		//输出，接LED
+	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);		// output, connect a LED
 	
-	SysTick_Config(0x1000000);				//注意：SysTick 是 24 位的，超过最大计数值时 SysTick_Config 不配置，直接返回
+	SysTick_Config(0x1000000);				// Note: SysTick counter is 24-bit width and SysTick will not be configured if argment bigger than 0x1000000.
 	
 	while(1==1)
 	{
@@ -16,6 +16,6 @@ int main(void)
 
 void SysTick_Handler(void)
 {	
-	GPIO_InvBit(GPIOA, PIN9);	//反转LED亮灭状态
+	GPIO_InvBit(GPIOA, PIN9);
 }
 

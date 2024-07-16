@@ -1,5 +1,9 @@
 #include "SWM341.h"
 
+
+/* SPI send routine, using TX register empty interrupt and TX frame done interrupt, can use the logic analyzer to view the send process */
+
+
 uint16_t *TXBuff = 0; 
 uint16_t TXCount = 0;
 uint16_t TXIndex = 0;
@@ -8,8 +12,7 @@ void SerialInit(void);
 void SPI_Master_Send(uint16_t buff[], uint16_t cnt);
 
 int main(void)
-{	
-	uint32_t i;
+{
 	SPI_InitStructure SPI_initStruct;
 	uint16_t txbuff[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF};
 	
@@ -17,7 +20,7 @@ int main(void)
 	
 	SerialInit();	
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);		//用作中断进入指示信号
+	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);		// debug indication signal
 	
 	GPIO_Init(GPIOM, PIN3, 1, 0, 0, 0);
 #define SPI0_CS_Low()	GPIO_ClrBit(GPIOM, PIN3)
@@ -47,7 +50,7 @@ int main(void)
 	{
 		SPI_Master_Send(txbuff, 16);
 		
-		for(i = 0; i < SystemCoreClock/100; i++) __NOP();
+		for(int i = 0; i < SystemCoreClock/100; i++) __NOP();
 	}
 }
 
@@ -70,7 +73,7 @@ void SPI0_Handler(void)
 	{
 		SPI_INTClr(SPI0, SPI_IT_TX_DONE);
 		
-		if(TXIndex == TXCount)	// 要发送的数据已全部填入SPI TX FIFO
+		if(TXIndex == TXCount)	// data to be sent is all filled in TX FIFO
 		{
 			SPI0_CS_High();
 			SPI_INTDis(SPI0, SPI_IT_TX_DONE);
@@ -96,7 +99,7 @@ void SPI0_Handler(void)
 			SPI_INTDis(SPI0, SPI_IT_TX_EMPTY);
 		}
 		
-		SPI0->IF = SPI_IF_TFE_Msk;	//清除中断标志，必须在填充TX FIFO后清中断标志
+		SPI0->IF = SPI_IF_TFE_Msk;	// clear interrupt flag, must clear after filling data to TX FIFO
 	}
 	
 	GPIO_InvBit(GPIOA, PIN3);
@@ -107,8 +110,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -121,14 +124,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

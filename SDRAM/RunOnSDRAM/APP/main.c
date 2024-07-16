@@ -17,7 +17,7 @@ int main(void)
 	
 	SDRAM_Config();
 	
-	SFC_Read(0, (uint32_t *)SDRAMM_BASE, 0x100000/4);        // 将 SPI Flash 上前 1MB 拷贝到 SDRAM 上
+	SFC_Read(0, (uint32_t *)SDRAMM_BASE, 0x100000/4);        // Copy the first 1MB of SPI Flash to SDRAM
 	
 	led_init();
 	
@@ -38,7 +38,7 @@ void SFC_Config(uint8_t width)
 {
 	SFC_InitStructure SFC_initStruct;
 	
-	/* SFC使用专用的FSPI（Flash SPI）接口连接SPI Flash */
+	/* The SFC uses the dedicated Flash SPI (FSPI) interface to connect to SPI Flash */
 	PORT_Init(PORTD, PIN5, PORTD_PIN5_FSPI_SCLK,  0);
 	PORT_Init(PORTD, PIN6, PORTD_PIN6_FSPI_SSEL,  0);
 	PORT_Init(PORTD, PIN8, PORTD_PIN8_FSPI_MOSI,  1);
@@ -137,8 +137,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);		//GPIOM.0配置为UART0输入引脚
- 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);		//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+ 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -154,14 +154,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

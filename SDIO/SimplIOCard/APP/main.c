@@ -36,7 +36,7 @@ int main(void)
 	
 	SDIO_IO_Init(1000000, SDIO_4bit);
 	
-	/* 主机向从机发送 GO_IDLE 命令，从机可将此命令作为软件复位指令 */
+	/* The host sends the GO_IDLE command to the slave, which can be used as a software reset instruction */
 	SDIO_SendCmd(SD_CMD_GO_IDLE_STATE, 0x00, SD_RESP_NO, 0);
 	
 	SDIO_IO_ByteWrite(0, 0x02, 0xFE);		// Enable all Function
@@ -46,12 +46,12 @@ int main(void)
 	SDIO_IO_ByteWrite(0, 0x111, 512 >> 8);	// I/O block size for function 1
 	SDIO_IO_ByteWrite(0, 0x110, 512 & 0xFF);
 	
-	/* 主机向从机发送数据 */
+	/* The host sends data to the slave */
 	SDIO_IO_BlockWrite(1, 0x00, 0, Buffer, 512);
 	
 	SDIO_IO_MultiBlockWrite(1, 0x00, 0, Buffer, 2);
 	
-	/* 主机从从机读取数据 */
+	/* The host reads data from the slave */
 	SDIO_IO_BlockRead(1, 0x00, 0, Buffer, 512);
 	
 	SDIO_IO_MultiBlockRead(1, 0x00, 0, Buffer, 2);
@@ -66,8 +66,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -83,14 +83,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

@@ -1,1 +1,0 @@
-功能说明：使用SFC（Serial Flash Controller）读写SPI Flash

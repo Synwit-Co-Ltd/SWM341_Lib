@@ -8,8 +8,8 @@
 #include "jpeg_synwit.h"
 
 
-#define LCD_HDOT	480		// 水平点数
-#define LCD_VDOT	272		// 垂直点数
+#define LCD_HDOT	480		// horizontal dot number
+#define LCD_VDOT	272		// vertical dot number
 
 uint16_t *LCD_Buffer = (uint16_t *)SDRAMM_BASE;
 uint8_t  *jpeg_image_sdr = (uint8_t *)(SDRAMM_BASE + 0x100000);
@@ -43,7 +43,7 @@ int main(void)
 	jpeg_outset.format = JPEG_OUT_RGB565;
 	jpeg_outset.dither = 0;
 	jpeg_outset.RGBAddr = SDRAMM_BASE;
-	jpeg_outset.RGBWidth = jfif_info.Width;	// 图片宽度与屏幕宽度相同，赋值 jfif_info.Width 或 LCD_HDOT 均可
+	jpeg_outset.RGBWidth = jfif_info.Width;		// When image width is same as screen width, can be assigned either jfif_info.Width or LCD_HDOT
 	JPEG_Decode(JPEG, &jfif_info, &jpeg_outset);
 	while(JPEG_DecodeBusy(JPEG)) __NOP();
 
@@ -54,7 +54,7 @@ int main(void)
 	jpeg_outset.format = JPEG_OUT_RGB565;
 	jpeg_outset.dither = 0;
 	jpeg_outset.RGBAddr = SDRAMM_BASE;
-	jpeg_outset.RGBWidth = LCD_HDOT;		// 图片宽度小于屏幕宽度，解码到显存中直接显示，必须赋值屏幕宽度 LCD_HDOT
+	jpeg_outset.RGBWidth = LCD_HDOT;			// When image width is less than screen width, and expect to decode image to graphical buffer directly, must use LCD_HDOT
 	JPEG_Decode(JPEG, &jfif_info, &jpeg_outset);
 	while(JPEG_DecodeBusy(JPEG)) __NOP();
 #endif
@@ -127,9 +127,9 @@ void RGBLCDInit(void)
 	uint32_t i;
 	LCD_InitStructure LCD_initStruct;
 	
-	GPIO_Init(GPIOA, PIN6, 1, 0, 0, 0);		//屏幕背光
+	GPIO_Init(GPIOA, PIN6, 1, 0, 0, 0);		// LCD backlight switch
 	GPIO_SetBit(GPIOA, PIN6);
-	GPIO_Init(GPIOC, PIN6, 1, 0, 0, 0);		//屏幕复位
+	GPIO_Init(GPIOC, PIN6, 1, 0, 0, 0);		// LCD hardware reset
 	GPIO_ClrBit(GPIOC, PIN6);
 	for(i = 0; i < 1000000; i++) __NOP();
 	GPIO_SetBit(GPIOC, PIN6);
@@ -175,7 +175,7 @@ void RGBLCDInit(void)
 	LCD_initStruct.VsyncWidth = 5;
 	LCD_initStruct.DataSource = (uint32_t)LCD_Buffer;
 	LCD_initStruct.Background = 0xFFFF;
-	LCD_initStruct.SampleEdge = LCD_SAMPLE_FALL;	// ATK-4342 RGBLCD 下降沿采样
+	LCD_initStruct.SampleEdge = LCD_SAMPLE_FALL;	// ATK-4342 samples data on falling edge
 	LCD_initStruct.IntEOTEn = 1;
 	LCD_Init(LCD, &LCD_initStruct);
 }
@@ -192,8 +192,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);		//GPIOM.0配置为UART0输入引脚
- 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);		//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+ 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -209,14 +209,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

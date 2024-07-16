@@ -2,8 +2,8 @@
 #include "SWM341.h"
 
 #define TR_LEN	1024
-uint16_t RX_Buffer[2][TR_LEN] = {0};	// RX_Buffer[0]：DMA 前半段搬运使用的 Buffer
-										// RX_Buffer[1]：DMA 后半段搬运使用的 Buffer
+uint16_t RX_Buffer[2][TR_LEN] = {0};	// RX_Buffer[0]: the destination buffer for the first half of the DMA transfer
+										// RX_Buffer[1]: the destination buffer for the second half of the DMA transfer
 uint16_t TX_Buffer[2][TR_LEN] = {{
 	0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007, 0x0008, 0x0009, 0x000A, 0x000B, 0x000C, 0x000D, 0x000E, 0x000F,
 	0x0010, 0x0011, 0x0012, 0x0013, 0x0014, 0x0015, 0x0016, 0x0017, 0x0018, 0x0019, 0x001A, 0x001B, 0x001C, 0x001D, 0x001E, 0x001F,
@@ -137,8 +137,8 @@ uint16_t TX_Buffer[2][TR_LEN] = {{
 	0x07F0, 0x07F1, 0x07F2, 0x07F3, 0x07F4, 0x07F5, 0x07F6, 0x07F7, 0x07F8, 0x07F9, 0x07FA, 0x07FB, 0x07FC, 0x07FD, 0x07FE, 0x07FF,
 }};
 
-volatile int RX_DoneIndex = 0;	// bit1：半段传输完成标志位
-								// bit0：完成传输的是哪半段，0 前半段   1 后半段
+volatile int RX_DoneIndex = 0;	// bit1: half of the transmission complete flag
+								// bit0: which half of the transmission is complete, 0 the first half, 1 the second half
 volatile int TX_DoneIndex = 0;
 
 void SerialInit(void);
@@ -203,11 +203,11 @@ void I2S_Master_Init(void)
 	
 	DMA_initStruct.Mode = DMA_MODE_CIRCLE;
 	DMA_initStruct.Unit = DMA_UNIT_HALFWORD;
-	DMA_initStruct.Count = TR_LEN * 2;	// DMA 搬运分两段，前半段和后半段各长 TR_LEN
+	DMA_initStruct.Count = TR_LEN * 2;	// DMA transfer is divided into two sections, each length ADC_LEN
 	DMA_initStruct.SrcAddr = (uint32_t)&SPI0->DATA;
 	DMA_initStruct.SrcAddrInc = 0;
 	DMA_initStruct.DstAddr = (uint32_t)RX_Buffer;
-	DMA_initStruct.DstAddrInc = 2;		// Scatter-Gather 模式
+	DMA_initStruct.DstAddrInc = 2;		// Scatter-Gather mode
 	DMA_initStruct.Handshake = DMA_CH1_SPI0RX;
 	DMA_initStruct.Priority = DMA_PRI_LOW;
 	DMA_initStruct.INTEn = DMA_IT_DSTSG_HALF | DMA_IT_DSTSG_DONE;
@@ -245,9 +245,9 @@ void I2S_Slave_Init(void)
 	
 	DMA_initStruct.Mode = DMA_MODE_CIRCLE;
 	DMA_initStruct.Unit = DMA_UNIT_HALFWORD;
-	DMA_initStruct.Count = TR_LEN * 2;	// DMA 搬运分两段，前半段和后半段各长 TR_LEN
+	DMA_initStruct.Count = TR_LEN * 2;	// DMA transfer is divided into two sections, each length ADC_LEN
 	DMA_initStruct.SrcAddr = (uint32_t)TX_Buffer;
-	DMA_initStruct.SrcAddrInc = 2;		// Scatter-Gather 模式
+	DMA_initStruct.SrcAddrInc = 2;		// Scatter-Gather mode
 	DMA_initStruct.DstAddr = (uint32_t)&SPI1->DATA;
 	DMA_initStruct.DstAddrInc = 0;
 	DMA_initStruct.Handshake = DMA_CH2_SPI1TX;
@@ -298,8 +298,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -312,14 +312,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

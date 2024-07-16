@@ -5,11 +5,11 @@ int main(void)
 {	
 	SystemInit();
 	
-	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);			//输出，接LED
+	GPIO_Init(GPIOA, PIN9, 1, 0, 0, 0);			// output, connect LED
 	
-	GPIO_Init(GPIOA, PIN2, 0, 1, 0, 0);			//输入，上拉使能，接KEY
+	GPIO_Init(GPIOA, PIN2, 0, 1, 0, 0);			// input, enable pull-up, connect key
 	
-	EXTI_Init(GPIOA, PIN2, EXTI_FALL_EDGE);		//下降沿触发中断
+	EXTI_Init(GPIOA, PIN2, EXTI_FALL_EDGE);		// falling edge on PA2 generates an interrupt
 	
 //	NVIC_EnableIRQ(GPIOA_IRQn);
 	
@@ -31,6 +31,6 @@ void GPIOA_Handler(void)
 {
 	if(EXTI_State(GPIOA, PIN2))
 	{
-		EXTI_Clear(GPIOA, PIN2);	// 当GPIOA中断使能时，GPIOA2下降沿同时触发NMI中断和GPIOA中断
+		EXTI_Clear(GPIOA, PIN2);	// When GPIOA interrupt is enabled, the falling edge of PA2 triggers both NMI interrupt and GPIOA interrupt
 	}
 }

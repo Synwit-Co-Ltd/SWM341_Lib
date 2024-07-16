@@ -6,8 +6,8 @@
 
 extern const unsigned char gImage_Synwit128[32768];
 
-#define LCD_HDOT	480		// 水平点数
-#define LCD_VDOT	272		// 垂直点数
+#define LCD_HDOT	480		// horizontal dot number
+#define LCD_VDOT	272		// vertical dot number
 
 
 UG_GUI gui;
@@ -19,8 +19,8 @@ uint16_t *LCD_Buffer2 = (uint16_t *)(SDRAMM_BASE + 0x100000);
 uint16_t *LCD_Buffer;
 
 void _HW_DrawPoint(UG_S16 x, UG_S16 y, UG_COLOR c)
-{	
-	LCD_Buffer[y * 128 + x] = c;	// 在128X128大小的图层上绘图
+{
+	LCD_Buffer[y * 128 + x] = c;	// Draw on a 128X128 layer
 }
 
 
@@ -79,9 +79,9 @@ void RGBLCDInit(void)
 	LCD_InitStructure LCD_initStruct;
 	LCD_LayerInitStructure LCD_layerInitStruct;
 	
-	GPIO_Init(GPIOA, PIN6, 1, 0, 0, 0);		//屏幕背光
+	GPIO_Init(GPIOA, PIN6, 1, 0, 0, 0);		// LCD backlight switch
 	GPIO_SetBit(GPIOA, PIN6);
-	GPIO_Init(GPIOC, PIN6, 1, 0, 0, 0);		//屏幕复位
+	GPIO_Init(GPIOC, PIN6, 1, 0, 0, 0);		// LCD hardware reset
 	GPIO_ClrBit(GPIOC, PIN6);
 	for(i = 0; i < 1000000; i++) __NOP();
 	GPIO_SetBit(GPIOC, PIN6);
@@ -127,7 +127,7 @@ void RGBLCDInit(void)
 	LCD_initStruct.VsyncWidth = 3;
 	LCD_initStruct.DataSource = (uint32_t)LCD_Buffer;
 	LCD_initStruct.Background = C_GRAY;
-	LCD_initStruct.SampleEdge = LCD_SAMPLE_FALL;	// ATK-4342 RGBLCD 下降沿采样
+	LCD_initStruct.SampleEdge = LCD_SAMPLE_FALL;	// ATK-4342 samples data on falling edge
 	LCD_initStruct.IntEOTEn = 1;
 	LCD_Init(LCD, &LCD_initStruct);
 	
@@ -219,8 +219,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);		//GPIOM.0配置为UART0输入引脚
- 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);		//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+ 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -233,14 +233,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

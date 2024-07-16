@@ -1,6 +1,9 @@
 #include "SWM341.h"
 
 
+/* Use Serial Flash Controller (SFC) to read and write SPI Flash */
+
+
 #define EEPROM_ADDR	  0x10000
 
 uint32_t WrBuff[20] = {0x14141414, 0x15151515, 0x16161616, 0x17171717, 0x18181818,
@@ -37,7 +40,7 @@ int main(void)
 	
 	printf("\r\nAfter Write: \r\n");
 
-	/* SFC 写入较慢，大量写入时，建议用 GPIO 模拟 SPI 写入 */
+	/* SFC writes are slow, and it is recommended to use GPIO to simulate SPI writes when writing a large number of data */
 #if 0
 	SFC_Write(EEPROM_ADDR, WrBuff, 20);
 #else
@@ -69,7 +72,7 @@ void SFC_Config(uint8_t width)
 {
 	SFC_InitStructure SFC_initStruct;
 	
-	/* SFC使用专用的FSPI（Flash SPI）接口连接SPI Flash */
+	/* SFC uses the dedicated Flash SPI (FSPI) interface to connect to SPI Flash */
 	PORT_Init(PORTD, PIN5, PORTD_PIN5_FSPI_SCLK,  0);
 	PORT_Init(PORTD, PIN6, PORTD_PIN6_FSPI_SSEL,  0);
 	PORT_Init(PORTD, PIN8, PORTD_PIN8_FSPI_MOSI,  1);
@@ -113,8 +116,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
- 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+ 	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -127,14 +130,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

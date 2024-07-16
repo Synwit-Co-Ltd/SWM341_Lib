@@ -145,7 +145,7 @@ int jfif_parse(const uint8_t buf[], uint32_t len, jfif_info_t * jfif_info)
 			if(jfif_info->HTableCnt == 3)
 			{
 				if((jfif_info->CompInfo[0].htab_id_dc == jfif_info->CompInfo[1].htab_id_dc) &&
-				   (jfif_info->CompInfo[0].htab_id_dc == jfif_info->CompInfo[2].htab_id_dc))	// 共用DC表
+				   (jfif_info->CompInfo[0].htab_id_dc == jfif_info->CompInfo[2].htab_id_dc))	// use same DC table
 				{
 					if(jfif_info->CompInfo[0].htab_id_dc == 0)
 						memcpy(&jfif_info->HTable[1].DC, &jfif_info->HTable[0].DC, sizeof(jfif_info->HTable[0].DC));
@@ -156,7 +156,7 @@ int jfif_parse(const uint8_t buf[], uint32_t len, jfif_info_t * jfif_info)
 					jfif_info->CompInfo[1].htab_id_dc = jfif_info->CompInfo[1].htab_id_ac;
 					jfif_info->CompInfo[2].htab_id_dc = jfif_info->CompInfo[2].htab_id_ac;
 				}
-				else																			// 共用AC表
+				else																			// use same AC table
 				{
 					if(jfif_info->CompInfo[0].htab_id_ac == 0)
 						memcpy(&jfif_info->HTable[1].AC, &jfif_info->HTable[0].AC, sizeof(jfif_info->HTable[0].AC));

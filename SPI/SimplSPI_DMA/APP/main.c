@@ -1,6 +1,7 @@
 #include <string.h>
 #include "SWM341.h"
 
+
 char TX_Buffer[] = "Hello From Synwit\r\n";
 
 #define BUF_SIZE  32
@@ -23,7 +24,7 @@ int main(void)
 	SPI0_CS_High();
 	
 	PORT_Init(PORTM, PIN2, PORTM_PIN2_SPI0_SCLK, 0);
-	PORT_Init(PORTM, PIN4, PORTM_PIN4_SPI0_MISO, 1);	//将MOSI与MISO连接，自发、自收、然后打印
+	PORT_Init(PORTM, PIN4, PORTM_PIN4_SPI0_MISO, 1);	// connect MOSI to MISO, receive data sent by self
 	PORT_Init(PORTM, PIN5, PORTM_PIN5_SPI0_MOSI, 0);
 	
 	SPI_initStruct.clkDiv = SPI_CLKDIV_8;
@@ -90,9 +91,9 @@ void DMA_Handler(void)
 	{
 		DMA_CH_INTClr(DMA_CH0, DMA_IT_DONE);
 		
-		for(i = 0; i < SystemCoreClock/4; i++)  __NOP();		// 延时一会儿
+		for(i = 0; i < SystemCoreClock/4; i++)  __NOP();
 		
-		DMA_CH_Open(DMA_CH0);	// 重新开始，再次搬运
+		DMA_CH_Open(DMA_CH0);	// restart, transfer agian
 	}
 	else if(DMA_CH_INTStat(DMA_CH1, DMA_IT_DONE))
 	{
@@ -101,7 +102,7 @@ void DMA_Handler(void)
 		for(i = 0; i < BUF_SIZE; i++)  printf("%c", RX_Buffer[i]);
 		
 		memset(RX_Buffer, 0x00, sizeof(RX_Buffer));
-		DMA_CH_Open(DMA_CH1);	// 重新开始，再次搬运
+		DMA_CH_Open(DMA_CH1);	// restart, transfer agian
 	}
 }
 
@@ -110,8 +111,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -124,14 +125,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);
