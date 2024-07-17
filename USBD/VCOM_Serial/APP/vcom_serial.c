@@ -31,7 +31,7 @@ void VCOM_Init(void)
 	UART_initStruct.RXThresholdIEn = 1;
 	UART_initStruct.TXThreshold = 3;
 	UART_initStruct.TXThresholdIEn = 0;
-	UART_initStruct.TimeoutTime = 10;		//10个字符时间内未接收到新的数据则触发超时中断
+	UART_initStruct.TimeoutTime = 10;		// A timeout interrupt is triggered if no new data is received within 10 characters time
 	UART_initStruct.TimeoutIEn = 1;
  	UART_Init(UART0, &UART_initStruct);
 	UART_Open(UART0);
@@ -148,7 +148,7 @@ void VCOM_ClassRequest(USB_Setup_Packet_t * pSetup)
 			USBD_PrepareCtrlOut((uint8_t *)&LineCfg, 7);
 
             /* Status stage
-			   读取数据再后执行 USBD_TxWrite(0, 0, 0)，否则主机可能会发来新的数据覆盖旧数据 */
+			   Run USBD_TxWrite(0, 0, 0) after reading the data. Otherwise, the host may send new data to overwrite the old data */
             break;
 
         default:

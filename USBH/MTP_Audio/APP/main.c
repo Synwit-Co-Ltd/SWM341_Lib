@@ -4,6 +4,10 @@
 #include "usbh_core.h"
 #include "usbh_mtp.h"
 
+
+/* As a USB Host, read the first Wav audio file in the root directory of the Android phone through the MTP protocol and play it through the DAC */
+
+
 extern USBH_Class_cb_t USBH_MTP_cb;
 extern USBH_User_cb_t  USBH_USR_cb;
 
@@ -44,8 +48,8 @@ void DAC_Config(void);
 int main(void)
 {
 	USBH_Status status;
-	uint32_t BytesRead;		// 想要读取数据字节数
-	uint32_t bytesread;		// 实际读取数据字节数
+	uint32_t BytesRead;		// Number of bytes of data you want to read
+	uint32_t bytesread;		// Number of bytes of data actually read
 	
 	SystemInit();
 	
@@ -96,9 +100,9 @@ int main(void)
 		goto fail;
 	}
 	
-	/* 跳过 Wave 文件头的其他 chunk */
+	/* Skip other chunks of the Wave header */
 	uint32_t offset = sizeof(WAV_Info_t);
-	BytesRead = WavInfo.SubChunk2Size + 8;	// 读出下个 chunk 的 ID 和 Size
+	BytesRead = WavInfo.SubChunk2Size + 8;	// Read the ID and Size of the next chunk
 	while(1)
 	{
 		while((status = USBH_MTP_GetPartialObject(pHost, WavHandle, offset, BytesRead, (uint8_t *)ReadBuffer, &bytesread)) == USBH_BUSY) USBH_TObreak(1000);
@@ -121,7 +125,7 @@ int main(void)
 		if(status != USBH_OK)
 			goto fail;
 
-#if 0	// 打印音频数据，检查是否正确
+#if 0	// Print the audio data and check that it is correct
 		if(offset / BytesRead == 100)
 		{
 			printf("Wave Data @ %d is:\n", offset);
@@ -133,7 +137,7 @@ int main(void)
 		}
 #endif
 		
-		while(FillingBuffer != PlayingBuffer) __NOP();	// 等待上个 FillingBuffer 被使用
+		while(FillingBuffer != PlayingBuffer) __NOP();	// Wait for last FillingBuffer to be used
 		FillingBuffer = 1 - PlayingBuffer;
 		
 		for(int i = 0; i < BUFLEN; i++)
@@ -220,8 +224,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -237,14 +241,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

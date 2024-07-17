@@ -32,7 +32,7 @@ int main(void)
 	
 	SysTick_Config(CyclesPerUs * 100);
 	
-	while(USBH_MSC_Info.Ready == 0) __NOP();	// 等待 U 盘插入
+	while(USBH_MSC_Info.Ready == 0) __NOP();	// Wait for the U-Disk to be inserted
 	
 once:
 	res = f_mount(&fatfs, "usb:", 1);
@@ -103,12 +103,12 @@ once:
 		printf("read string != write string\r\n");
 	}
 	
-	while(USBH_MSC_Info.Ready == 1) __NOP();	// 等待 U 盘拔下
+	while(USBH_MSC_Info.Ready == 1) __NOP();	// Wait for the U-Disk to be removed
 	
 fail:
 	while(1==1)
 	{
-		if(USBH_MSC_Info.Ready == 1)	// 检测到 U 盘插入
+		if(USBH_MSC_Info.Ready == 1)	// U-Disk insertion detected
 			goto once;
 	}
 }
@@ -124,8 +124,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -141,14 +141,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

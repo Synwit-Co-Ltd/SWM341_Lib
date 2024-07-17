@@ -1,1 +1,0 @@
-功能说明：作为USB Host，通过 MTP 协议读取 Android 手机根目录下的第一首 Wav 音频文件，通过 DAC 播放

@@ -71,4 +71,4 @@ void MSC_ProcessOUT(void);
 void MSC_ProcessIN(void);
 
 
-#endif // __MASSSTORAGE_H__
+#endif

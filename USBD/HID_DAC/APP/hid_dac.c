@@ -133,9 +133,9 @@ extern uint16_t DAC_Buffer[1024];
 
 void HID_GetOutReport(uint8_t *buf, uint32_t size)
 {
-	uint8_t chnl = buf[0];						// 此包中数据属于哪个 DAC 通道
-	uint8_t count = buf[1];						// 此包中数据个数
-	uint16_t offset = buf[2] + (buf[3] << 8);	// 此包中数据在波形中的位置
+	uint8_t chnl = buf[0];						// The DAC channel to which the data in this packet belongs
+	uint8_t count = buf[1];						// The number of data in the packet
+	uint16_t offset = buf[2] + (buf[3] << 8);	// The position of the data in the waveform in this packet
 	
 //	printf("Copy %d-bytes from %08X to %08X\n", count*2, (int)&buf[4], (int)&DAC_Buffer[offset]);
 	

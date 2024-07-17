@@ -1,1 +1,0 @@
-功能说明：USB Host 连接鼠标（只支持 Full Speed 鼠标）

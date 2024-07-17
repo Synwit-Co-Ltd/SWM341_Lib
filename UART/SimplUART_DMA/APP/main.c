@@ -13,8 +13,9 @@ const char TX_String[8][32] = {
 	"TestString1234567\r\n",
 };
 
-#define RX_LEN	256					// 推荐用 2 的整数次幂，从而将取余运算转换成与运算，加快运算速度
-int  RX_Buffer[RX_LEN] = { 0 };		// DMA 搬运 UART 接收到的数据必须以字为单位，否则可能出现数据暂存在 DMA 内部无法被程序读出的问题
+#define RX_LEN	256					// It is recommended to use an integer power of 2 to convert the remainder operation into an and operation to speed up the operation
+int  RX_Buffer[RX_LEN] = { 0 };		// When using DMA to move the data received by UART to the memory, the unit must be words.
+									// Otherwise, the data may temporarily exist in the DMA internal and cannot be read out by the program.
 char TX_Buffer[RX_LEN] = { 0 };
 
 
@@ -31,7 +32,7 @@ int main(void)
 	
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTB, PIN13, PORTB_PIN13_UART2_RX, 1);	// 连接 PM1，接收 UART0 发出的数据，然后原样发出
+	PORT_Init(PORTB, PIN13, PORTB_PIN13_UART2_RX, 1);	// Connect to PM1, receive the data sent by UART0, and send it as-is
 	PORT_Init(PORTB, PIN11, PORTB_PIN11_UART2_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
@@ -114,8 +115,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -131,14 +132,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

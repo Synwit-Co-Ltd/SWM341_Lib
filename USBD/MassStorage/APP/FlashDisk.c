@@ -24,7 +24,6 @@ void FlashDiskInit(void)
 #if (MSC_MEDIUM == MSC_MEDIUM_SFLASH)
 	SFC_InitStructure SFC_initStruct;
 	
-	/* SFC使用专用的FSPI（Flash SPI）接口连接SPI Flash */
 	PORT_Init(PORTD, PIN5, PORTD_PIN5_FSPI_SCLK,  0);
 	PORT_Init(PORTD, PIN6, PORTD_PIN6_FSPI_SSEL,  0);
 	PORT_Init(PORTD, PIN8, PORTD_PIN8_FSPI_MOSI,  1);

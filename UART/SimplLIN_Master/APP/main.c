@@ -1,9 +1,10 @@
 #include "SWM341.h"
 
-#define LIN_ID_Sensor	0x11	// 此从机是一个传感器，只能从它读数据
-#define LIN_ID_Switch	0x21	// 此从机是一个开关，  只能向它写数据
 
-#define LIN_NB_Sensor	6		// Number of Byte, 传感器的数据是 6 字节
+#define LIN_ID_Sensor	0x11	// This slave is a sensor from which data can only be read
+#define LIN_ID_Switch	0x21	// This slave is a switch to which data can only be written
+
+#define LIN_NB_Sensor	6		// Number of Byte, the data length of the sensor is 6 bytes
 #define LIN_NB_Switch	4
 
 uint8_t Buffer_Sensor[LIN_NB_Sensor] = { 0 };
@@ -31,20 +32,20 @@ int main(void)
 	
 	LIN_Master_Init();
 	
-	TIMR_Init(BTIMR0, TIMR_MODE_TIMER, CyclesPerUs, 1000000/9600, 1);	// 发出 break 后，延迟一个 bit 时间再发送后续内容
+	TIMR_Init(BTIMR0, TIMR_MODE_TIMER, CyclesPerUs, 1000000/9600, 1);	// After break is sent, the subsequent content is sent after 1 bit time delay
 	
 	TIMR_Init(BTIMR1, TIMR_MODE_TIMER, CyclesPerUs, 20000, 0);
 	
 	while(1==1)
 	{
-		LIN_Master_Start(LIN_ID_Sensor, false);		// 从 Sensor 读数据
+		LIN_Master_Start(LIN_ID_Sensor, false);		// read data from the sensor
 		
 		TIMR_Stop(BTIMR1);
 		TIMR_Start(BTIMR1);
 		TIMR_INTClr(BTIMR1, TIMR_IT_TO);
 		while(!LIN_Rcv_Complete)
 		{
-			if(TIMR_INTStat(BTIMR1, TIMR_IT_TO))	// 20ms 未接收到数据，接收超时
+			if(TIMR_INTStat(BTIMR1, TIMR_IT_TO))	// no data is received within 20ms
 			{
 				goto retry;
 			}
@@ -58,7 +59,7 @@ int main(void)
 		}
 		printf("\n\n");
 		
-		LIN_Master_Start(LIN_ID_Switch, false);		// 向 Switch 写数据
+		LIN_Master_Start(LIN_ID_Switch, false);		// write data to the switch
 		
 retry:
 		for(int i = 0; i < SystemCoreClock/4; i++) __NOP();
@@ -119,7 +120,7 @@ void UART1_Handler(void)
 		
 		if(LIN_Rcv_Index < 2)
 		{
-			// 主机发出的 0x55 和 ID 经过收发器，主机自己也会接收到
+			// 0x55 and ID issued by the master pass through the transceiver and are also received by the master itself
 		}
 		else if(LIN_Rcv_Index < 2 + LIN_NB_Sensor)
 		{
@@ -127,7 +128,7 @@ void UART1_Handler(void)
 		}
 		else if(LIN_Rcv_Index == 2 + LIN_NB_Sensor)
 		{
-			/* TODO: 计算 Checksum 并比较 */
+			/* TODO: calculate the checksum and compare */
 			
 			LIN_Rcv_Complete = true;
 		}
@@ -170,8 +171,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -188,14 +189,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

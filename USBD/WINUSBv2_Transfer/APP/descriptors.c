@@ -6,7 +6,7 @@ uint8_t USBD_DeviceDescriptor[] =
 {
     18,                     // bLength
     USB_DESC_DEVICE,        // bDescriptorType
-    0x01, 0x02,             // bcdUSB£¬MS OS 2.0 ÃèÊö·ûÒªÇó USB 2.1
+    0x01, 0x02,             // bcdUSB, MS OS 2.0 descriptor requires USB 2.1
     0x00,                   // bDeviceClass
     0x00,                   // bDeviceSubClass
     0x00,                   // bDeviceProtocol

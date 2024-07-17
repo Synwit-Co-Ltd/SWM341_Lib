@@ -5,12 +5,12 @@ void SerialInit(void);
 void TestSignal(void);
 
 int main(void)
-{	
+{
 	SystemInit();
 	
 	SerialInit();
 	
-	TestSignal();
+	TestSignal();	// generate test waveform, use HALL to measure it's pulse width
 	
 #if 1
 	PORT_Init(PORTA, PIN0, PORTA_PIN0_HALL0_IN0, 1);
@@ -18,7 +18,7 @@ int main(void)
 	PORT_Init(PORTA, PIN2, PORTA_PIN2_HALL0_IN2, 1);
 	PORTA->PULLU |= ((1 << PIN0) | (1 << PIN1) | (1 << PIN2));
 	
-	TIMR_Init(TIMR0, TIMR_MODE_TIMER, CyclesPerUs, 0xFFFFFF, 0);		//最大测量脉宽0xFFFFFF uS，即16.7s
+	TIMR_Init(TIMR0, TIMR_MODE_TIMER, CyclesPerUs, 0xFFFFFF, 0);		// The maximum measurable pulse width is 0xFFFFFF uS, i.e. 16.7s
 	
 	TIMRG->HALLEN |= TIMRG_HALLEN_HALL0_Msk;
 	TIMRG->HALLIF =  TIMRG_HALLIF_H0IN0_Msk | TIMRG_HALLIF_H0IN1_Msk | TIMRG_HALLIF_H0IN2_Msk;
@@ -32,7 +32,7 @@ int main(void)
 	PORT_Init(PORTA, PIN14, PORTA_PIN14_HALL3_IN2, 1);
 	PORTA->PULLU |= ((1 << PIN12) | (1 << PIN13) | (1 << PIN14));
 	
-	TIMR_Init(TIMR3, TIMR_MODE_TIMER, CyclesPerUs, 0xFFFFFF, 0);		//最大测量脉宽0xFFFFFF uS，即16.7s
+	TIMR_Init(TIMR3, TIMR_MODE_TIMER, CyclesPerUs, 0xFFFFFF, 0);
 	
 	TIMRG->HALLEN |= TIMRG_HALLEN_HALL3_Msk;
 	TIMRG->HALLIF =  TIMRG_HALLIF_H3IN0_Msk | TIMRG_HALLIF_H3IN1_Msk | TIMRG_HALLIF_H3IN2_Msk;
@@ -97,8 +97,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -111,15 +111,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

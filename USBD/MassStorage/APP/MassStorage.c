@@ -106,7 +106,7 @@ void USB_Handler(void)
 			}
 			else if(USBD_TxNAKSent(EP_BULK_IN_NUM))
 			{
-				/* 主机检测到 EP_BULK_IN_NUM STALL 后会使用标准请求“Clear Feature”清除，然后再读取 CSW */
+				/* After detecting EP_BULK_IN_NUM STALL, the host uses the standard request "Clear Feature" to clear the stall, and then reads the CSW */
 				if((MSC_State == MSC_STATE_IN) && ((g_CBW.u8OPCode == UFI_INQUIRY) || (g_CBW.u8OPCode == UFI_REQUEST_SENSE)))
 				{
 					MSC_ProcessIN();
@@ -133,7 +133,7 @@ void MSC_ClassRequest(USB_Setup_Packet_t * pSetup)
 		switch(pSetup->bRequest)
 		{
 		case 0xFE:		// GET_MAX_LUN
-			/* wIndex 存储的是 bInterfaceNumber */
+			/* wIndex stores bInterfaceNumber */
 			if((pSetup->wIndex == USBD_ConfigDescriptor[9 + 2]) && (pSetup->wValue + pSetup->wLength == 1))
 			{
 				/* Data stage */
@@ -161,7 +161,7 @@ void MSC_ClassRequest(USB_Setup_Packet_t * pSetup)
 		switch(pSetup->bRequest)
 		{
 		case 0xFF:		// BULK_ONLY_MASS_STORAGE_RESET
-			/* wIndex 存储的是 bInterfaceNumber */
+			/* wIndex stores bInterfaceNumber */
 			if((pSetup->wIndex == USBD_ConfigDescriptor[9 + 2]) && (pSetup->wValue + pSetup->wLength == 0))
 			{
 				/* Prepare to receive the CBW */
@@ -259,7 +259,7 @@ void MSC_ProcessOUT(void)
 			{
 				USBD_TxStall(EP_BULK_IN_NUM);
 				
-				/* 主机检测到 EP_BULK_IN_NUM STALL 后会使用标准请求“Clear Feature”清除，然后再读取 CSW */
+				/* After detecting EP_BULK_IN_NUM STALL, the host uses the standard request "Clear Feature" to clear the stall, and then reads the CSW */
 				g_CSW.bCSWStatus = 1;
 				g_CSW.dCSWDataResidue = 0;
 			}
@@ -268,7 +268,7 @@ void MSC_ProcessOUT(void)
 		
 		case UFI_READ_FORMAT_CAPACITY:
 			g_Address = (uint32_t)Buffer;
-			g_Size = g_CBW.dCBWDataTransferLength;	// 主机不知道设备的“Capacity List Length”是多少，所以可能会读256字节
+			g_Size = g_CBW.dCBWDataTransferLength;	// The host does not know what the "Capacity List Length" of the device is, so it may read 256 bytes
 			
 			memset(Buffer, 0x00, sizeof(Buffer));
 
@@ -288,7 +288,7 @@ void MSC_ProcessOUT(void)
 			// 11b = No Cartridge in Drive - Maximum formattable capacity for any cartridge
 			Buffer[8] = 0x02;
 
-			Buffer[ 9] = 0x00;								// 扇区大小： 512字节
+			Buffer[ 9] = 0x00;								// sector size: 512 bytes
 			Buffer[10] = 0x02;
 			Buffer[11] = 0x00;
 
@@ -298,7 +298,7 @@ void MSC_ProcessOUT(void)
 			Buffer[14] = (SECTOR_COUNT >>  8) & 0xFF;
 			Buffer[15] = (SECTOR_COUNT >>  0) & 0xFF;
 
-			Buffer[17] = 0x00;								// 扇区大小： 512字节
+			Buffer[17] = 0x00;								// sector size: 512 bytes
 			Buffer[18] = 0x02;
 			Buffer[19] = 0x00;
 		
@@ -321,7 +321,7 @@ void MSC_ProcessOUT(void)
 			Buffer[1] = ((SECTOR_COUNT - 1) >> 16) & 0xFF;
 			Buffer[2] = ((SECTOR_COUNT - 1) >>  8) & 0xFF;
 			Buffer[3] = ((SECTOR_COUNT - 1) >>  0) & 0xFF;
-			Buffer[4] = 0x00;								// 扇区大小： 512字节
+			Buffer[4] = 0x00;								// sector size: 512 bytes
 			Buffer[5] = 0x00;
 			Buffer[6] = 0x02;
 			Buffer[7] = 0x00;
@@ -416,7 +416,7 @@ void MSC_ProcessOUT(void)
 			{
 				USBD_TxStall(EP_BULK_IN_NUM);
 				
-				/* 主机检测到 EP_BULK_IN_NUM STALL 后会使用标准请求“Clear Feature”清除，然后再读取 CSW */
+				/* After detecting EP_BULK_IN_NUM STALL, the host uses the standard request "Clear Feature" to clear the stall, and then reads the CSW */
 				g_CSW.bCSWStatus = 1;
 				g_CSW.dCSWDataResidue = 0;
 			}
@@ -517,7 +517,7 @@ void MSC_ProcessIN(void)
 	
 	if(MSC_State == MSC_STATE_CSW)
 	{
-		/* 发送 CSW 后，准备接收下一个 CBW */
+		/* After sending the CSW, prepare to receive the next CBW */
 		MSC_State = MSC_STATE_CBW;
 	}
 	else if(MSC_State == MSC_STATE_IN)

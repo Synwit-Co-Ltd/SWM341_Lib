@@ -1,7 +1,7 @@
 #include "SWM341.h"
 #include "hid_dac.h"
 
-uint16_t DAC_nPoint = 100;	// DAC 波形点数
+uint16_t DAC_nPoint = 100;	// number of points
 uint16_t DAC_Buffer[1024] = {
     2048,  2176,  2304,  2431,  2557,  2680,  2801,  2919,  3034,  3144,
     3251,  3352,  3449,  3540,  3625,  3704,  3776,  3841,  3900,  3951,
@@ -52,8 +52,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -69,14 +69,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);

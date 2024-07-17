@@ -1,9 +1,9 @@
 #include "SWM341.h"
 
-#define LIN_ID_Sensor	0x11	// 此从机是一个传感器，只能从它读数据
-#define LIN_ID_Switch	0x21	// 此从机是一个开关，  只能向它写数据
+#define LIN_ID_Sensor	0x11	// This slave is a sensor from which data can only be read
+#define LIN_ID_Switch	0x21	// This slave is a switch to which data can only be written
 
-#define LIN_NB_Sensor	6		// Number of Byte, 传感器的数据是 6 字节
+#define LIN_NB_Sensor	6		// Number of Byte, the data length of the sensor is 6 bytes
 #define LIN_NB_Switch	4
 
 uint8_t Buffer_Sensor[LIN_NB_Sensor] = { 0x12, 0x34, 0x56, 0x78, 0x55, 0xAA };
@@ -90,7 +90,7 @@ void UART1_Handler(void)
 		{
 			if(chr != 0x55)
 			{
-				/* TODO: 波特率错误 */
+				/* TODO: baudrate error */
 			}
 		}
 		else if(LIN_Rcv_Index == 1)
@@ -98,7 +98,7 @@ void UART1_Handler(void)
 			uint8_t id_parity = UART_LIN_IDParity(chr);
 			if(chr != id_parity)
 			{
-				/* TODO: ID 校验错误 */
+				/* TODO: ID parity error */
 			}
 			
 			LIN_Now_ID = chr;
@@ -118,7 +118,7 @@ void UART1_Handler(void)
 				uint8_t checksum = UART_LIN_Checksum(LIN_Now_ID, Buffer_Switch, LIN_NB_Switch, false);
 				if(chr != checksum)
 				{
-					/* TODO: Checksum 校验错误 */
+					/* TODO: Checksum error */
 				}
 				
 				LIN_Rcv_Complete = true;
@@ -148,8 +148,8 @@ void SerialInit(void)
 {
 	UART_InitStructure UART_initStruct;
 	
-	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);	//GPIOM.0配置为UART0输入引脚
-	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);	//GPIOM.1配置为UART0输出引脚
+	PORT_Init(PORTM, PIN0, PORTM_PIN0_UART0_RX, 1);
+	PORT_Init(PORTM, PIN1, PORTM_PIN1_UART0_TX, 0);
  	
  	UART_initStruct.Baudrate = 57600;
 	UART_initStruct.DataBits = UART_DATA_8BIT;
@@ -166,14 +166,6 @@ void SerialInit(void)
 	UART_Open(UART0);
 }
 
-/****************************************************************************************************************************************** 
-* 函数名称: fputc()
-* 功能说明: printf()使用此函数完成实际的串口打印动作
-* 输    入: int ch		要打印的字符
-*			FILE *f		文件句柄
-* 输    出: 无
-* 注意事项: 无
-******************************************************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
 	UART_WriteByte(UART0, ch);
