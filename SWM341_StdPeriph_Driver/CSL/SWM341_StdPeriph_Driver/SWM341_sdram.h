@@ -20,8 +20,8 @@ typedef struct {
 #define SDRAM_SIZE_16MB		1	// HADDR[23:12]    HADDR[11:10]    HADDR[9:1]
 #define SDRAM_SIZE_32MB		2	// HADDR[24:12]    HADDR[11:10]    HADDR[9:1]
 
-#define SDRAM_CLKDIV_1		0	// supported CPU frequency range: 80MHz--140MHz
-#define SDRAM_CLKDIV_2		1	// supported CPU frequency range: 80MHz--160Mhz
+#define SDRAM_CLKDIV_1		0	// supported CPU frequency range: 20MHz--140MHz
+#define SDRAM_CLKDIV_2		1	// supported CPU frequency range: 40MHz--160Mhz
 
 #define SDRAM_CASLATENCY_2	0
 #define SDRAM_CASLATENCY_3	1
