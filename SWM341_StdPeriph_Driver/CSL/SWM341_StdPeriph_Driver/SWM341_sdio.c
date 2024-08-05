@@ -133,6 +133,7 @@ uint32_t SDIO_Init(uint32_t freq)
 	SDIO_SendCmd(SD_CMD_SEL_DESEL_CARD, SD_cardInfo.RCA << 16, SD_RESP_32b_busy, &resp);	// CMD7: Select the card and enter the Transfer mode from Standy mode
 	SDIO->IF = SDIO_IF_TRXDONE_Msk;
 	
+	
 	SDIO_SendCmd(SD_CMD_APP_CMD, SD_cardInfo.RCA << 16, SD_RESP_32b, &resp);
 	
 	SDIO_SendCmd(SD_CMD_APP_SD_SET_BUSWIDTH, SD_BUSWIDTH_4b, SD_RESP_32b, &resp);	// Switch to 4-bit bus mode
@@ -620,6 +621,37 @@ uint32_t calcSDCLKDiv(uint32_t freq)
 	else                 regdiv = 0x00;
 	
 	return regdiv;
+}
+
+/*******************************************************************************************************************************
+* @brief	Switch mode High-Speed
+* @param
+* @return	SD_RES_OK, SD_RES_ERR, SD_RES_TIMEOUT
+* @note		This function must be used after "Transfer State"
+*******************************************************************************************************************************/
+uint32_t SDIO_HighSpeed(void)
+{
+	uint32_t res, resp;
+	uint32_t buff[512/8/4];
+	
+	SDIO->BLK = 512 / 8;	// 512 bits of status
+	
+	res = SDIO_SendCmdWithData(SD_CMD_HS_SWITCH, 0x80FFFF01, SD_RESP_32b, &resp, 1, 1);
+	if(res != SD_RES_OK)
+		return res;
+	
+    wait_while((SDIO->IF & SDIO_IF_BUFRDRDY_Msk) == 0);
+	SDIO->IF = SDIO_IF_BUFRDRDY_Msk;
+    
+    for(int i = 0; i < 512/8/4; i++) buff[i] = SDIO->DATA;
+    
+	wait_while((SDIO->IF & SDIO_IF_TRXDONE_Msk) == 0);
+	SDIO->IF = SDIO_IF_TRXDONE_Msk;
+	
+	if((buff[4] & 0xF) != 1)
+		return SD_RES_ERR;
+	
+	return SD_RES_OK;
 }
 
 

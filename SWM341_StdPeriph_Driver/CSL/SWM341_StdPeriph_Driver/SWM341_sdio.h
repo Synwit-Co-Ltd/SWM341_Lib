@@ -160,6 +160,7 @@ void parseCID(uint32_t CID_Tab[4]);
 void parseCSD(uint32_t CID_Tab[4]);
 
 uint32_t calcSDCLKDiv(uint32_t freq_sel);
+uint32_t SDIO_HighSpeed(void);
 
 
 enum SDIO_bus_width { SDIO_1bit = 0, SDIO_4bit = 1 };
