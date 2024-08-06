@@ -1,16 +1,21 @@
 #include "SWM341.h"
 
-#include "CircleBuffer.h"
 
-CircleBuffer_t CirBuf;
+/* Error Handling demo:
+ *	0) SWM341 CAN <==CAN_RX/TX==> CAN transceiver (e.g. VP230) <==CAN_H/L==> CAN analyzer
+ *	1) Disconnect the CAN transceiver from the CAN analyzer, trigger ACK error, and CAN->TXERR increases from 0 to 128, then remains unchanged.
+ *	2) Disconnect SWM341 CAN from the CAN transceiver, trigger bit error, and CAN->TXERR increases to 255, then triggers Bus Off.
+ *		And then CAN->CR.RST automatically set to 1, SWM341 CAN enters reset state.
+ *	3) In ISR, after detecting Bus Off, run CAN_Open(CAN0) to make the SWM341 CAN exit from reset state. 
+ *		At this time, restore the above disconnected connection. CAN->TXERR will gradually decrease to 0, and SWM341 CAN will resume normal work.
+ */
+
 
 void SerialInit(void);
 
 int main(void)
 {
-	uint32_t i, n = 0;
 	CAN_InitStructure CAN_initStruct;
-	uint8_t tx_data[8] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
 	
 	SystemInit();
 	
@@ -26,8 +31,10 @@ int main(void)
 	CAN_initStruct.Baudrate = 50000;
 	CAN_initStruct.RXNotEmptyIEn = 1;
 	CAN_initStruct.ArbitrLostIEn = 0;
-	CAN_initStruct.ErrPassiveIEn = 0;
+	CAN_initStruct.ErrPassiveIEn = 1;
 	CAN_Init(CAN0, &CAN_initStruct);
+	
+	CAN_INTEn(CAN0, CAN_IT_ERR_WARN | CAN_IT_RX_OVERFLOW);
 	
 	CAN_SetFilter32b(CAN0, CAN_FILTER_1, 0x00122122, 0x1FFFFFFE);		// accept extended frame with ID 0x00122122 and 0x00122123
 	CAN_SetFilter16b(CAN0, CAN_FILTER_2, 0x122, 0x7FE, 0x101, 0x7FF);	// accept standard frame with ID 0x122, 0x123 and 0x101
@@ -36,37 +43,65 @@ int main(void)
 	
 	while(1==1)
 	{
-		CAN_RXMessage msg;
+		uint8_t tx_data[8] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
 		
-		if(CirBuf_Read(&CirBuf, &msg, 1))
-		{
-			if(msg.size > 0)
-			{
-				printf("\r\nReceive %s: %08X, ", msg.format == CAN_FRAME_STD ? "STD" : "EXT", msg.id);
-				for(i = 0; i < msg.size; i++) printf("%02X, ", msg.data[i]);
-			}
-			else if(msg.remote == 1)	// remote frame
-			{
-				printf("\r\nReceive %s Remote Request", msg.format == CAN_FRAME_STD ? "STD" : "EXT");
-			}
-		}
+		CAN_Transmit(CAN0, CAN_FRAME_STD, 0x133, tx_data, 8, 1);
+		while(CAN_TXComplete(CAN0) == 0) __NOP();
 		
-		if(++n % (SystemCoreClock/5) == 0)
-			CAN_Transmit(CAN0, CAN_FRAME_STD, 0x177, tx_data, 8, 1);	// convenient for debugging SWM341's CAN tramsmit funcion
+		printf("\r\nCAN->TXERR: %d\r\n", CAN0->TXERR);
+		
+		for(int i = 0; i < SystemCoreClock / 16; i++) __NOP();
 	}
 }
 
 void CAN0_Handler(void)
 {
-	CAN_RXMessage msg;
-	
 	uint32_t int_sr = CAN_INTStat(CAN0);
 	
 	if(int_sr & CAN_IF_RXDA_Msk)
 	{
+		CAN_RXMessage msg;
+		
 		CAN_Receive(CAN0, &msg);
 		
-		CirBuf_Write(&CirBuf, &msg, 1);
+		if(msg.size > 0)
+		{
+			printf("\r\nReceive %s: %08X, ", msg.format == CAN_FRAME_STD ? "STD" : "EXT", msg.id);
+			for(int i = 0; i < msg.size; i++) printf("%02X, ", msg.data[i]);
+		}
+		else if(msg.remote == 1)	// remote frame
+		{
+			printf("\r\nReceive %s Remote Request", msg.format == CAN_FRAME_STD ? "STD" : "EXT");
+		}
+	}
+	
+	if(int_sr & CAN_IF_RXOV_Msk)
+	{
+		printf("\r\nCAN RX Overflow\r\n");
+		
+		CAN_Close(CAN0);
+		for(int i = 0; i < CyclesPerUs; i++) __NOP();
+		CAN_Open(CAN0);
+	}
+	
+	if(int_sr & CAN_IF_ERRWARN_Msk)
+	{
+		if(CAN0->SR & CAN_SR_BUSOFF_Msk)
+		{
+			printf("\r\nCAN Bus Off\r\n");
+			printf("\r\nCAN->CR.RST = %d\r\n", CAN0->CR & CAN_CR_RST_Msk ? 1 : 0);
+			
+			CAN_Open(CAN0);			// Bus Off recovery
+		}
+		else if(CAN0->SR & CAN_SR_ERRWARN_Msk)
+		{
+			printf("\r\nCAN Error Warning\r\n");
+		}
+	}
+	
+	if(int_sr & CAN_IF_ERRPASS_Msk)
+	{
+		printf("\r\nCAN Error Passive\r\n");
 	}
 }
 
