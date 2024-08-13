@@ -686,15 +686,15 @@ typedef struct {
 
 	__IO uint32_t INTEN;					// interrupt enable
 
-	__IO uint32_t INTRAWSTAT;			    // interrupt raw state
+	__I  uint32_t INTRAWSTAT;			    // interrupt raw state
 
-	__IO uint32_t INTSTAT;				    // INTSTAT.PIN0 = INTRAWSTAT.PIN0 & INTEN.PIN0
+	__I  uint32_t INTSTAT;				    // INTSTAT.PIN0 = INTRAWSTAT.PIN0 & INTEN.PIN0
 
-	__IO uint32_t INTCLR;				    // interrupt flag clear
+	__O  uint32_t INTCLR;				    // interrupt flag clear
 		
 		 uint32_t RESERVED[3];
 	
-	__IO uint32_t IDR;
+	__I  uint32_t IDR;
 	
 		 uint32_t RESERVED2[3];
 	
