@@ -185,6 +185,7 @@ void SystemInit(void)
 	PORTM->PULLD &= ~(1 << PIN1);
 	PORTM->PULLU &= ~((1 << PIN2) | (1 << PIN3));
 	
+	SYS->USBCR |= (1 << SYS_USBCR_RSTPLL_Pos);
 	SYS->USBPHYCR &= ~SYS_USBPHYCR_OPMODE_Msk;
 	SYS->USBPHYCR |= (1 << SYS_USBPHYCR_OPMODE_Pos);  	//Non-Driving, DP Pull-Up disable
 }
