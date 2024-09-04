@@ -48,6 +48,8 @@ void LCD_Init(LCD_TypeDef * LCDx, LCD_InitStructure * initStruct);
 void LCD_LayerInit(LCD_TypeDef * LCDx, uint32_t layerx, LCD_LayerInitStructure * initStruct);
 void LCD_SetLayerPos(LCD_TypeDef * LCDx, uint32_t layerx, uint16_t hstart, uint16_t hstop, uint16_t vstart, uint16_t vstop);
 void LCD_Start(LCD_TypeDef * LCDx);
+void LCD_Stop(LCD_TypeDef * LCDx);
+void LCD_ReStart(LCD_TypeDef * LCDx);
 uint32_t LCD_IsBusy(LCD_TypeDef * LCDx);
 
 void LCD_INTEn(LCD_TypeDef * LCDx);

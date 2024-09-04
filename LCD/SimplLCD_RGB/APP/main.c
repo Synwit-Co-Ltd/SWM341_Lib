@@ -36,13 +36,13 @@ int main(void)
 	SystemInit();
 	
 	SerialInit();
-		
+	
 	MemoryInit();
 	
 	RGBLCDInit();
 	
 	LCD_Start(LCD);
-
+	
 #if LCD_DIRH
 	UG_Init(&gui,(void(*)(UG_S16,UG_S16,UG_COLOR))_HW_DrawPoint, LCD_HDOT, LCD_VDOT);
 #else
@@ -58,7 +58,7 @@ int main(void)
 	UG_DrawCircle(200, 210, 50, C_GREEN);
 	UG_DrawCircle(200, 210, 51, C_GREEN);
 	UG_DrawCircle(200, 210, 52, C_GREEN);
-
+	
 	while(1==1)
 	{		
 		for(i = 0; i < 3; i++)

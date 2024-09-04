@@ -137,6 +137,40 @@ void LCD_Start(LCD_TypeDef * LCDx)
 	LCDx->START |= (1 << LCD_START_GO_Pos);
 }
 
+static uint32_t LCD_AutoRestart = 0;
+/*******************************************************************************************************************************
+* @brief	LCD stop
+* @param	LCDx is the LCD to stop
+* @return
+*******************************************************************************************************************************/
+void LCD_Stop(LCD_TypeDef * LCDx)
+{
+	LCD_AutoRestart = LCDx->CR & LCD_CR_AUTORESTA_Msk;
+	
+	if(LCD_AutoRestart)
+		LCDx->CR &= ~LCD_CR_AUTORESTA_Msk;
+	else
+		NVIC_DisableIRQ(LCD_IRQn);
+}
+
+/*******************************************************************************************************************************
+* @brief	LCD restart
+* @param	LCDx is the LCD to restart
+* @return
+* @note		can only call once after LCD_Stop() call.
+*******************************************************************************************************************************/
+void LCD_ReStart(LCD_TypeDef * LCDx)
+{
+	if(LCD_AutoRestart)
+	{
+		LCD_Start(LCDx);
+		
+		LCDx->CR |=  LCD_CR_AUTORESTA_Msk;
+	}
+	else
+		NVIC_EnableIRQ(LCD_IRQn);
+}
+
 /*******************************************************************************************************************************
 * @brief	LCD busy query
 * @param	LCDx is the LCD to query
