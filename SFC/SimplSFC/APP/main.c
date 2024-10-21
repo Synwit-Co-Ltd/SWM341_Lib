@@ -30,6 +30,24 @@ int main(void)
 	id = SFC_ReadJEDEC();
 	
 	printf("\r\nFlash JEDEC: %06X\r\n", id);
+
+#if 1
+	GPIO_SetBit(GPIOD, PIN6);
+	GPIO_SetBit(GPIOD, PIN5);
+	GPIO_INIT(GPIOD, PIN5, GPIO_OUTPUT);
+	GPIO_INIT(GPIOD, PIN6, GPIO_OUTPUT);
+	GPIO_INIT(GPIOD, PIN8, GPIO_OUTPUT);
+	GPIO_INIT(GPIOD, PIN7, GPIO_INPUT);
+	
+	uint8_t uid[8] = {0};
+	SFC_GPIOReadUID(uid, 8);
+	printf("\r\nFlash UID: %02X%02X%02X%02X%02X%02X%02X%02X\r\n", uid[0], uid[1], uid[2], uid[3], uid[4], uid[5], uid[6], uid[7]);
+	
+	PORT_Init(PORTD, PIN5, PORTD_PIN5_FSPI_SCLK,  0);
+	PORT_Init(PORTD, PIN6, PORTD_PIN6_FSPI_SSEL,  0);
+	PORT_Init(PORTD, PIN8, PORTD_PIN8_FSPI_MOSI,  1);
+	PORT_Init(PORTD, PIN7, PORTD_PIN7_FSPI_MISO,  1);
+#endif
 	
 	printf("\r\nAfter Erase: \r\n");
 	

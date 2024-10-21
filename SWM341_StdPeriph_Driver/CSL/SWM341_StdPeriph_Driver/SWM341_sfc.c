@@ -193,6 +193,25 @@ void SFC_GPIOWrite(uint32_t addr, uint32_t buff[], uint32_t cnt)
 
 
 /*******************************************************************************************************************************
+* @brief	read SPI Flash UID throught simulated SPI by GPIO
+* @param	uid is used to save the read UID
+* @param	cnt is the length of UID in byte
+* @return
+* @note		before and after calling this function, you need to configure the corresponding pin to correct mode
+*******************************************************************************************************************************/
+void SFC_GPIOReadUID(uint8_t uid[], uint32_t cnt)
+{
+	IOSPI_CS_Low();
+	IOSPI_ReadWrite(SFC_CMD_READ_UID);
+	for(int i = 0; i < 4; i++)
+		IOSPI_ReadWrite(0x00);	// dummy byte
+	for(int i = 0; i < cnt; i++)
+		uid[i] = IOSPI_ReadWrite(0x00);
+	IOSPI_CS_High();
+}
+
+
+/*******************************************************************************************************************************
 * @brief	SFC read data from SPI Flash
 * @param	addr is address to read from, must be word aligned
 * @param	buff is used to save the read data

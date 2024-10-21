@@ -24,6 +24,7 @@ typedef struct {
 #define SFC_PPWIDTH_4	1
 
 
+#define SFC_CMD_READ_UID			0x4B
 #define SFC_CMD_READ_JEDEC			0x9F
 #define SFC_CMD_ERASE_CHIP			0x60
 #define SFC_CMD_WRITE_ENABLE		0x06
@@ -50,6 +51,8 @@ void SFC_EraseEx(uint32_t addr, uint8_t cmd, uint8_t wait);
 void SFC_Write(uint32_t addr, uint32_t buff[], uint32_t cnt);
 void SFC_GPIOWrite(uint32_t addr, uint32_t buff[], uint32_t cnt);
 void SFC_Read(uint32_t addr, uint32_t buff[], uint32_t cnt);
+
+void SFC_GPIOReadUID(uint8_t uid[], uint32_t cnt);
 
 
 uint8_t SFC_ReadStatusReg(uint8_t cmd);
