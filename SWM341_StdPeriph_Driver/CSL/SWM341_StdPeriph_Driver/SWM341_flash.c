@@ -34,7 +34,9 @@ uint32_t FLASH_Erase(uint32_t addr)
 	
 	__disable_irq();
 	
+	FLASH_Unlock();
 	IAP_Flash_Erase(addr/4096, 0x0B11FFAC);
+	FLASH_Lock();
 	
 	IAP_Cache_Reset((FMC->CACHE | FMC_CACHE_CCLR_Msk), 0x0B11FFAC);	// Cache Clear
 	
@@ -58,13 +60,32 @@ uint32_t FLASH_Write(uint32_t addr, uint32_t buff[], uint32_t count)
 	
 	__disable_irq();
 	
+	FLASH_Unlock();
 	IAP_Flash_Write(addr, (uint32_t)buff, count/4, 0x0B11FFAC);
+	FLASH_Lock();
 	
 	IAP_Cache_Reset((FMC->CACHE | FMC_CACHE_CCLR_Msk), 0x0B11FFAC);	// Cache Clear
 	
 	__enable_irq();
 	
 	return FLASH_RES_OK;
+}
+
+
+void FLASH_Lock(void)	// Flash erase & write disable
+{
+	__NOP();__NOP();__NOP();__NOP();
+	__NOP();__NOP();__NOP();__NOP();
+	
+	FMC->CFG2 = 0x00;
+}
+
+void FLASH_Unlock(void)
+{
+	FMC->CFG2 = 0x55FA64B4;
+	
+	__NOP();__NOP();__NOP();__NOP();
+	__NOP();__NOP();__NOP();__NOP();
 }
 
 

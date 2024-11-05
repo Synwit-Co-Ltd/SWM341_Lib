@@ -5,6 +5,9 @@
 uint32_t FLASH_Erase(uint32_t addr);
 uint32_t FLASH_Write(uint32_t addr, uint32_t buff[], uint32_t count);
 
+void FLASH_Lock(void);
+void FLASH_Unlock(void);
+
 void Flash_Param_at_xMHz(uint32_t xMHz);
 
 

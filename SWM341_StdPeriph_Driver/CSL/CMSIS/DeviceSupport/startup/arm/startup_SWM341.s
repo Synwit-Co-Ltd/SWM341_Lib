@@ -171,6 +171,9 @@ Reset_Handler    PROC
                  EXPORT  Reset_Handler             [WEAK]
 				 IMPORT  __main
 				 IMPORT FPU_Enable
+				 IMPORT FLASH_Lock
+				 LDR	 R0, =FLASH_Lock
+				 BLX	 R0
 				 LDR     R0, =FPU_Enable
 				 BLX     R0
                  LDR     R0, =__main
