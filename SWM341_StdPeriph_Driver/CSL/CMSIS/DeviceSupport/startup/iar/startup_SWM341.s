@@ -141,6 +141,9 @@ __vector_table
         PUBWEAK Reset_Handler
         SECTION .text:CODE:REORDER:NOROOT(2)
 Reset_Handler
+        EXTERN  FLASH_Lock
+        LDR     R0, =FLASH_Lock
+        BLX     R0
         LDR     R0, =__iar_program_start
         BX      R0
         
