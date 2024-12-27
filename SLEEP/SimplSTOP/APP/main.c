@@ -4,7 +4,7 @@
 /* note:
  * 1) After entering STOP mode, you can only wake-up through the wake-up pin, and cannot reset the chip by pressing the reset button.
  * 2) The program restarts from the beginning after wake-up form the STOP mode.
- * 3) The wake-up pins are PD6 and PD15, their falling edge wake-up chip, so need to keep high level during STOP mode.
+ * 3) The wake-up pin is PD6, its falling edge wake-up chip, so need to keep high level during STOP mode.
  */
 
 

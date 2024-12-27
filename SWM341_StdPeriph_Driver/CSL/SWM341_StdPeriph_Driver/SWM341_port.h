@@ -416,7 +416,6 @@ void PORT_Init(PORT_TypeDef * PORTx, uint32_t n, uint32_t func, uint32_t digit_i
 #define PORTD_PIN14_GPIO        0
 
 #define PORTD_PIN15_GPIO        0
-#define PORTD_PIN15_WAKEUP     	15
 
 #define PORTE_PIN0_GPIO			0
 #define PORTE_PIN0_SDR_D7		1
