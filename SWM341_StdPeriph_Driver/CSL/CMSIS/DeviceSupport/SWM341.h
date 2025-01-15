@@ -3701,6 +3701,8 @@ typedef struct {
 #define JPEG_CR_HTCNT_Msk			(0x01 << JPEG_CR_HTCNT_Pos)
 #define JPEG_CR_CUCNT_Pos			12		// The number of CU in the restart interval
 #define JPEG_CR_CUCNT_Msk			(0xFFFF<<JPEG_CR_CUCNT_Pos)
+#define JPEG_CR_HALT_Pos			28		// decoding halt control bit
+#define JPEG_CR_HALT_Msk			(0x01 << JPEG_CR_HALT_Pos)
 
 #define JPEG_IR_IEDONE_Pos			0		// Frame processing finish interrupt enable
 #define JPEG_IR_IEDONE_Msk			(0x01 << JPEG_IR_IEDONE_Pos)
