@@ -503,9 +503,9 @@ typedef struct {
 
 #define SYS_BODCR_IE_Pos		    1		// Interrupt Enable
 #define SYS_BODCR_IE_Msk		    (0x01 << SYS_BODCR_IE_Pos)
-#define SYS_BODCR_INTLVL_Pos		4		// BOD interrupt trigger level, 0 1.9v, 1 2.1v, 2 2.3v, 3 2.5v, 4 2.7v
+#define SYS_BODCR_INTLVL_Pos		4		// BOD interrupt trigger level
 #define SYS_BODCR_INTLVL_Msk		(0x07 << SYS_BODCR_INTLVL_Pos)
-#define SYS_BODCR_RSTLVL_Pos		7		// BOD reset level, 0 1.7v, 1 1.9v, 2 2.1v, 3 2.7v
+#define SYS_BODCR_RSTLVL_Pos		7		// BOD reset level
 #define SYS_BODCR_RSTLVL_Msk		(0x07 << SYS_BODCR_RSTLVL_Pos)
 
 #define SYS_BODSR_IF_Pos			0		// interrupt flag, write 1 to clear
