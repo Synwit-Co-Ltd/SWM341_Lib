@@ -110,6 +110,34 @@ void RTC_GetDateTime(RTC_TypeDef * RTCx, RTC_DateTime * dateTime)
 }
 
 /*******************************************************************************************************************************
+* @brief	set time and date
+* @param	RTCx is the RTC to set
+* @param	dateTime is the time and date to set
+* @return
+*******************************************************************************************************************************/
+void RTC_SetDateTime(RTC_TypeDef * RTCx, RTC_DateTime * dateTime)
+{
+	RTC_Stop(RTCx);
+	
+	while(RTCx->CFGABLE == 0);
+	
+	RTCx->MINSEC = (dateTime->Second << RTC_MINSEC_SEC_Pos) |
+				   (dateTime->Minute << RTC_MINSEC_MIN_Pos);
+	
+	RTCx->DATHUR = (dateTime->Hour << RTC_DATHUR_HOUR_Pos) |
+				   (dateTime->Date << RTC_DATHUR_DATE_Pos);
+	
+	RTCx->MONDAY = (calcWeekDay(dateTime->Year, dateTime->Month, dateTime->Date) << RTC_MONDAY_DAY_Pos) |
+				   (dateTime->Month << RTC_MONDAY_MON_Pos);
+	
+	RTCx->YEAR = dateTime->Year;
+	
+	RTCx->LOAD = (1 << RTC_LOAD_TIME_Pos);
+	
+	RTC_Start(RTCx);
+}
+
+/*******************************************************************************************************************************
 * @brief	set alarm time
 * @param	RTCx is the RTC to set
 * @param	alarmStruct is data used to set alarm time
