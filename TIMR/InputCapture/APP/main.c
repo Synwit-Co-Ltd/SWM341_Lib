@@ -12,8 +12,9 @@ int main(void)
 	TestSignal();	// Generate test signals for Input Capture functional
 	
 	PORT_Init(PORTB, PIN15, PORTB_PIN15_TIMR0_IN, 1);
+	PORTB->PULLD |= (1 << PIN15);
 	
-	TIMR_Init(TIMR0, TIMR_MODE_IC, CyclesPerUs, 0xFFFFFF, 0);
+	TIMR_Init(TIMR0, TIMR_MODE_IC, CyclesPerUs, 0xFFFFFF, 1);
 	
 	TIMR_IC_Init(TIMR0, 1, 1);
 	
@@ -38,6 +39,12 @@ void TIMR0_Handler(void)
 		TIMR_INTClr(TIMR0, TIMR_IT_IC_LOW);
 		
 		printf("L: %d\r\n", TIMR_IC_GetCaptureL(TIMR0));
+	}
+	else if(TIMR_INTStat(TIMR0, TIMR_IT_TO))
+	{
+		TIMR_INTClr(TIMR0, TIMR_IT_TO);
+		
+		printf("Overflow: The pulse is too wide to capture\n");
 	}
 }
 
