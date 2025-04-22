@@ -620,7 +620,7 @@ typedef struct {
 #define SYS_ACMPCR2_BRK1_Msk		(0x01 << SYS_ACMPCR2_BRK1_Pos)
 #define SYS_ACMPCR2_BRK2_Pos		2
 #define SYS_ACMPCR2_BRK2_Msk		(0x01 << SYS_ACMPCR2_BRK2_Pos)
-#define SYS_ACMPCR2_VREF_Pos		3		// ACMP internal refrence voltage = 0.25 + 0.02*VREF
+#define SYS_ACMPCR2_VREF_Pos		3		// ACMP internal refrence voltage = 0.3 + 0.02*VREF, VREF range from 0 to 47
 #define SYS_ACMPCR2_VREF_Msk		(0x3F << SYS_ACMPCR2_VREF_Pos)
 
 #define SYS_DACCR_VRADJ_Pos			0		// Vref Adjust
