@@ -2,7 +2,7 @@
 #define __MASSSTORAGE_H__
 
 
-#define USBD_VID	0x0416
+#define USBD_VID	0x1209
 #define USBD_PID    0x5020
 
 

@@ -27,3 +27,23 @@ int main(void)
 		}
 	}
 }
+
+
+void int_to_unicode(uint32_t value , uint8_t *pbuf , uint8_t len)
+{
+	for(int i = 0 ; i < len ; i++)
+	{
+		if((value >> 28) < 0xA)
+		{
+			pbuf[2 * i] = (value >> 28) + '0';
+		}
+		else
+		{
+			pbuf[2 * i] = (value >> 28) + 'A' - 10;
+		}
+
+		pbuf[2 * i + 1] = 0;
+
+		value = value << 4;
+	}
+}

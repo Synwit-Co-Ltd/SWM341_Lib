@@ -37,21 +37,12 @@ void MSC_Init(void)
 	USBD_Info.DescHIDReport = USBD_HIDReport;
 	USBD_Info.pClassRequest_Callback = MSC_ClassRequest;
 	USBD_Init();
-
-	/*
-	   Generate Mass-Storage Device serial number
-	   To compliant USB-IF MSC test, we must enable serial string descriptor.
-	   However, windows may fail to recognize the devices if PID/VID and serial number are all the same
-	   when plug them to Windows at the sample time.
-	   Therefore, we must generate different serial number for each device to avoid conflict
-	   when plug more then 2 MassStorage devices to Windows at the same time.
-
-	   NOTE: We use compiler predefine macro "__TIME__" to generate different number for serial
-	   at each build but each device here for a demo.
-	   User must change it to make sure all serial number is different between each device.
-	 */
-	uint8_t *stringSerial = USBD_StringDescriptor[3];
-	for(uint32_t i = 0; i < 8; i++)  stringSerial[stringSerial[0] - 16 + i * 2] = __TIME__[i];
+	
+	/* Generate Mass-Storage Device serial number */
+	extern void int_to_unicode(uint32_t value , uint8_t *pbuf , uint8_t len);
+	
+	int_to_unicode(SYS->CHIPID[0] + SYS->CHIPID[2], &USBD_StringDescriptor[3][2],  8);
+    int_to_unicode(SYS->CHIPID[1] + SYS->CHIPID[2], &USBD_StringDescriptor[3][18], 4);
 }
 
 
