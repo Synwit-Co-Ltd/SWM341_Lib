@@ -126,9 +126,9 @@ uint8_t LangStringDesc[4] =
 
 uint8_t VendorStringDesc[] =
 {
-    16,
+    14,
     USB_DESC_STRING,
-    'S', 0, 'y', 0, 'n', 0, 'w', 0, 'i', 0, 't', 0, ' ', 0
+    'S', 0, 'y', 0, 'n', 0, 'w', 0, 'i', 0, 't', 0
 };
 
 uint8_t ProductStringDesc[] =
