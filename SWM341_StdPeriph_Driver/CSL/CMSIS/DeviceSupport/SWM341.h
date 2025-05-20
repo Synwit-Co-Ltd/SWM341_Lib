@@ -3241,7 +3241,7 @@ typedef struct {
 	
 	__IO uint32_t EPIF;						// Endpoint Interrupt Flag
 	
-	__IO uint32_t FRAMENR;					// Frame Number
+	__IO uint32_t FRAMENR;					// Frame Number, set the frame number for isochronous transfer
 	
 		 uint32_t RESERVED1[(0x4700-0x4628)/4-1];
 		 
