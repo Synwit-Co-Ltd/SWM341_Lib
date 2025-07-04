@@ -142,7 +142,7 @@ void UART_Close(UART_TypeDef * UARTx)
 * @param	data is the byte to send
 * @return
 *******************************************************************************************************************************/
-void UART_WriteByte(UART_TypeDef * UARTx, uint8_t data)
+void UART_WriteByte(UART_TypeDef * UARTx, uint16_t data)
 {
 	UARTx->DATA = data;
 }

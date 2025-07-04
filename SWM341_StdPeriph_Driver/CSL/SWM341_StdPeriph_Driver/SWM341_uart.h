@@ -62,7 +62,7 @@ void UART_Init(UART_TypeDef * UARTx, UART_InitStructure * initStruct);
 void UART_Open(UART_TypeDef * UARTx);
 void UART_Close(UART_TypeDef * UARTx);
 
-void UART_WriteByte(UART_TypeDef * UARTx, uint8_t data);
+void UART_WriteByte(UART_TypeDef * UARTx, uint16_t data);
 uint32_t UART_ReadByte(UART_TypeDef * UARTx, uint32_t * data);
 
 uint32_t UART_IsTXBusy(UART_TypeDef * UARTx);
