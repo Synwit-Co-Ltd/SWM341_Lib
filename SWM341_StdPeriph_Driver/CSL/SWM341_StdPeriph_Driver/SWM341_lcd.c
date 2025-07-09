@@ -254,27 +254,32 @@ void MPULCD_Init(LCD_TypeDef * LCDx, MPULCD_InitStructure * initStruct)
 void LCD_WR_REG(LCD_TypeDef * LCDx, uint16_t reg)
 {
 	LCDx->MPUIR = reg;
+	__NOP(); __NOP(); __NOP();
 	while(LCD_IsBusy(LCDx)) __NOP();
 }
 
 void LCD_WR_DATA(LCD_TypeDef * LCDx, uint16_t val)
 {
 	LCDx->MPUDR = val;
+	__NOP(); __NOP(); __NOP();
 	while(LCD_IsBusy(LCDx)) __NOP();
 }
 
 void LCD_WriteReg(LCD_TypeDef * LCDx, uint16_t reg, uint16_t val)
 {
 	LCDx->MPUIR = reg;
+	__NOP(); __NOP(); __NOP();
 	while(LCD_IsBusy(LCDx)) __NOP();
 	
 	LCDx->MPUDR = val;
+	__NOP(); __NOP(); __NOP();
 	while(LCD_IsBusy(LCDx)) __NOP();
 }
 
 uint16_t LCD_ReadReg(LCD_TypeDef * LCDx, uint16_t reg)
 {
 	LCDx->MPUIR = reg;
+	__NOP(); __NOP(); __NOP();
 	while(LCD_IsBusy(LCDx)) __NOP();
 	
 	return LCDx->MPUDR;
