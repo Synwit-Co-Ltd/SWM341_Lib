@@ -81,6 +81,8 @@ typedef struct {
 	} HTable[JFIF_HTAB_MAX];
 	uint8_t HTableCnt;
 	
+	uint16_t RestartInterval;
+	
 	uint32_t CodeAddr;			// data to decode
 	uint32_t CodeLen;
 } jfif_info_t;

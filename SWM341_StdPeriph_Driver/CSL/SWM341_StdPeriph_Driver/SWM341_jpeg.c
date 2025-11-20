@@ -247,7 +247,9 @@ void JPEG_Decode(JPEG_TypeDef * JPEGx, jfif_info_t * jfif_info, jpeg_outset_t * 
 		}
 	}
 	
-	JPEGx->CR = (1 << JPEG_CR_LASTBUF_Pos) |
+	JPEGx->CR = ((jfif_info->RestartInterval != 0) << JPEG_CR_REINTRV_Pos) |
+				(jfif_info->RestartInterval << JPEG_CR_CUCNT_Pos) |
+				(1 << JPEG_CR_LASTBUF_Pos) |
 				(1 << JPEG_CR_START_Pos);
 }
 

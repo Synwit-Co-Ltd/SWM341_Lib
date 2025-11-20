@@ -176,6 +176,10 @@ int jfif_parse(const uint8_t buf[], uint32_t len, jfif_info_t * jfif_info)
 			return JFIF_RES_OK;
 
 		case JFIF_MKR_DRI:
+			jfif_info->RestartInterval = (buf[index+2] << 8) | buf[index+3];
+			index += (buf[index] << 8) | buf[index+1];
+			break;
+		
 		case JFIF_MKR_COM:
             index += (buf[index] << 8) | buf[index+1];
             break;
