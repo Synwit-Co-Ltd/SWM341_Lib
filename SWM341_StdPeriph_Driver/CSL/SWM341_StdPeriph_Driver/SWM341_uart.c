@@ -68,6 +68,8 @@ void UART_Init(UART_TypeDef * UARTx, UART_InitStructure * initStruct)
 				   (initStruct->TXThresholdIEn << UART_CTRL_TXIE_Pos) |
 				   (initStruct->TimeoutIEn << UART_CTRL_TOIE_Pos);
 	
+	UART_INTClr(UARTx, UART_IT_RX_TOUT);
+	
 	switch((uint32_t)UARTx)
 	{
 	case ((uint32_t)UART0):		
