@@ -107,7 +107,7 @@ void Flash_Param_at_xMHz(uint32_t xMHz)
 	else if(xMHz <= 120)
 		IAP_Flash_Param(0x11C89, 0x3D6B, 0x0B11FFAC);
 	else
-		IAP_Flash_Param(0x16589, 0x4C74, 0x0B11FFAC);
+		IAP_Flash_Param(0x16589, 0x4C7C, 0x0B11FFAC);
 	
 	__enable_irq();
 }
