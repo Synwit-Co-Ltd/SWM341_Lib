@@ -155,11 +155,11 @@ USBH_Status USBH_ParseCfgDesc(USBH_Info_t *phost, uint8_t *buff, uint16_t size)
             break;
 
         case USB_DESC_ENDPOINT:
-            memcpy(&phost->Device.Ep_Desc[if_ix][ep_ix], pdesc, sizeof(USB_EpDesc_t));
-            if(++ep_ix >= USBH_MAX_NUM_ENDPOINTS)
+			if(ep_ix >= USBH_MAX_NUM_ENDPOINTS)
             {
                 return USBH_NOT_SUPPORTED;
             }
+            memcpy(&phost->Device.Ep_Desc[if_ix][ep_ix++], pdesc, sizeof(USB_EpDesc_t));
             break;
 
         case USB_DESC_HID:
