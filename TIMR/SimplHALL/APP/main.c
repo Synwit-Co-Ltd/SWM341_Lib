@@ -77,18 +77,18 @@ void TestSignal(void)
 
 void TIMR1_Handler(void)
 {
-	static uint32_t setp = 0;
+	static uint32_t step = 0;
 	
 	TIMR1->IF = (1 << TIMR_IF_TO_Pos);
 	
-	switch(setp++)
+	switch(step++)
 	{
 	case 0: GPIO_SetBit(GPIOA, PIN9);  break;
 	case 1: GPIO_SetBit(GPIOA, PIN10); break;
 	case 2: GPIO_SetBit(GPIOA, PIN11); break;
 	case 3: GPIO_ClrBit(GPIOA, PIN9);  break;
 	case 4: GPIO_ClrBit(GPIOA, PIN10); break;
-	case 5: GPIO_ClrBit(GPIOA, PIN11); setp = 0; break;
+	case 5: GPIO_ClrBit(GPIOA, PIN11); step = 0; break;
 	}
 }
 
