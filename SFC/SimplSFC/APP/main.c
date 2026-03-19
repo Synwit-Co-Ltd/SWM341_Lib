@@ -59,7 +59,13 @@ int main(void)
 	printf("\r\nAfter Write: \r\n");
 
 	/* SFC writes are slow, and it is recommended to use GPIO to simulate SPI writes when writing a large number of data */
-#if 0
+	/* 注意：
+		SFC 控制器内部有读缓存，若先用 SFC_Read(ADDR_X, ...) 读取，然后依次执行 SFC_GPIOWrite(ADDR_Y, ...)、SFC_Read(ADDR_Y, ...),
+		且 ADDR_Y 略大于 ADDR_X，则第二次 SFC_Read() 返回的数据可能是第一次 SFC_Read() 读取缓存的，即返回错误的旧数据。
+		这是由于 SFC 控制器无法知道软件通过 GPIO 更新了 SPI Flash 内容，通过 SFC_Write() 写数据没有这个问题。
+		因此 SFC_GPIOWrite() 更适合连续、大批量数据写入，不适合对同一片区域频繁、少量的读取、写入操作。
+	*/
+#if 1
 	SFC_Write(EEPROM_ADDR, WrBuff, 20);
 #else
 	GPIO_SetBit(GPIOD, PIN6);
