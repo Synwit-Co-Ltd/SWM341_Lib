@@ -457,7 +457,7 @@ void TIMR_OC_Init(TIMR_TypeDef * TIMRx, uint32_t match, uint32_t match_int_en, u
 *******************************************************************************************************************************/
 void TIMR_OC_OutputEn(TIMR_TypeDef * TIMRx)
 {
-	TIMRx->OCCR &= ~(TIMR_OCCR_FORCEEN_Pos);
+	TIMRx->OCCR &= ~(1 << TIMR_OCCR_FORCEEN_Pos);
 }
 
 /*******************************************************************************************************************************
@@ -471,7 +471,7 @@ void TIMR_OC_OutputDis(TIMR_TypeDef * TIMRx, uint32_t level)
 	if(level) TIMRx->OCCR |=  (1 << TIMR_OCCR_FORCELVL_Pos);
 	else      TIMRx->OCCR &= ~(1 << TIMR_OCCR_FORCELVL_Pos);
 	
-	TIMRx->OCCR |= (TIMR_OCCR_FORCEEN_Pos);
+	TIMRx->OCCR |= (1 << TIMR_OCCR_FORCEEN_Pos);
 }
 
 /*******************************************************************************************************************************
