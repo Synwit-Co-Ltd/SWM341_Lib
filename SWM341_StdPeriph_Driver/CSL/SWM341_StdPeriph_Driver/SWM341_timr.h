@@ -10,7 +10,7 @@
 
 /* Interrupt Type */
 #define TIMR_IT_TO			TIMR_IE_TO_Msk		// timeout
-#define TIMR_IT_OC			TIMR_IE_OC0_Msk		// output compare match
+#define TIMR_IT_OC			TIMR_IE_OC_Msk		// output compare match
 #define TIMR_IT_IC_LOW		TIMR_IE_ICR_Msk		// input capture low level
 #define TIMR_IT_IC_HIGH		TIMR_IE_ICF_Msk		// input capture high level
 
