@@ -758,10 +758,8 @@ typedef struct {
 
 #define TIMR_IE_TO_Pos				0		// Time out
 #define TIMR_IE_TO_Msk				(0x01 << TIMR_IE_TO_Pos)
-#define TIMR_IE_OC0_Pos				1		// Output compare inversion point zero
-#define TIMR_IE_OC0_Msk				(0x01 << TIMR_IE_OC0_Pos)
-#define TIMR_IE_OC1_Pos				2		// Output compare inversion point one
-#define TIMR_IE_OC1_Msk				(0x01 << TIMR_IE_OC1_Pos)
+#define TIMR_IE_OC_Pos				1		// Output compare match interrupt
+#define TIMR_IE_OC_Msk				(0x01 << TIMR_IE_OC_Pos)
 #define TIMR_IE_ICR_Pos				3		// Input capture, rising edge interrupt
 #define TIMR_IE_ICR_Msk				(0x01 << TIMR_IE_ICR_Pos)
 #define TIMR_IE_ICF_Pos				4		// Input capture, falling edge interrupt
@@ -769,10 +767,8 @@ typedef struct {
 
 #define TIMR_IF_TO_Pos				0		// write 1 to clear
 #define TIMR_IF_TO_Msk				(0x01 << TIMR_IF_TO_Pos)
-#define TIMR_IF_OC0_Pos				1
-#define TIMR_IF_OC0_Msk				(0x01 << TIMR_IF_OC0_Pos)
-#define TIMR_IF_OC1_Pos				2
-#define TIMR_IF_OC1_Msk				(0x01 << TIMR_IF_OC1_Pos)
+#define TIMR_IF_OC_Pos				1
+#define TIMR_IF_OC_Msk				(0x01 << TIMR_IF_OC_Pos)
 #define TIMR_IF_ICR_Pos				3
 #define TIMR_IF_ICR_Msk				(0x01 << TIMR_IF_ICR_Pos)
 #define TIMR_IF_ICF_Pos				4
