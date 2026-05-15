@@ -4041,4 +4041,14 @@ typedef struct {
 #endif
 
 
+static __INLINE uint32_t __disable_irq_more(void)
+{
+	uint32_t primask = __get_PRIMASK();
+	
+    __disable_irq();
+	
+	return primask;
+}
+
+
 #endif //__SWM341_H__

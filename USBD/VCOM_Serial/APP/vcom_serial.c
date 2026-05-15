@@ -227,9 +227,9 @@ void VCOM_TransferData(void)
                     vcom.rx_head = 0;
             }
 
-			__disable_irq();
+			uint32_t primask = __disable_irq_more();
             vcom.rx_bytes -= len;
-            __enable_irq();
+            __set_PRIMASK(primask);
 
             vcom.in_bytes = len;
             USBD_TxWrite(EP_BULK_IN_NUM, (uint8_t *)vcom.in_buff, len);
@@ -253,9 +253,9 @@ void VCOM_TransferData(void)
                 vcom.tx_tail = 0;
         }
 
-        __disable_irq();
+        uint32_t primask = __disable_irq_more();
         vcom.tx_bytes += vcom.out_bytes;
-		__enable_irq();
+		__set_PRIMASK(primask);
 
         vcom.out_ready = 0; 	// Clear bulk out ready flag
 

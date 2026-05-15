@@ -255,12 +255,12 @@ uint32_t USBH_CDC_Send(uint8_t *data, uint16_t size)
 	
 	if(space >= size)
 	{
-		__disable_irq();
+		uint32_t primask = __disable_irq_more();
 		
 		memcpy((uint8_t *)&USBH_CDC_Info.TxBuff[USBH_CDC_Info.TxWrPtr], data, size);
 		USBH_CDC_Info.TxWrPtr += size;
 		
-		__enable_irq();
+		__set_PRIMASK(primask);
 		
 		return size;
 	}
@@ -282,7 +282,7 @@ uint32_t USBH_CDC_Read(uint8_t *buff, uint16_t size)
 	
 	if(size)
 	{
-		__disable_irq();
+		uint32_t primask = __disable_irq_more();
 		
 		memcpy(buff, (uint8_t *)&USBH_CDC_Info.RxBuff[USBH_CDC_Info.RxRdPtr], size);
 		
@@ -293,7 +293,7 @@ uint32_t USBH_CDC_Read(uint8_t *buff, uint16_t size)
 			USBH_CDC_Info.RxWrPtr = 0;
 		}
 		
-		__enable_irq();
+		__set_PRIMASK(primask);
 	}
 	
 	return size;

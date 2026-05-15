@@ -33,9 +33,9 @@ uint32_t GPIO_GetBits(GPIO_TypeDef * GPIOx, uint32_t n, uint32_t w);
 #define GPIO_AtomicClrBit	GPIO_ClrBit
 #define GPIO_AtomicInvBit	GPIO_InvBit
 
-#define GPIO_AtomicSetBits(GPIOx, n, w)	{ __disable_irq(); GPIO_SetBits(GPIOx, n, w); __enable_irq(); }
-#define GPIO_AtomicClrBits(GPIOx, n, w)	{ __disable_irq(); GPIO_ClrBits(GPIOx, n, w); __enable_irq(); }
-#define GPIO_AtomicInvBits(GPIOx, n, w)	{ __disable_irq(); GPIO_InvBits(GPIOx, n, w); __enable_irq(); }
+#define GPIO_AtomicSetBits(GPIOx, n, w)	{ uint32_t primask = __disable_irq_more(); GPIO_SetBits(GPIOx, n, w); __set_PRIMASK(primask); }
+#define GPIO_AtomicClrBits(GPIOx, n, w)	{ uint32_t primask = __disable_irq_more(); GPIO_ClrBits(GPIOx, n, w); __set_PRIMASK(primask); }
+#define GPIO_AtomicInvBits(GPIOx, n, w)	{ uint32_t primask = __disable_irq_more(); GPIO_InvBits(GPIOx, n, w); __set_PRIMASK(primask); }
 
 
 #endif
