@@ -135,7 +135,7 @@ uint32_t USBH_SendSetupPacket(uint8_t addr, uint8_t *data, uint16_t size)
 {
 	uint32_t res;
 	
-	uint32_t primask = __disable_irq_more();
+	uint32_t primask = SW_enter_critical();
 	
 	if((USBH->FRAMERM < 10000) && (USBH->FRAMERM > 2000))
 	{
@@ -159,7 +159,7 @@ uint32_t USBH_SendSetupPacket(uint8_t addr, uint8_t *data, uint16_t size)
 		res = 0;
 	}
 	
-	__set_PRIMASK(primask);
+	SW_exit_critical(primask);
 	
 	return res;
 }
@@ -177,7 +177,7 @@ uint32_t USBH_SendOutPacket(uint8_t addr, uint8_t endp, uint8_t DATAx, uint8_t *
 {
 	uint32_t res;
 	
-	uint32_t primask = __disable_irq_more();
+	uint32_t primask = SW_enter_critical();
 	
 	if((USBH->FRAMERM < 10000) && (USBH->FRAMERM > 2000))
 	{
@@ -201,7 +201,7 @@ uint32_t USBH_SendOutPacket(uint8_t addr, uint8_t endp, uint8_t DATAx, uint8_t *
 		res = 0;
 	}
 	
-	__set_PRIMASK(primask);
+	SW_exit_critical(primask);
 	
 	return res;
 }
@@ -218,7 +218,7 @@ uint32_t USBH_SendInPacket(uint8_t addr, uint8_t endp, uint8_t DATAx, uint16_t s
 {
 	uint32_t res;
 	
-	uint32_t primask = __disable_irq_more();
+	uint32_t primask = SW_enter_critical();
 	
 	if((USBH->FRAMERM < 10000) && (USBH->FRAMERM > 2000))
 	{
@@ -238,7 +238,7 @@ uint32_t USBH_SendInPacket(uint8_t addr, uint8_t endp, uint8_t DATAx, uint16_t s
 		res = 0;
 	}
 	
-	__set_PRIMASK(primask);
+	SW_exit_critical(primask);
 	
 	return res;
 }

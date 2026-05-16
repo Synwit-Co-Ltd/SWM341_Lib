@@ -414,7 +414,7 @@ void USBD_CtrlOut(void)
 *******************************************************************************************************************************/
 void USBD_TxWrite(uint8_t epnr, uint8_t *data, uint16_t size)
 {
-	uint32_t primask = __disable_irq_more();
+	uint32_t primask = SW_enter_critical();
 	
 	USBD->INEP[epnr].TXCR = (1 << USBD_TXCR_FLUSHFF_Pos);
 	
@@ -422,7 +422,7 @@ void USBD_TxWrite(uint8_t epnr, uint8_t *data, uint16_t size)
 	if(size) USBD_memcpy((uint8_t *)USBD->TXBUF[epnr], data, size);
 	USBD->INEP[epnr].TXCR = (1 << USBD_TXCR_FFRDY_Pos);
 	
-	__set_PRIMASK(primask);
+	SW_exit_critical(primask);
 }
 
 /*******************************************************************************************************************************
@@ -433,7 +433,7 @@ void USBD_TxWrite(uint8_t epnr, uint8_t *data, uint16_t size)
 *******************************************************************************************************************************/
 uint16_t USBD_RxRead(uint8_t *buff, uint16_t size)
 {
-	uint32_t primask = __disable_irq_more();
+	uint32_t primask = SW_enter_critical();
 	
 	uint16_t real_size = (USBD->RXSR & USBD_RXSR_TRSZ_Msk) >> USBD_RXSR_TRSZ_Pos;
 	
@@ -442,7 +442,7 @@ uint16_t USBD_RxRead(uint8_t *buff, uint16_t size)
 	
 	USBD_memcpy(buff, (uint8_t *)USBD->RXBUF, size);
 	
-	__set_PRIMASK(primask);
+	SW_exit_critical(primask);
 	
 	return size;
 }
