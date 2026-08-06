@@ -32,6 +32,8 @@ void CRC_Init(CRC_TypeDef * CRCx, CRC_InitStructure * initStruct)
 		break;
 	}
 	
+	__NOP(); __NOP(); __NOP(); __NOP();
+	
 	CRCx->INIVAL = initStruct->init_crc;
 	
 	CRCx->CR = (1 << CRC_CR_EN_Pos) |
