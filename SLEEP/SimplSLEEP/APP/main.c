@@ -68,7 +68,7 @@ int main(void)
 
 		SYS->PAWKSR = (1 << PIN10);					//清除唤醒标志
 		SYS->SLEEP |= (1 << SYS_SLEEP_SLEEP_Pos);	//进入睡眠模式
-		while((SYS->PAWKSR & (1 << PIN10)) == 0){};	//等待唤醒条件
+		while((SYS->PAWKSR & (1 << PIN10)) == 0) __NOP();	//等待唤醒条件
 		
 
 		switchToPLL(1, 3, 60, PLL_OUT_DIV8, 0);		//唤醒后，切换到 PLL
