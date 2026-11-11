@@ -320,7 +320,15 @@ void switchToPLL(uint32_t clksrc_xtal, uint32_t indiv, uint32_t fbdiv, uint32_t 
 	
 	SYS->PLLCR &= ~(1 << SYS_PLLCR_OFF_Pos);
 	
-	while(SYS->PLLLOCK == 0);		// wait for PLL to lock
+	for(int i = 0; i < 10; i = i)	// 连续检测到 10 次 PLLLOCK 为 1，才认为真的已经 lock
+	{
+		if(SYS->PLLLOCK)
+			i += 1;
+		else
+			i = 0;
+		
+		SW_DelayUS(2);
+	}
 	
 	SYS->PLLCR |= (1 << SYS_PLLCR_OUTEN_Pos);
 	
